@@ -1,0 +1,77 @@
+[
+  {
+    "locationId": "LOC_HOME",
+    "locationNameKey": "loc_home_title",
+    "category": "RESIDENTIAL",
+    "subNodes": [
+      {
+        "subNodeId": "HOME_LIVING_ROOM",
+        "labelKey": "sub_home_living_room",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_living_room.webp",
+        "availableActionIds": ["WATCH_TV", "RELAX_SOFA", "INTERACT_PET"],
+        "vendorConfig": null
+      },
+      {
+        "subNodeId": "HOME_KITCHEN",
+        "labelKey": "sub_home_kitchen",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_kitchen.webp",
+        "availableActionIds": ["COOK_MEAL", "OPEN_FRIDGE"],
+        "vendorConfig": null
+      },
+      {
+        "subNodeId": "HOME_BATHROOM",
+        "labelKey": "sub_home_bathroom",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_bathroom.webp",
+        "availableActionIds": ["TAKE_SHOWER", "USE_BODY_SCALE"],
+        "vendorConfig": null
+      }
+    ]
+  },
+  {
+    "locationId": "LOC_HOSPITAL",
+    "locationNameKey": "loc_hospital_title",
+    "category": "HEALTHCARE",
+    "subNodes": [
+      {
+        "subNodeId": "HOSPITAL_EXAMINATION_ROOM",
+        "labelKey": "sub_hospital_exam_room",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_hospital_room.webp",
+        "availableActionIds": ["FULL_BODY_CHECKUP", "PSYCHOLOGY_CONSULTATION"],
+        "vendorConfig": {
+          "vendorNameKey": "vendor_hospital_pharmacy",
+          "is24h": true,
+          "openingTime": "00:00",
+          "closingTime": "23:59",
+          "acceptedPaymentMethods": ["CASH", "HEALTH_INSURANCE"],
+          "availableItemIds": ["MED_PRESCRIPTION_HEPATITIS", "MED_ANTIDEPRESSANT"]
+        }
+      }
+    ]
+  },
+  {
+    "locationId": "LOC_SUPERMARKET",
+    "locationNameKey": "loc_supermarket_title",
+    "category": "COMMERCIAL",
+    "subNodes": [
+      {
+        "subNodeId": "SUPERMARKET_STORE",
+        "labelKey": "sub_supermarket_checkout",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_supermarket.webp",
+        "availableActionIds": ["BROWSE_GROCERIES"],
+        "vendorConfig": {
+          "vendorNameKey": "vendor_supermarket_counter",
+          "is24h": false,
+          "openingTime": "07:00",
+          "closingTime": "21:30",
+          "acceptedPaymentMethods": ["CASH", "BANK_TRANSFER"],
+          "availableItemIds": ["SCALE_TAPE", "FOOD_RICE_EGG", "PAD_SANITARY"]
+        }
+      }
+    ]
+  }
+]

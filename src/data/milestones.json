@@ -1,0 +1,187 @@
+[
+  {
+    "milestoneIndex": 1,
+    "ageYear": 1,
+    "titleKey": "Tiệc Thôi Nôi & Món Đồ Chơi Đầu Đời",
+    "backgroundAsset": "bg_childhood_age1_thoinoi.webp",
+    "contextDescription": "Khách khứa và người thân đến chúc mừng thôi nôi rất đông đúc, rộn rã tiếng cười nói. Trước mặt bé là một khay đựng nhiều đồ chơi và vật phẩm tượng trưng.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Bò vào góc yên tĩnh, tự xếp các khối gỗ một mình",
+        "narrativeExcerpt": "Bé lẳng lặng bò tránh khỏi chỗ đông người, ngồi xếp từng khối gỗ chồng lên nhau không một tiếng khóc quấy.",
+        "sensoryFeedback": "Bé cảm thấy an tâm nhất khi được tự do chìm đắm trong thế giới riêng."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Cười khanh khách, đưa tay đòi mọi người bế truyền tay nhau",
+        "narrativeExcerpt": "Bé toe toét cười rạng rỡ, liên tục nhoài người sang tay các cô chú bác, rất thích thú khi được mọi người tung hứng.",
+        "sensoryFeedback": "Tiếng cười đùa và sự hiện diện của mọi người khiến bé phấn khích tột độ."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Chộp lấy món đồ chơi phát nhạc to nhất rồi ném thử xem có vỡ không",
+        "narrativeExcerpt": "Bé giật chiếc lục lạc phát âm thanh chát chúa nhất, ném mạnh xuống sàn gỗ rồi vỗ tay thích thú khi thấy nó bật nảy.",
+        "sensoryFeedback": "Bé tò mò vô hạn với những thứ chuyển động mạnh và tạo ra tiếng động lớn."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Nép chặt vào lòng mẹ, quan sát vẻ mặt từng người rồi mới chạm vào gấu bông",
+        "narrativeExcerpt": "Bé ôm ghì lấy cổ mẹ, đôi mắt tròn xoe quan sát kỹ từng gương mặt người lớn xung quanh rồi mới rụt rè chạm tay vào chú gấu bông mềm mại.",
+        "sensoryFeedback": "Bé nhạy bén với cảm xúc của người chăm sóc trước khi bắt đầu tiếp xúc thế giới."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 2,
+    "ageYear": 2,
+    "titleKey": "Buổi Chiều Ở Công Viên Lộng Gió",
+    "backgroundAsset": "bg_childhood_age2_park.webp",
+    "contextDescription": "Mẹ đưa bé ra bãi cỏ công viên dạo mát. Phía trước có một chú chó nhỏ đang chạy lại gần và các bạn nhỏ đang chơi cầu trượt.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Ngồi yên dưới gốc cây nhặt lá vàng và chăm chú ngắm đàn kiến bò",
+        "narrativeExcerpt": "Bé ngồi bệt dưới bóng râm mát, tỉ mẩn xếp những chiếc lá vàng rơi và ngắm nhìn hàng kiến tha mồi về tổ.",
+        "sensoryFeedback": "Không gian tĩnh lặng của tự nhiên giúp bé tập trung sâu sắc."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Chạy ùa ra kéo áo các bạn nhỏ lạ để rủ chơi chung ngay lập tức",
+        "narrativeExcerpt": "Không chút e dè, bé lon ton chạy lại bập bênh, kéo tay bạn nhỏ đang đứng gần đó đòi chơi chung.",
+        "sensoryFeedback": "Bé hòa nhập tức thì với bạn bè đồng trang lứa mà không cần người lớn dỗ dành."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Lao thẳng lên bậc thang cầu trượt cao nhất mà không cần mẹ đỡ",
+        "narrativeExcerpt": "Mẹ chưa kịp chớp mắt, bé đã thoăn thoắt leo lên bậc thang trượt cao nhất rồi lao vút xuống bãi cát cười nắc nẻ.",
+        "sensoryFeedback": "Cảm giác tốc độ và sự mạo hiểm đem lại niềm vui bất tận cho bé."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Đứng lại xem bạn nhỏ vừa bị ngã và đưa chiếc khăn tay của mình cho bạn",
+        "narrativeExcerpt": "Thấy bạn nhỏ bên cạnh vấp ngã khóc nhè, bé dừng bước chạy lại xoa đầu bạn rồi chìa chiếc khăn tay mẹ vừa lau miệng cho mình.",
+        "sensoryFeedback": "Bé dễ dàng đồng cảm với nỗi đau của người khác ngay từ những bước đi chập chững."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 3,
+    "ageYear": 3,
+    "titleKey": "Ngày Đầu Tiên Đi Nhà Trẻ",
+    "backgroundAsset": "bg_childhood_age3_kindergarten.webp",
+    "contextDescription": "Cha mẹ vẫy tay tạm biệt ở cổng trường mầm non. Lớp học mới lạ lẫm với hàng chục bạn nhỏ đang vừa chơi vừa có bạn khóc đòi về.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Tự tìm một góc bàn có sách tranh và ngồi xem im lặng suốt buổi",
+        "narrativeExcerpt": "Bé ngoan ngoãn chọn chiếc ghế nhỏ ở góc giá sách, lật từng trang tranh vẽ động vật và tự thưởng thức trọn vẹn buổi sáng.",
+        "sensoryFeedback": "Thế giới hình ảnh và suy tưởng đem lại sự vững vàng tâm lý cho bé."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Nhanh chóng làm quen, kể chuyện líu lo với cô giáo và cả lớp",
+        "narrativeExcerpt": "Chỉ sau vài phút, bé đã đứng giữa nhóm đồ chơi, bi bô kể chuyện gia đình và chia kẹo cho các bạn xung quanh.",
+        "sensoryFeedback": "Bé là tâm điểm kết nối và lan tỏa năng lượng tích cực trong lớp học."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Lén mở cửa lớp chạy ra sân trường khám phá khu vườn phía sau",
+        "narrativeExcerpt": "Nhân lúc cô giáo đang dỗ bạn khác, bé đẩy nhẹ cánh cửa phụ, lén chạy ra bồn hoa đuổi bắt chuồn chuồn một cách dũng cảm.",
+        "sensoryFeedback": "Ranh giới và quy củ gò bó luôn thôi thúc bản năng thám hiểm của bé."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Ngồi ngay ngắn nghe lời cô và dỗ dành một bạn bên cạnh đang khóc nhớ mẹ",
+        "narrativeExcerpt": "Bé ngồi ngoan ngoãn trên ghế gỗ, vỗ về bờ vai bạn bên cạnh: 'Đừng khóc nữa, chiều bố mẹ lại đón mà!'",
+        "sensoryFeedback": "Sự an ủi của bé trở thành điểm tựa dịu dàng cho bạn bè xung quanh."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 4,
+    "ageYear": 4,
+    "titleKey": "Tranh Giành Đồ Chơi Trong Giờ Sinh Hoạt",
+    "backgroundAsset": "bg_childhood_age4_playfight.webp",
+    "contextDescription": "Bé đang cặm cụi lắp một tòa lâu đài đồ chơi dở dang thì một bạn nhỏ hung hăng khác lao tới giật mạnh món mảnh ghép chính trên tay.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Không đôi co, lặng lẽ lấy bộ đồ chơi khác và tự nghĩ cách lắp mô hình mới phức tạp hơn",
+        "narrativeExcerpt": "Bé không tranh cãi, thu mình sang góc khác lấy những thanh gỗ đơn sơ hơn và tự tạo ra một cấu trúc hoàn toàn mới.",
+        "sensoryFeedback": "Khả năng thích ứng nội tại và sức bền trí tuệ giúp bé vượt qua va chạm."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Gọi to các bạn xung quanh lại để phân xử và thuyết phục bạn kia chơi chung",
+        "narrativeExcerpt": "Bé cất tiếng gọi cô giáo và các bạn khác lại phân trần: 'Chúng mình cùng xây chung thành lũy khổng lồ sẽ vui hơn!'",
+        "sensoryFeedback": "Tư duy đàm phán cộng đồng và kỹ năng xã hội bộc lộ sắc bén."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Giật mạnh lại món đồ chơi ngay lập tức, nhất quyết không chịu nhượng bộ",
+        "narrativeExcerpt": "Bé trừng mắt cương quyết, dùng cả hai tay giật mạnh lại khối ghép của mình và khẳng định quyền sở hữu rõ ràng.",
+        "sensoryFeedback": "Ý chí cạnh tranh mạnh mẽ và tính khí khẳng khái không chịu khuất phục."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Nhường cho bạn chơi trước vì thấy bạn đang buồn, rồi kiên nhẫn chờ đến lượt",
+        "narrativeExcerpt": "Thấy bạn kia mếu máo vì không có đồ chơi đẹp, bé mỉm cười buông tay: 'Cậu chơi trước đi, lát đổi cho tớ nhé!'",
+        "sensoryFeedback": "Lòng vị tha và đức tính kiên nhẫn vượt trội so với lứa tuổi mẫu giáo."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 5,
+    "ageYear": 5,
+    "titleKey": "Đêm Giông Bão Sấm Sét Mất Điện",
+    "backgroundAsset": "bg_childhood_age5_storm.webp",
+    "contextDescription": "Bên ngoài trời mưa như trút nước, sấm chớp giật từng cơn rền vang. Toàn bộ khu phố đột ngột mất điện, căn nhà chìm vào bóng tối sâu thẳm.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Tự bật chiếc đèn pin nhỏ, nằm trong chăn tưởng tượng ra các câu chuyện vũ trụ",
+        "narrativeExcerpt": "Bé tự tìm được chiếc đèn pin đồ chơi, trùm chăn kín đầu soi đèn lên trần nhà và mường tượng về những vì sao xa xôi.",
+        "sensoryFeedback": "Bóng tối kích thích trí tưởng tượng phong phú và chiều sâu tâm hồn của bé."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Gọi cả nhà quây quần lại phòng khách để cùng hát và chơi trò đố chữ",
+        "narrativeExcerpt": "Bé nắm tay bố mẹ kéo lại quanh ngọn nến sáng, khởi xướng trò chơi đố chữ râm ran tiếng cười xua tan nỗi sợ bóng đêm.",
+        "sensoryFeedback": "Khả năng gắn kết mọi người và mang lại niềm lạc quan trong nghịch cảnh."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Đòi mở then cửa sổ ra ngoài hiên để tận mắt nhìn tia chớp và hứng nước mưa",
+        "narrativeExcerpt": "Bé nhón chân bên ô cửa kính, mắt mở to thích thú ngắm những lằn chớp xé rách bầu trời đêm mà không hề sợ hãi.",
+        "sensoryFeedback": "Sự dũng cảm bẩm sinh trước những hiện tượng dữ dội của tự nhiên."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Ôm chặt lấy thú cưng đang run sợ và nhắc bố mẹ kiểm tra xem cửa nẻo đã đóng chặt chưa",
+        "narrativeExcerpt": "Bé bế gọn chú cún con đang co rúm vào lòng vỗ về, miệng nhỏ nhẹ nhắc mẹ: 'Mẹ ơi đóng cửa sổ gác lửng kẻo nước tạt vào nhà!'",
+        "sensoryFeedback": "Tinh thần trách nhiệm và lòng yêu thương bảo bọc những sinh linh bé nhỏ."
+      }
+    ]
+  }
+]

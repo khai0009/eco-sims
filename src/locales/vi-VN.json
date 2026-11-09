@@ -1,0 +1,27 @@
+{
+  "locale": "vi-VN",
+  "translations": {
+    "ui_hud": {
+      "clock_unrevealed": "Trời ngả về chiều, gió lạnh hun hút...",
+      "weather_smog": "Bầu trời mịt mù bụi mịn, hít vào rát cổ họng",
+      "sensory_health_label": "Sức khỏe thể chất",
+      "sensory_happiness_label": "Cảm xúc tâm lý",
+      "btn_city_map": "► Ra Bản Đồ Thành Phố",
+      "btn_view_journal": "Mở Nhật Ký Đời Người"
+    },
+    "mono_body": {
+      "mono_body_fine": "Cơ thể nhẹ nhõm, tinh thần sảng khoái.",
+      "mono_liver_ache_nausea": "Hạ sườn phải đau âm ỉ, miệng đắng ngắt, buồn nôn liên miên...",
+      "mono_heart_palpitation_chest_tight": "Ngực trái nhói buốt từng cơn, tim đập dồn dập bất thường...",
+      "mono_lungs_short_breath_cough": "Lồng ngực nghẹn ứ, ho khan kéo dài rát cả cuống họng...",
+      "mono_stomach_burning_cramps": "Bụng cồn cào đau thắt, dịch chua trào ngược lên cổ...",
+      "mono_brain_dizziness_headache": "Đầu óc choáng váng, hai thái dương giật giật đau nhức...",
+      "mono_spine_joints_stiff": "Lưng mỏi rã rời, các khớp gối kêu lạo xạo khi đứng lên...",
+      "mono_body_fatigue_general": "Người mệt lả như muốn sập nguồn, không nhấc nổi tay chân..."
+    },
+    "evt_brake_failure_title": "NGUY HIỂM: CHIẾC XE TẢI BĂNG CẮT MẶT ĐƯỜNG!",
+    "evt_brake_failure_desc": "Má phanh mòn trơ đáy không thể dừng xe kịp thời! Chiếc xe tải chở đất đang lao thẳng về phía bạn!",
+    "evt_brake_failure_opt_a": "Chủ động quăng xe, lăn mình vào bụi cỏ ven đường",
+    "evt_brake_failure_opt_b": "Hoảng loạn bóp chết tay thắng (Hết giờ / Bị đóng băng PTSD)"
+  }
+}
