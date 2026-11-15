@@ -1,0 +1,223 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeMedicineAndTreatmentCatalog",
+"description": "Bảng thuốc điều trị dùng chung cho cả Hiệu thuốc tây (bốc theo triệu chứng mô tả, không cần toa) và Bệnh viện (bác sĩ kê sẵn chính xác trên Phiếu Khám Bệnh).",
+"version": "1.0.0",
+"dispensing_rules": {
+"PHARMACY_OTC_MODE": {
+"duration_minutes": 15,
+"requires_work_leave": false,
+"diagnostic_accuracy": "SYMPTOM_GUESSWORK",
+"description": "Dược sĩ chỉ nghe mô tả triệu chứng rồi chọn ngẫu nhiên 1 thuốc OTC thuộc nhóm triệu chứng đó. Nếu trùng đúng mã bệnh thực tế ở mức nhẹ (ORANGE) -> trị khỏi bệnh nhẹ. Nếu bốc nhầm bệnh trùng triệu chứng hoặc dùng thuốc giảm đau cắt cơn -> không khỏi bệnh gốc và trừ thẳng vào Gan/Thận."
+},
+"HOSPITAL_PRESCRIPTION_MODE": {
+"duration_minutes": 360,
+"requires_work_leave": true,
+"work_leave_penalty_note": "Phải xin nghỉ phép 1 ngày/1 ca làm việc để đi khám xét nghiệm chuyên sâu.",
+"diagnostic_accuracy": "100_PERCENT_EXACT",
+"description": "Xét nghiệm giải mã chính xác bệnh trong disease_catalog.json, xuất Phiếu Kết Quả Khám Bệnh và kê sẵn đơn thuốc (mở khóa quyền mua các thuốc requires_prescription: true tại quầy thuốc Bệnh viện hoặc Nhà thuốc)."
+}
+},
+"medicines": [
+{
+"medicine_id": "MED_PAINKILLER_GENERIC_OTC",
+"name_key": "med_painkiller_generic",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 45000,
+"treats_disease_ids": [],
+"symptom_clusters_covered": [
+"SYM_UPPER_ABDOMINAL_ACHE",
+"SYM_CHEST_TIGHTNESS_BURNING",
+"SYM_DIZZINESS_HEADACHE_FATIGUE",
+"SYM_LOWER_BACK_AND_FATIGUE"
+],
+"effects_when_matched_mild": {},
+"effects_when_mismatched_or_severe": {
+"suppress_symptom_hours": 6,
+"organ_deltas": { "liver": -5.5, "kidneys": -2.0 }
+}
+},
+{
+"medicine_id": "MED_ANTACID_STOMACH",
+"name_key": "med_antacid_stomach",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 120000,
+"treats_disease_ids": ["DIS_GASTRITIS_MILD", "DIS_GERD_REFLUX"],
+"symptom_clusters_covered": ["SYM_UPPER_ABDOMINAL_ACHE", "SYM_CHEST_TIGHTNESS_BURNING"],
+"effects_when_matched_mild": {
+"organ_deltas": { "digestive": 11.0, "liver": -1.0 }
+},
+"effects_when_mismatched_or_severe": {
+"suppress_symptom_hours": 3,
+"organ_deltas": { "liver": -3.5 }
+}
+},
+{
+"medicine_id": "MED_LIVER_DETOX_OTC",
+"name_key": "med_liver_detox_otc",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 180000,
+"treats_disease_ids": ["DIS_FATTY_LIVER_HEPATITIS"],
+"symptom_clusters_covered": ["SYM_UPPER_ABDOMINAL_ACHE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "liver": 10.5 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "kidneys": -2.5 }
+}
+},
+{
+"medicine_id": "MED_HEPATITIS_SPECIAL_RX",
+"name_key": "med_hepatitis_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 850000,
+"treats_disease_ids": ["DIS_FATTY_LIVER_HEPATITIS"],
+"symptom_clusters_covered": ["SYM_UPPER_ABDOMINAL_ACHE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "liver": 22.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "liver": 18.0 }
+}
+},
+{
+"medicine_id": "MED_GASTRIC_MUCOSA_RX",
+"name_key": "med_gastric_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 650000,
+"treats_disease_ids": ["DIS_GASTRITIS_MILD", "DIS_GERD_REFLUX"],
+"symptom_clusters_covered": ["SYM_UPPER_ABDOMINAL_ACHE", "SYM_CHEST_TIGHTNESS_BURNING"],
+"effects_when_matched_mild": {
+"organ_deltas": { "digestive": 22.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "digestive": 18.0 }
+}
+},
+{
+"medicine_id": "MED_CARDIO_VASODILATOR_RX",
+"name_key": "med_cardio_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 1200000,
+"treats_disease_ids": ["DIS_CORONARY_ISCHEMIA"],
+"symptom_clusters_covered": ["SYM_CHEST_TIGHTNESS_BURNING"],
+"effects_when_matched_mild": {
+"organ_deltas": { "heart": 20.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "heart": 16.0 }
+}
+},
+{
+"medicine_id": "MED_COUGH_BRONCHIAL_OTC",
+"name_key": "med_bronchial_otc",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 135000,
+"treats_disease_ids": ["DIS_ASTHMA_BRONCHITIS"],
+"symptom_clusters_covered": ["SYM_CHEST_TIGHTNESS_BURNING"],
+"effects_when_matched_mild": {
+"organ_deltas": { "lungs": 10.5, "liver": -1.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "liver": -4.0 }
+}
+},
+{
+"medicine_id": "MED_INHALER_ASTHMA_RX",
+"name_key": "med_asthma_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 750000,
+"treats_disease_ids": ["DIS_ASTHMA_BRONCHITIS"],
+"symptom_clusters_covered": ["SYM_CHEST_TIGHTNESS_BURNING"],
+"effects_when_matched_mild": {
+"organ_deltas": { "lungs": 22.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "lungs": 18.0 }
+}
+},
+{
+"medicine_id": "MED_BRAIN_TONIC_OTC",
+"name_key": "med_brain_tonic_otc",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 160000,
+"treats_disease_ids": ["DIS_CEREBRAL_ANEMIA_STRESS"],
+"symptom_clusters_covered": ["SYM_DIZZINESS_HEADACHE_FATIGUE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "brain": 10.0, "liver": -1.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "liver": -4.0 }
+}
+},
+{
+"medicine_id": "MED_NEURO_RECOVERY_RX",
+"name_key": "med_neuro_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 980000,
+"treats_disease_ids": ["DIS_CEREBRAL_ANEMIA_STRESS"],
+"symptom_clusters_covered": ["SYM_DIZZINESS_HEADACHE_FATIGUE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "brain": 20.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "brain": 16.0 }
+}
+},
+{
+"medicine_id": "MED_JOINT_SUPPORT_OTC",
+"name_key": "med_joint_otc",
+"requires_prescription": false,
+"sold_at_locations": ["LOC_PHARMACY", "LOC_HOSPITAL"],
+"price_vnd": 150000,
+"treats_disease_ids": ["DIS_LUMBAR_DEGENERATION"],
+"symptom_clusters_covered": ["SYM_LOWER_BACK_AND_FATIGUE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "musculoskeletal": 10.5, "liver": -1.5 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "liver": -4.5, "kidneys": -2.0 }
+}
+},
+{
+"medicine_id": "MED_ORTHOPEDIC_RX",
+"name_key": "med_orthopedic_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 800000,
+"treats_disease_ids": ["DIS_LUMBAR_DEGENERATION"],
+"symptom_clusters_covered": ["SYM_LOWER_BACK_AND_FATIGUE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "musculoskeletal": 22.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "musculoskeletal": 18.0 }
+}
+},
+{
+"medicine_id": "MED_RENAL_THERAPY_RX",
+"name_key": "med_renal_rx",
+"requires_prescription": true,
+"sold_at_locations": ["LOC_HOSPITAL", "LOC_PHARMACY"],
+"price_vnd": 1100000,
+"treats_disease_ids": ["DIS_KIDNEY_DYSFUNCTION"],
+"symptom_clusters_covered": ["SYM_LOWER_BACK_AND_FATIGUE"],
+"effects_when_matched_mild": {
+"organ_deltas": { "kidneys": 20.0 }
+},
+"effects_when_mismatched_or_severe": {
+"organ_deltas": { "kidneys": 16.0 }
+}
+}
+]
+}

@@ -1,0 +1,92 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_DAILY_AND_HOME",
+"description": "Sự kiện sinh hoạt thường ngày tại nhà (LOC_HOME), hàng xóm láng giềng và sự cố quên hành trang khi ra ngoài.",
+"events": [
+{
+"event_id": "EVT_INDOOR_NEIGHBOR_GIFT",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 55.0,
+"trigger_conditions": {
+"age_range": [6.0, 95.0],
+"allowed_location_ids": ["LOC_HOME"]
+},
+"presentation": {
+"title_key": "evt_neighbor_fruit_gift_title",
+"narrative_body_key": "evt_neighbor_fruit_gift_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "CHAT_WARMLY",
+"label_key": "evt_neighbor_choice_chat",
+"outcomes": {
+"time_elapsed_minutes": 20,
+"happiness_delta": 8.0,
+"organ_deltas": { "digestive": 3.0 }
+}
+},
+{
+"choice_id": "THANK_BRIEFLY",
+"label_key": "evt_neighbor_choice_quick_thanks",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 2,
+"happiness_delta": 3.0
+}
+}
+]
+},
+{
+"event_id": "EVT_FORGOT_SMARTPHONE_AT_HOME",
+"category": "DAILY_GRAY",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"base_weight": 100.0,
+"trigger_conditions": {
+"age_range": [12.0, 90.0],
+"biological_and_item_triggers": {
+"required_active_condition": "OPENED_BAG_WITHOUT_SMARTPHONE"
+}
+},
+"presentation": {
+"title_key": "evt_forgot_phone_title",
+"narrative_body_key": "evt_forgot_phone_body_monologue",
+"base_countdown_seconds": 10.0
+},
+"choices": [
+{
+"choice_id": "QUICK_GRAB_AT_DOORSTEP",
+"label_key": "evt_forgot_phone_choice_careful_quick_grab",
+"unlock_requirements": {
+"required_innate_traits": ["CAREFUL_CHECKLIST"]
+},
+"outcomes": {
+"time_elapsed_minutes": 3,
+"happiness_delta": -1.0
+}
+},
+{
+"choice_id": "TURN_BACK_HOME_FULL_TRIP",
+"label_key": "evt_forgot_phone_choice_turn_back",
+"outcomes": {
+"time_elapsed_minutes": 40,
+"money_delta_vnd": -15000,
+"happiness_delta": -8.0
+}
+},
+{
+"choice_id": "LEAVE_IT_BEHIND_MANAGE_WITHOUT",
+"label_key": "evt_forgot_phone_choice_leave_it",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 0,
+"happiness_delta": -5.0
+}
+}
+]
+}
+]
+}

@@ -1,0 +1,193 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "UniversalHumanEntitySchema",
+"description": "Cấu trúc dữ liệu sinh học, giác quan, tâm lý và tiến trình rèn luyện lối sống đồng nhất cho cả Người chơi và NPC.",
+"type": "object",
+"properties": {
+"entity_id": { "type": "string" },
+"entity_role": {
+"type": "string",
+"enum": ["PLAYER", "NPC"]
+},
+"identity_biometrics": {
+"type": "object",
+"properties": {
+"full_name": { "type": "string" },
+"biological_sex": { "type": "string", "enum": ["MALE", "FEMALE"] },
+"socioeconomic_origin": { "type": "string", "enum": ["Q1", "Q2", "Q3", "Q4", "Q5"] },
+"exact_age_years": { "type": "number", "minimum": 0.0, "maximum": 120.0 },
+"height_cm": { "type": "number", "minimum": 45.0, "maximum": 220.0 },
+"weight_kg": { "type": "number", "minimum": 2.5, "maximum": 200.0 },
+"current_bmi": { "type": "number" },
+"blood_type": { "type": "string", "enum": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+"locked_personality": {
+"type": ["string", "null"],
+"enum": ["INTROVERT", "EXTROVERT", "DAREDEVIL", "EMPATHETIC", "AMBIVERT", null]
+},
+"innate_and_genetic_traits": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"ADHD",
+"DYSLEXIA",
+"ASD",
+"FAST_LEARNER",
+"SUPERIOR_PHYSIQUE",
+"QUICK_REFLEXES",
+"COGNITIVE_DECLINE",
+"GENETIC_HEART_WEAKNESS",
+"GENETIC_ASTHMA",
+"GENETIC_MYOPIA",
+"ADDICTION_PRONE"
+]
+}
+},
+"lifestyle_habits": {
+"type": "array",
+"description": "Danh sách các lối sống đã mở khóa và đang kích hoạt trên nhân vật.",
+"items": {
+"type": "string",
+"enum": [
+"CAREFUL_CHECKLIST",
+"SCATTERBRAINED",
+"MINIMALIST",
+"HOARDER",
+"EARLY_BIRD",
+"NIGHT_OWL",
+"WORKAHOLIC",
+"FRUGAL_SAVER",
+"IMPULSE_SPENDER",
+"STREET_SMART",
+"HEALTH_CONSCIOUS",
+"SLOB_NEGLECTFUL",
+"SOCIAL_BUTTERFLY",
+"LONE_WOLF"
+]
+}
+},
+"habit_formation_progress": {
+"type": "object",
+"description": "Điểm tích lũy ngầm (0 - 100) của từng thói quen đang rèn luyện. Đạt 100 sẽ mở khóa và xóa lối sống đối lập.",
+"additionalProperties": {
+"type": "number",
+"minimum": 0.0,
+"maximum": 100.0
+}
+}
+},
+"required": ["full_name", "biological_sex", "exact_age_years", "height_cm", "weight_kg", "current_bmi", "lifestyle_habits", "habit_formation_progress"]
+},
+"communication_and_devices": {
+"type": "object",
+"properties": {
+"has_smartphone_on_person": { "type": "boolean", "default": false },
+"smartphone_left_at_location_id": { "type": ["string", "null"], "default": "LOC_HOME" },
+"has_wallet_on_person": { "type": "boolean", "default": true },
+"can_receive_cellular_sms_calls": { "type": "boolean", "default": false },
+"can_access_internet_chat_apps": { "type": "boolean", "default": false },
+"can_pay_cash": { "type": "boolean", "default": true },
+"can_pay_qr_transfer": { "type": "boolean", "default": false }
+},
+"required": ["has_smartphone_on_person", "has_wallet_on_person", "can_receive_cellular_sms_calls", "can_access_internet_chat_apps"]
+},
+"hidden_black_box": {
+"type": "object",
+"properties": {
+"core_organs_6": {
+"type": "object",
+"properties": {
+"brain": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"heart": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"lungs": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"liver": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"digestive": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"musculoskeletal": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+},
+"required": ["brain", "heart", "lungs", "liver", "digestive", "musculoskeletal"]
+},
+"secondary_systems": {
+"type": "object",
+"properties": {
+"kidneys": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"endocrine_immune": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"integumentary_skin": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"reproductive": {
+"type": "object",
+"properties": {
+"fertility_health": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"puberty_status": { "type": "string", "enum": ["PRE_PUBERTY", "IN_PUBERTY", "MATURE", "MENOPAUSE_ANDROPAUSE"] },
+"menstrual_cycle_day": { "type": ["integer", "null"], "minimum": 1, "maximum": 35 },
+"pregnancy_weeks": { "type": ["integer", "null"], "minimum": 0, "maximum": 42 }
+},
+"required": ["fertility_health", "puberty_status"]
+}
+},
+"required": ["kidneys", "endocrine_immune", "integumentary_skin", "reproductive"]
+},
+"sensory_organs": {
+"type": "object",
+"properties": {
+"vision": {
+"type": "object",
+"properties": {
+"acuity_pct": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"myopia_diopters": { "type": "number", "minimum": 0.0, "maximum": 15.0 },
+"is_wearing_corrective_glasses": { "type": "boolean", "default": false }
+},
+"required": ["acuity_pct", "myopia_diopters", "is_wearing_corrective_glasses"]
+},
+"hearing": {
+"type": "object",
+"properties": {
+"acuity_pct": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+"has_tinnitus": { "type": "boolean", "default": false }
+},
+"required": ["acuity_pct", "has_tinnitus"]
+},
+"olfactory_gustatory": {
+"type": "object",
+"properties": {
+"sensitivity_pct": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+},
+"required": ["sensitivity_pct"]
+},
+"tactile_nociception": {
+"type": "object",
+"properties": {
+"pain_sensitivity_pct": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+},
+"required": ["pain_sensitivity_pct"]
+}
+},
+"required": ["vision", "hearing", "olfactory_gustatory", "tactile_nociception"]
+},
+"circadian_and_trauma": {
+"type": "object",
+"properties": {
+"hours_awake_continuous": { "type": "number", "default": 0.0 },
+"sleep_debt_hours": { "type": "number", "default": 0.0 },
+"ptsd_trauma_score": { "type": "number", "minimum": 0.0, "maximum": 100.0, "default": 0.0 },
+"burnout_index": { "type": "number", "minimum": 0.0, "maximum": 100.0, "default": 0.0 }
+},
+"required": ["hours_awake_continuous", "sleep_debt_hours", "ptsd_trauma_score", "burnout_index"]
+}
+},
+"required": ["core_organs_6", "secondary_systems", "sensory_organs", "circadian_and_trauma"]
+},
+"sensory_ui_projection": {
+"type": "object",
+"properties": {
+"health_color": { "type": "string", "enum": ["BLUE", "GREEN", "YELLOW", "ORANGE", "RED"] },
+"happiness_color": { "type": "string", "enum": ["BLUE", "GREEN", "YELLOW", "ORANGE", "RED"] },
+"active_symptom_monologue_key": { "type": "string" },
+"sensory_environment_cues": {
+"type": "array",
+"items": { "type": "string" }
+}
+},
+"required": ["health_color", "happiness_color", "active_symptom_monologue_key"]
+}
+},
+"required": ["entity_id", "entity_role", "identity_biometrics", "communication_and_devices", "hidden_black_box", "sensory_ui_projection"]
+}

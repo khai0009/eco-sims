@@ -1,0 +1,110 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "TimeAndCircadianEngineRules",
+"description": "Công thức tính toán thời gian thực, trôi lố hành động, đếm ngược sự kiện, sốc nhịp sinh học và lão hóa.",
+"version": "1.0.0",
+"base_time_constants": {
+"real_seconds_per_game_minute_at_1x": 1.0,
+"game_minutes_per_day": 1440,
+"game_days_per_year": 365,
+"childhood_unlock_age": 6.0,
+"senior_aging_start_age": 60.0,
+"rush_hour_windows": [
+{ "start": "07:00", "end": "09:00" },
+{ "start": "16:30", "end": "19:00" }
+]
+},
+"action_duration_modifiers": {
+"description": "Công thức: ActualMinutes = BaseMinutes * OverrunMult * ConditionMult * MasteryMult",
+"unskilled_time_overrun": {
+"condition": "is_time_management_unlocked == false",
+"random_multiplier_range": [1.10, 1.60],
+"hide_duration_on_ui": true
+},
+"environmental_and_physical_multipliers": {
+"rush_hour_transit_multiplier": 2.5,
+"inventory_overweight_multiplier": 1.3,
+"dyslexia_reading_paperwork_multiplier": 1.45,
+"adhd_boring_study_multiplier": 1.30,
+"adhd_hyperfocus_hobby_multiplier": 0.65,
+"fast_learner_study_multiplier": 0.75,
+"menstrual_cycle_first_2_days_multiplier": 1.11
+},
+"habit_mastery_curve": {
+"formula": "max(T_min, T_initial * exp(-0.02 * repeat_count))",
+"minimum_physical_floor_ratio": 0.4
+}
+},
+"event_popup_reaction_window": {
+"description": "Tính thời gian (giây thực) của thanh đếm ngược khi có sự kiện bất ngờ.",
+"base_seconds_by_severity": {
+"DAILY_GRAY": 12.0,
+"OPPORTUNITY_GREEN": 8.0,
+"DANGER_RED": 4.0
+},
+"modifiers": {
+"experience_bonus_formula": "1 + (0.15 * years_exp) + (0.05 * similar_encounter_count)",
+"brain_health_factor": "core_organs_6.brain / 100.0",
+"quick_reflexes_trait_flat_bonus_sec": 3.0,
+"ptsd_freeze_penalty_sec": -2.0,
+"minimum_allowed_window_sec": 1.0,
+"maximum_allowed_window_sec": 15.0
+},
+"timeout_or_force_quit_rule": "Tự động chọn default_penalty_choice_id và lưu ngay lập tức để chống Save-scumming."
+},
+"circadian_and_karoshi_engine": {
+"hourly_tick_effects": {
+"awake_hours_increment": 1.0,
+"sleep_debt_threshold_hours": 16.0,
+"sleep_debt_accumulation_rate": "1.25 giờ nợ cho mỗi giờ thức vượt quá mốc 16h"
+},
+"sleep_deprivation_milestones": [
+{
+"awake_hours_min": 18.0,
+"status": "GROGGY",
+"efficiency_penalty_pct": -30.0,
+"accident_risk_multiplier": 1.5
+},
+{
+"awake_hours_min": 30.0,
+"status": "MICRO_SLEEP",
+"trigger_micro_sleep_event_chance_per_hour": 0.35,
+"accident_risk_multiplier": 3.5
+},
+{
+"awake_hours_min": 40.0,
+"status": "FORCED_COLLAPSE",
+"action": "Ngất xỉu ngủ gục tại chỗ trong 6 giờ game; nếu đang ở ngoài đường có 60% bị móc túi mất tiền/điện thoại."
+}
+],
+"circadian_shift_shock": {
+"trigger_condition": "Đổi từ NIGHT_SHIFT sang DAY_SHIFT đột ngột mà không có ít nhất 48 giờ nghỉ đệm",
+"duration_game_hours": 72,
+"hourly_organ_drain": {
+"heart": -0.35,
+"brain": -0.30,
+"digestive": -0.25
+}
+},
+"karoshi_stroke_check": {
+"check_interval_game_hours": 1,
+"activation_condition": "sleep_debt_hours > 24.0 AND burnout_index > 75.0",
+"stroke_probability_formula": "((sleep_debt_hours - 24.0) * 0.005) * (2.0 - ((heart + brain) / 200.0))",
+"outcome": "Kích hoạt Sự kiện Đỏ: Đột quỵ cấp tính (Tử vong tại chỗ hoặc giảm vĩnh viễn brain & musculoskeletal xuống dưới 20%)."
+}
+},
+"passive_time_decay_rules": {
+"device_and_item_decay_per_game_hour": {
+"smartphone_battery_idle_drain_pct": -1.5,
+"smartphone_battery_active_use_drain_pct": -5.0,
+"perishable_food_room_temp_decay_pct": -4.0,
+"perishable_food_fridge_decay_pct": -0.4
+},
+"annual_senior_aging_decay": {
+"trigger_age": 60.0,
+"yearly_organ_decay_pct": -2.0,
+"yearly_sensory_decay_pct": -2.5,
+"dementia_autopilot_threshold": "core_organs_6.brain < 25.0"
+}
+}
+}

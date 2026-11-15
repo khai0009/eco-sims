@@ -1,0 +1,56 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeHousekeepingAndLaundry",
+"description": "Hệ thống vệ sinh không gian sống và giặt quần áo (tách rõ làm thủ công vs dùng máy giặt có độ bền).",
+"version": "1.0.0",
+"home_cleanliness_rules": {
+"passive_dust_trash_decay_per_day": -8.0,
+"dirty_house_threshold": 40.0,
+"dirty_house_penalties": {
+"lungs_dust_drain_per_day": -1.5,
+"digestive_food_spoil_multiplier": 1.6,
+"happiness_drain_per_day": -4.0
+},
+"allowed_location_ids": ["LOC_HOME"],
+"interactable_actions": [
+{
+"action_id": "ACT_SWEEP_MOP_MANUAL",
+"label_key": "Quét dọn & lau nhà thủ công (+45 phút)",
+"duration_minutes": 45,
+"cleanliness_restore": 55.0,
+"musculoskeletal_fatigue": -1.0,
+"habit_gain": { "CAREFUL_CHECKLIST": 4 }
+},
+{
+"action_id": "ACT_VACUUM_CLEANING",
+"label_key": "Hút bụi & lau sàn bằng máy (+15 phút)",
+"duration_minutes": 15,
+"requires_furniture_id": "FURN_VACUUM_CLEANER",
+"cleanliness_restore": 75.0
+}
+]
+},
+"laundry_rules": {
+"clothes_dirty_after_hours_worn": 18,
+"wearing_dirty_clothes_npc_penalty": -12,
+"allowed_location_ids": ["LOC_HOME"],
+"interactable_actions": [
+{
+"action_id": "ACT_HAND_WASH_CLOTHES",
+"label_key": "Giặt đồ bằng tay ngoài sân/nhà tắm (+40 phút)",
+"duration_minutes": 40,
+"clothes_freshness_restore": 100.0,
+"musculoskeletal_fatigue": -1.5,
+"consumes_item_id": "ITEM_LAUNDRY_DETERGENT"
+},
+{
+"action_id": "ACT_MACHINE_WASH_CLOTHES",
+"label_key": "Bỏ vào máy giặt tự động (+10 phút thao tác, máy chạy 50p)",
+"duration_minutes": 10,
+"requires_furniture_id": "FURN_WASHING_MACHINE",
+"clothes_freshness_restore": 100.0,
+"consumes_item_id": "ITEM_LAUNDRY_DETERGENT"
+}
+]
+}
+}

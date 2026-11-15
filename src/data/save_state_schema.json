@@ -1,0 +1,87 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeSaveStateSchema",
+"description": "Cấu trúc tệp lưu trữ đồng nhất giữa Web và Tauri Desktop PC (AppData + Rust HMAC Integrity + Tự động sao lưu khi tắt app để tiếp tục ngay tại khoảnh khắc đang chơi).",
+"version": "1.1.0",
+"storage_architecture": {
+"web_browser_mode": {
+"storage_backend": "localStorage / IndexedDB (kết hợp sự kiện window.beforeunload)",
+"keys": {
+"slots_index": "ecolife_save_slots_v1",
+"slot_payload_prefix": "ecolife_slot_data_",
+"memorials_archive": "ecolife_memorial_books_v1"
+}
+},
+"tauri_pc_mode": {
+"storage_backend": "@tauri-apps/plugin-fs (BaseDirectory.AppData) + Rust Tauri Commands",
+"close_hook": "Lắng nghe sự kiện tắt cửa sổ Tauri (onCloseRequested / Alt+F4) để tự động ghi đè trạng thái hiện tại trước khi thoát.",
+"directory_layout": {
+"saves_dir": "EcoLife/saves/",
+"slot_file_pattern": "slot_{slot_id}.sav",
+"memorials_dir": "EcoLife/memorials/",
+"memorial_file_pattern": "memoir_{memoir_id}.json"
+},
+"anti_tamper_security": {
+"algorithm": "HMAC-SHA256",
+"signing_layer": "Rust Backend (Secret key giấu trong binary biên dịch)",
+"on_tamper_detected": "Từ chối load file và cảnh báo dữ liệu cuộc đời đã bị chỉnh sửa trái phép."
+}
+}
+},
+"type": "object",
+"properties": {
+"save_format_version": { "type": "string", "default": "1.1.0" },
+"slot_meta": {
+"type": "object",
+"properties": {
+"slot_id": { "type": "string" },
+"character_name": { "type": "string" },
+"age_years": { "type": "number" },
+"birth_year": { "type": "integer" },
+"current_game_year": { "type": "integer" },
+"socioeconomic_origin": { "type": "string", "enum": ["Q1", "Q2", "Q3", "Q4", "Q5"] },
+"is_deceased": { "type": "boolean", "default": false },
+"last_saved_unix_ms": { "type": "integer" },
+"save_trigger_reason": {
+"type": "string",
+"enum": ["MANUAL_SAVE", "ACTION_COMPLETED", "EVENT_TRIGGERED", "APP_EXIT_SUSPEND"],
+"default": "MANUAL_SAVE"
+},
+"active_locale": { "type": "string", "enum": ["vi-VN", "en-US"], "default": "vi-VN" }
+},
+"required": ["slot_id", "character_name", "age_years", "is_deceased", "last_saved_unix_ms"]
+},
+"integrity_envelope": {
+"type": "object",
+"properties": {
+"hmac_sha256_signature": {
+"type": "string",
+"description": "Chữ ký số của toàn bộ chuỗi JSON root_game_state + suspended_event_snapshot do tầng Rust tạo ra."
+},
+"save_counter": {
+"type": "integer",
+"minimum": 1,
+"description": "Bộ đếm tăng dần mỗi lần lưu."
+}
+},
+"required": ["hmac_sha256_signature", "save_counter"]
+},
+"suspended_event_snapshot": {
+"type": ["object", "null"],
+"description": "Lưu nguyên trạng hộp thoại sự kiện ngay khi xuất hiện hoặc khi tắt game. Khi mở lại sẽ bật đúng sự kiện này và đặt lại đếm ngược về đúng số giây gốc ban đầu.",
+"properties": {
+"event_id": { "type": "string" },
+"original_countdown_seconds": { "type": "number", "minimum": 1.0 },
+"ptsd_freeze_remaining_seconds": { "type": "number", "minimum": 0.0, "default": 0.0 },
+"captured_at_unix_ms": { "type": "integer" }
+},
+"required": ["event_id", "original_countdown_seconds", "captured_at_unix_ms"]
+},
+"root_game_state": {
+"type": "object",
+"description": "Toàn bộ trạng thái thế giới tại thời điểm tắt game: time_engine, active_location, player (character_biology_schema), npcs, inventory, finances, life_journal.",
+"additionalProperties": true
+}
+},
+"required": ["save_format_version", "slot_meta", "integrity_envelope", "root_game_state"]
+}

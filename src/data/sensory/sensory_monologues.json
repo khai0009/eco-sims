@@ -1,0 +1,85 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.0.0",
+"description": "Ánh xạ chỉ số nội tạng (0-100) và độ bền vật phẩm (0-100) sang khóa lời thoại cảm quan theo 5 nhóm tính cách, tuyệt đối không xuất số lên UI."
+},
+"organ_threshold_to_color_and_symptom": [
+{
+"min_pct": 85.0,
+"max_pct": 100.0,
+"color_code": "BLUE",
+"level_number": 1,
+"default_monologue_key": "SYM_HEALTHY_OPTIMAL"
+},
+{
+"min_pct": 65.0,
+"max_pct": 84.99,
+"color_code": "GREEN",
+"level_number": 2,
+"default_monologue_key": "SYM_HEALTHY_OPTIMAL"
+},
+{
+"min_pct": 45.0,
+"max_pct": 64.99,
+"color_code": "YELLOW",
+"level_number": 3,
+"organ_specific_monologue_keys": {
+"brain": "SYM_HEADACHE_DIZZINESS",
+"heart": "SYM_CHEST_TIGHTNESS",
+"lungs": "SYM_RESPIRATORY_COUGH",
+"liver": "SYM_UPPER_ABDOMINAL_ACHE",
+"digestive": "SYM_UPPER_ABDOMINAL_ACHE",
+"musculoskeletal": "SYM_JOINT_BACK_PAIN",
+"kidneys": "SYM_KIDNEY_URINARY_STRESS",
+"integumentary_skin": "SYM_SKIN_IRRITATION"
+}
+},
+{
+"min_pct": 25.0,
+"max_pct": 44.99,
+"color_code": "ORANGE",
+"level_number": 4,
+"organ_specific_monologue_keys": {
+"brain": "SYM_HEADACHE_DIZZINESS",
+"heart": "SYM_CHEST_TIGHTNESS",
+"lungs": "SYM_RESPIRATORY_COUGH",
+"liver": "SYM_UPPER_ABDOMINAL_ACHE",
+"digestive": "SYM_UPPER_ABDOMINAL_ACHE",
+"musculoskeletal": "SYM_JOINT_BACK_PAIN",
+"kidneys": "SYM_KIDNEY_URINARY_STRESS",
+"integumentary_skin": "SYM_SKIN_IRRITATION"
+}
+},
+{
+"min_pct": 0.0,
+"max_pct": 24.99,
+"color_code": "RED",
+"level_number": 5,
+"organ_specific_monologue_keys": {
+"brain": "SYM_HEADACHE_DIZZINESS",
+"heart": "SYM_CHEST_TIGHTNESS",
+"lungs": "SYM_RESPIRATORY_COUGH",
+"liver": "SYM_UPPER_ABDOMINAL_ACHE",
+"digestive": "SYM_UPPER_ABDOMINAL_ACHE",
+"musculoskeletal": "SYM_JOINT_BACK_PAIN",
+"kidneys": "SYM_KIDNEY_URINARY_STRESS",
+"integumentary_skin": "SYM_SKIN_IRRITATION"
+}
+}
+],
+"durability_tiers": [
+{ "tier_id": "PRISTINE", "min_pct": 80.0, "max_pct": 100.0 },
+{ "tier_id": "GOOD", "min_pct": 50.0, "max_pct": 79.99 },
+{ "tier_id": "WORN", "min_pct": 25.0, "max_pct": 49.99 },
+{ "tier_id": "DECAYED", "min_pct": 5.0, "max_pct": 24.99 },
+{ "tier_id": "BROKEN", "min_pct": 0.0, "max_pct": 4.99 }
+],
+"supported_personality_ids": [
+"PERS_INTROVERT",
+"PERS_EXTROVERT",
+"PERS_DAREDEVIL",
+"PERS_CAUTIOUS",
+"PERS_AMBIVERT"
+]
+}

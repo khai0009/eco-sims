@@ -1,0 +1,266 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "LifestyleAndHabitFormationEngine",
+"description": "Hệ thống 5 nhóm lối sống đa chiều, tác động gameplay cụ thể và cơ chế hình thành/thoái hóa thói quen thông qua hành vi lặp lại, môi trường và biến cố.",
+"version": "2.0.0",
+"habit_formation_mechanics": {
+"description": "Người chơi không chọn lối sống lúc 0 tuổi. Lối sống được đúc kết từ chính cách người chơi điều khiển nhân vật hàng ngày.",
+"acquisition_pathways": [
+{
+"pathway_id": "BEHAVIOR_REPETITION_STREAK",
+"description": "Tích lũy điểm thói quen (0 - 100 điểm) khi lặp lại một chuỗi hành động trong 14 - 30 ngày game liên tiếp.",
+"unlock_threshold_points": 100,
+"daily_decay_if_neglected": -4.0,
+"loss_threshold_points": 30
+},
+{
+"pathway_id": "ENVIRONMENT_AND_INSTITUTION",
+"description": "Môi trường ép buộc rèn luyện kỷ luật (VD: Nhập ngũ 24 tháng, làm việc tại tập đoàn đa quốc gia MNC, hoặc sống trong khu ổ chuột).",
+"instant_or_accelerated_gain": true
+},
+{
+"pathway_id": "TOOLS_AND_KNOWLEDGE",
+"description": "Mua Sổ tay kế hoạch, đọc sách kỹ năng tại Thư viện/Nhà sách, hoặc dùng App quản lý trên Smartphone giúp nhân đôi tốc độ tích lũy điểm thói quen (+2.0x)."
+},
+{
+"pathway_id": "TRAUMA_AND_CRISIS_PIVOT",
+"description": "Cú sốc đời thực làm thay đổi đột ngột lối sống (VD: Bị trộm mất ví vì đãng trí -> chuyển hóa thành Cẩn thận; Phá sản -> chuyển hóa thành Tiết kiệm chắt bóp)."
+}
+],
+"mutually_exclusive_pairs": [
+["CAREFUL_CHECKLIST", "SCATTERBRAINED"],
+["EARLY_BIRD", "NIGHT_OWL"],
+["FRUGAL_SAVER", "IMPULSE_SPENDER"],
+["HEALTH_CONSCIOUS", "SLOB_NEGLECTFUL"],
+["MINIMALIST", "HOARDER"],
+["SOCIAL_BUTTERFLY", "LONE_WOLF"]
+]
+},
+"lifestyle_clusters": {
+"1_ORGANIZATION_AND_DISCIPLINE": [
+{
+"habit_id": "CAREFUL_CHECKLIST",
+"name_key": "habit_careful_checklist",
+"gameplay_effects": {
+"unlocks_doorstep_quick_grab": true,
+"auto_warns_missing_items_before_exit": true,
+"forgot_item_chance_pct": 2.0,
+"paperwork_error_chance_reduction_pct": -80.0
+},
+"how_to_build": [
+"Chủ động kiểm tra balo/túi đồ trước khi rời nhà 14 ngày liên tiếp (+7 điểm/ngày).",
+"Hoàn thành Nghĩa vụ quân sự (tự động mở khóa 100%).",
+"Đọc sách 'Nghệ thuật sắp xếp' + sử dụng Sổ tay kế hoạch."
+]
+},
+{
+"habit_id": "SCATTERBRAINED",
+"name_key": "habit_scatterbrained",
+"gameplay_effects": {
+"unlocks_doorstep_quick_grab": false,
+"forgot_item_chance_pct": 30.0,
+"public_place_item_loss_chance_pct": 5.0
+},
+"how_to_build": [
+"Thường xuyên ra khỏi nhà khi thiếu đồ, thức khuya thiếu ngủ kéo dài (> 20h nợ ngủ) hoặc có đặc tính bẩm sinh ADHD chưa điều trị."
+]
+},
+{
+"habit_id": "MINIMALIST",
+"name_key": "habit_minimalist",
+"gameplay_effects": {
+"inventory_base_weight_reduction_kg": -2.0,
+"home_cleaning_time_multiplier": 0.5,
+"happiness_gain_from_decluttering": 5.0
+},
+"how_to_build": [
+"Duy trì số lượng vật phẩm trong nhà và balo dưới ngưỡng tối giản trong 30 ngày, thường xuyên thanh lý/cho tặng đồ cũ."
+]
+}
+],
+"2_CIRCADIAN_AND_WORK_ETHIC": [
+{
+"habit_id": "EARLY_BIRD",
+"name_key": "habit_early_bird",
+"gameplay_effects": {
+"morning_action_speed_multiplier": 0.85,
+"morning_happiness_bonus": 4.0,
+"night_shift_fatigue_penalty_multiplier": 1.4
+},
+"how_to_build": [
+"Ngủ trước 23:00 và thức dậy trước 06:30 sáng trong 21 ngày liên tiếp."
+]
+},
+{
+"habit_id": "NIGHT_OWL",
+"name_key": "habit_night_owl",
+"gameplay_effects": {
+"late_night_study_work_efficiency_bonus_pct": 25.0,
+"early_morning_grogginess_penalty_pct": -20.0
+},
+"how_to_build": [
+"Thường xuyên làm việc, học bài hoặc giải trí từ 23:00 đến 03:00 sáng trong 14 ngày."
+]
+},
+{
+"habit_id": "WORKAHOLIC",
+"name_key": "habit_workaholic",
+"gameplay_effects": {
+"kpi_gain_multiplier": 1.35,
+"overtime_burnout_accumulation_multiplier": 1.5,
+"karoshi_risk_warning_masked": true
+},
+"how_to_build": [
+"Nhận tăng ca liên tục trên 10 ngày/tháng và bỏ qua các hoạt động sở thích/giải trí."
+]
+}
+],
+"3_FINANCE_AND_STREET_SMARTS": [
+{
+"habit_id": "FRUGAL_SAVER",
+"name_key": "habit_frugal_saver",
+"gameplay_effects": {
+"cheap_food_fatigue_immunity": true,
+"daily_living_cost_multiplier": 0.8,
+"unlocks_discount_hunting_actions": true
+},
+"how_to_build": [
+"Tự nấu ăn tại nhà thay vì ăn tiệm 20 ngày liên tiếp, trích ít nhất 30% thu nhập gửi tiết kiệm Ngân hàng."
+]
+},
+{
+"habit_id": "IMPULSE_SPENDER",
+"name_key": "habit_impulse_spender",
+"gameplay_effects": {
+"stress_shopping_trigger_chance_pct": 35.0,
+"instant_happiness_burst": 10.0,
+"next_day_regret_happiness_drop": -12.0
+},
+"how_to_build": [
+"Thường xuyên mua sắm đồ giải trí đắt tiền mỗi khi thanh Hạnh phúc tụt xuống mức Cam/Đỏ."
+]
+},
+{
+"habit_id": "STREET_SMART",
+"name_key": "habit_street_smart",
+"gameplay_effects": {
+"unlocks_shortcut_routes_bypass_rush_hour": true,
+"rush_hour_transit_penalty_reduction": 0.6,
+"scam_and_pickpocket_immunity_pct": 85.0,
+"informal_market_haggle_discount_pct": 15.0
+},
+"how_to_build": [
+"Làm các công việc giao hàng/chạy xe/buôn bán ngoài đường phố, hoặc tương tác nhiều với NPC khu bình dân."
+]
+}
+],
+"4_HEALTH_AND_SELF_CARE": [
+{
+"habit_id": "HEALTH_CONSCIOUS",
+"name_key": "habit_health_conscious",
+"gameplay_effects": {
+"organ_decay_rate_multiplier": 0.8,
+"auto_reminds_annual_checkup": true,
+"refuses_unprescribed_painkillers_warning": true
+},
+"how_to_build": [
+"Tập thể dục/bơi lội 3 lần/tuần, uống đủ nước, không hút thuốc và đi khám tổng quát định kỳ tại Bệnh viện."
+]
+},
+{
+"habit_id": "SLOB_NEGLECTFUL",
+"name_key": "habit_slob_neglectful",
+"gameplay_effects": {
+"npc_first_impression_penalty": -15,
+"food_poisoning_risk_multiplier": 1.8,
+"skin_acne_and_odor_debuff": true
+},
+"how_to_build": [
+"Bỏ tắm rửa nhiều ngày, ăn đồ hết hạn trong tủ lạnh và không dọn dẹp phòng ở."
+]
+}
+],
+"5_SOCIAL_AND_AUTONOMY": [
+{
+"habit_id": "SOCIAL_BUTTERFLY",
+"name_key": "habit_social_butterfly",
+"gameplay_effects": {
+"npc_bonding_gain_multiplier": 1.3,
+"borrow_phone_or_money_success_bonus_pct": 30.0,
+"loneliness_happiness_drain_if_isolated": -5.0
+},
+"how_to_build": [
+"Trò chuyện, tặng quà và đi cà phê/nhậu giao lưu với nhiều nhóm NPC khác nhau mỗi tuần."
+]
+},
+{
+"habit_id": "LONE_WOLF",
+"name_key": "habit_lone_wolf",
+"gameplay_effects": {
+"solo_activity_happiness_bonus": 6.0,
+"zero_loneliness_penalty": true,
+"group_event_stress_multiplier": 1.25
+},
+"how_to_build": [
+"Sống tự lập một mình, tự nấu ăn, tự sửa đồ và duy trì sở thích cá nhân mà không cần tương tác xã hội dài ngày."
+]
+}
+]
+},
+"essential_departure_items": [
+{
+"item_category_id": "SMARTPHONE",
+"check_condition": "owns_smartphone == true AND has_smartphone_on_person == false",
+"doorstep_quick_grab_minutes": 3,
+"consequences_if_left_behind": {
+"blocks_sim_calls_and_sms": true,
+"blocks_mobile_banking_qr_payment": true,
+"alternative_workarounds": [
+{
+"method": "USE_WORK_OR_HOME_PC",
+"requires_environment": ["LOC_WORK_OFFICE_MNC", "LOC_HOME"],
+"restores": ["DIGITAL_CLOCK", "INTERNET_CHAT_ZALO_WEB"],
+"still_blocked": ["CELLULAR_SIM_CALLS", "SMS_OTP"]
+},
+{
+"method": "BORROW_FROM_NEARBY_NPC",
+"requires_npc_bonding_min": 21,
+"npc_personality_refusal_chance": {
+"INTROVERT": 0.40,
+"EXTROVERT": 0.05,
+"DAREDEVIL": 0.10,
+"EMPATHETIC": 0.00,
+"AMBIVERT": 0.15
+}
+}
+]
+}
+},
+{
+"item_category_id": "WALLET_AND_ID",
+"check_condition": "has_wallet_on_person == false",
+"doorstep_quick_grab_minutes": 2,
+"consequences_if_left_behind": {
+"blocks_cash_payment": true,
+"traffic_police_stop_penalty": "Phạt hành chính lỗi không mang giấy tờ xe/CCCD."
+}
+},
+{
+"item_category_id": "SANITARY_PADS",
+"check_condition": "biological_sex == 'FEMALE' AND menstrual_cycle_day != null AND menstrual_cycle_day <= 5 AND pads_in_bag == 0",
+"doorstep_quick_grab_minutes": 2,
+"consequences_if_left_behind": {
+"triggers_event_id": "EVT_PUBERTY_FEMALE_MENSTRUAL_ACCIDENT"
+}
+},
+{
+"item_category_id": "CORRECTIVE_GLASSES",
+"check_condition": "myopia_diopters > 1.5 AND is_wearing_corrective_glasses == false",
+"doorstep_quick_grab_minutes": 2,
+"consequences_if_left_behind": {
+"event_countdown_penalty_sec": -1.5,
+"accident_risk_multiplier": 1.6
+}
+}
+]
+}

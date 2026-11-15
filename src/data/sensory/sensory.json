@@ -1,0 +1,287 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeSensoryMonologuesCatalog",
+"description": "Bộ quy tắc chọn lời độc thoại cảm quan (tuyệt đối không lộ con số %) dựa trên tình trạng cơ thể (6 tạng + Thận + Da), độ bền đồ vật, nhu cầu sinh hoạt, phương tiện và 5 nhóm tính cách đã khóa của nhân vật.",
+"version": "2.2.0",
+"organ_threshold_mapping": {
+"BLUE": { "level": 1, "min_pct": 85.0, "max_pct": 100.0 },
+"GREEN": { "level": 2, "min_pct": 65.0, "max_pct": 84.99 },
+"YELLOW": { "level": 3, "min_pct": 45.0, "max_pct": 64.99 },
+"ORANGE": { "level": 4, "min_pct": 25.0, "max_pct": 44.99 },
+"RED": { "level": 5, "min_pct": 0.0, "max_pct": 24.99 }
+},
+"organ_symptom_monologues": {
+"NORMAL_HEALTHY": {
+"PERS_INTROVERT": "mono_health_normal_introvert",
+"PERS_EXTROVERT": "mono_health_normal_extrovert",
+"PERS_DAREDEVIL": "mono_health_normal_daredevil",
+"PERS_EMPATHETIC": "mono_health_normal_empathetic",
+"PERS_AMBIVERT": "mono_health_normal_ambivert"
+},
+"PAINKILLER_MASKED": {
+"default": "mono_symptom_masked_by_painkiller"
+},
+"SYM_UPPER_ABDOMINAL_ACHE": {
+"YELLOW": {
+"default": "mono_abdomen_yellow_mild"
+},
+"ORANGE": {
+"PERS_INTROVERT": "mono_abdomen_orange_introvert",
+"PERS_EXTROVERT": "mono_abdomen_orange_extrovert",
+"PERS_DAREDEVIL": "mono_abdomen_orange_daredevil",
+"PERS_EMPATHETIC": "mono_abdomen_orange_empathetic",
+"PERS_AMBIVERT": "mono_abdomen_orange_ambivert"
+},
+"RED": {
+"PERS_INTROVERT": "mono_abdomen_red_introvert",
+"PERS_EXTROVERT": "mono_abdomen_red_extrovert",
+"PERS_DAREDEVIL": "mono_abdomen_red_daredevil",
+"PERS_EMPATHETIC": "mono_abdomen_red_empathetic",
+"PERS_AMBIVERT": "mono_abdomen_red_ambivert"
+}
+},
+"SYM_CHEST_TIGHTNESS_BURNING": {
+"YELLOW": {
+"default": "mono_chest_yellow_mild"
+},
+"ORANGE": {
+"PERS_INTROVERT": "mono_chest_orange_introvert",
+"PERS_EXTROVERT": "mono_chest_orange_extrovert",
+"PERS_DAREDEVIL": "mono_chest_orange_daredevil",
+"PERS_EMPATHETIC": "mono_chest_orange_empathetic",
+"PERS_AMBIVERT": "mono_chest_orange_ambivert"
+},
+"RED": {
+"default": "mono_chest_red_critical"
+}
+},
+"SYM_RESPIRATORY_COUGH": {
+"YELLOW": {
+"default": "mono_lungs_yellow_mild"
+},
+"ORANGE": {
+"PERS_INTROVERT": "mono_lungs_orange_introvert",
+"PERS_EXTROVERT": "mono_lungs_orange_extrovert",
+"PERS_DAREDEVIL": "mono_lungs_orange_daredevil",
+"PERS_EMPATHETIC": "mono_lungs_orange_empathetic",
+"PERS_AMBIVERT": "mono_lungs_orange_ambivert"
+},
+"RED": {
+"default": "mono_lungs_red_critical"
+}
+},
+"SYM_DIZZINESS_HEADACHE_FATIGUE": {
+"YELLOW": {
+"default": "mono_head_yellow_mild"
+},
+"ORANGE": {
+"PERS_INTROVERT": "mono_head_orange_introvert",
+"PERS_EXTROVERT": "mono_head_orange_extrovert",
+"PERS_DAREDEVIL": "mono_head_orange_daredevil",
+"PERS_EMPATHETIC": "mono_head_orange_empathetic",
+"PERS_AMBIVERT": "mono_head_orange_ambivert"
+},
+"RED": {
+"default": "mono_head_red_critical"
+}
+},
+"SYM_LOWER_BACK_AND_FATIGUE": {
+"YELLOW": {
+"default": "mono_back_yellow_mild"
+},
+"ORANGE": {
+"PERS_INTROVERT": "mono_back_orange_introvert",
+"PERS_EXTROVERT": "mono_back_orange_extrovert",
+"PERS_DAREDEVIL": "mono_back_orange_daredevil",
+"PERS_EMPATHETIC": "mono_back_orange_empathetic",
+"PERS_AMBIVERT": "mono_back_orange_ambivert"
+},
+"RED": {
+"default": "mono_back_red_critical"
+}
+},
+"SYM_KIDNEY_URINARY_STRESS": {
+"YELLOW": {
+"default": "mono_kidney_yellow_mild"
+},
+"ORANGE": {
+"default": "mono_kidney_orange_warning"
+},
+"RED": {
+"default": "mono_kidney_red_critical"
+}
+},
+"SYM_SKIN_IRRITATION": {
+"YELLOW": {
+"default": "mono_skin_yellow_mild"
+},
+"ORANGE": {
+"default": "mono_skin_orange_warning"
+},
+"RED": {
+"default": "mono_skin_red_critical"
+}
+},
+"SYM_REPRODUCTIVE_AND_NEURO_BLIND": {
+"MENSTRUAL_CRAMP": "mono_menstrual_cramp_active",
+"PREGNANCY_MORNING_SICKNESS": "mono_pregnancy_nausea_active",
+"DYSLEXIA_UNDIAGNOSED": "mono_dyslexia_letters_dancing",
+"UNMEASURED_WEIGHT_GAIN": "mono_clothes_feeling_tight"
+}
+},
+"durability_sensation_monologues": {
+"PRISTINE": {
+"PERS_INTROVERT": "item_pristine_introvert",
+"PERS_EXTROVERT": "item_pristine_extrovert",
+"PERS_DAREDEVIL": "item_pristine_daredevil",
+"PERS_EMPATHETIC": "item_pristine_empathetic",
+"PERS_AMBIVERT": "item_pristine_ambivert"
+},
+"GOOD": {
+"default": "item_good_standard"
+},
+"WORN": {
+"PERS_INTROVERT": "item_worn_introvert",
+"PERS_EXTROVERT": "item_worn_extrovert",
+"PERS_DAREDEVIL": "item_worn_daredevil",
+"PERS_EMPATHETIC": "item_worn_empathetic",
+"PERS_AMBIVERT": "item_worn_ambivert"
+},
+"DECAYED": {
+"PERS_INTROVERT": "item_decayed_introvert",
+"PERS_EXTROVERT": "item_decayed_extrovert",
+"PERS_DAREDEVIL": "item_decayed_daredevil",
+"PERS_EMPATHETIC": "item_decayed_empathetic",
+"PERS_AMBIVERT": "item_decayed_ambivert"
+},
+"BROKEN": {
+"default": "item_broken_unusable"
+}
+},
+"daily_needs_sensory_cues": {
+"BLADDER_URGENCY": {
+"MODERATE": "need_bladder_moderate",
+"CRITICAL_OVER_85": "need_bladder_critical_hold_warning"
+},
+"BODY_HYGIENE": {
+"SWEATY_UNDER_50": "need_hygiene_sweaty",
+"DIRTY_UNDER_35": "need_hygiene_dirty_odor"
+},
+"SLEEP_DEPRIVATION": {
+"GROGGY_18H": "need_sleep_groggy",
+"MICRO_SLEEP_30H": "need_sleep_microsleep_danger"
+},
+"HOME_ENVIRONMENT": {
+"DIRTY_HOUSE_UNDER_40": "env_home_dusty_messy"
+},
+"VEHICLE_FUEL_CUES": {
+"LOW_FUEL_WARNING": "veh_fuel_needle_low",
+"EMPTY_FUEL_PUSH": "veh_fuel_empty_pushing"
+}
+},
+"sky_and_environment_cues": {
+"BLIND_CLOCK_SKY": {
+"05_07": "sky_dawn_early_mist",
+"08_10": "sky_morning_clear_sun",
+"11_13": "sky_noon_blazing_vertical",
+"14_16": "sky_afternoon_slanting_light",
+"17_18": "sky_dusk_chilly_wind",
+"19_04": "sky_night_pitch_dark"
+},
+"SENSORY_HAZARDS": {
+"PM25_HIGH_NO_MASK": "env_throat_itchy_smog",
+"LOW_PAIN_SENSITIVITY_MASKED": "mono_numb_no_pain_warning"
+}
+},
+"reference_vi_vn_translations": {
+"mono_health_normal_introvert": "Cơ thể nhẹ nhõm, nhịp thở đều đặn, đầu óc tĩnh lặng.",
+"mono_health_normal_extrovert": "Người tràn đầy năng lượng, chỉ muốn ra ngoài gặp gỡ mọi người!",
+"mono_health_normal_daredevil": "Sung sức thế này thì làm thêm ca nữa cũng chẳng xi nhê gì.",
+"mono_health_normal_empathetic": "Cơ thể khỏe khoắn khiến lòng mình cũng thấy bình yên theo.",
+"mono_health_normal_ambivert": "Sức khỏe ổn định, sẵn sàng cho các kế hoạch trong ngày.",
+"mono_symptom_masked_by_painkiller": "Thuốc giảm đau đã làm dịu cơn nhức, nhưng bên trong vẫn có cảm giác âm ỉ khó tả...",
+"mono_abdomen_yellow_mild": "Bụng hơi đầy và âm ỉ nhẹ sau bữa ăn, chắc cần nghỉ ngơi chút.",
+"mono_abdomen_orange_introvert": "Bụng trên âm ỉ khó chịu từ sáng, chắc mình nên lặng lẽ kiếm chút cháo ấm hoặc đi khám.",
+"mono_abdomen_orange_extrovert": "Tự dưng bụng dạ ì ạch khó tiêu quá, mất cả hứng đi tụ tập.",
+"mono_abdomen_orange_daredevil": "Chắc tại hôm qua ăn uống qua loa nên hơi tức bụng chút thôi, ráng làm nốt việc đã.",
+"mono_abdomen_orange_empathetic": "Bụng đau âm ỉ và người mệt rã rời, cơ thể đang nhắc mình phải thương lấy bản thân hơn.",
+"mono_abdomen_orange_ambivert": "Vùng thượng vị đau râm ran, ăn không ngon miệng.",
+"mono_abdomen_red_introvert": "Cơn đau quặn thắt vùng bụng trên khiến mình toát mồ hôi lạnh, không thể giấu thêm được nữa!",
+"mono_abdomen_red_extrovert": "Đau bụng dữ dội quá, mặt mày tái mét rồi, phải gọi người đưa đi bệnh viện ngay!",
+"mono_abdomen_red_daredevil": "Đau gập người rồi... lần này không thể chủ quan tự mua thuốc uống bừa được nữa!",
+"mono_abdomen_red_empathetic": "Cơn đau buốt vùng bụng làm mình kiệt sức, sợ rằng cơ thể đã tổn thương nặng thật rồi.",
+"mono_abdomen_red_ambivert": "Vùng bụng trên đau quặn từng cơn dữ dội, không thể đứng thẳng nổi.",
+"mono_chest_yellow_mild": "Hơi thở hơi nông và tức nhẹ giữa ngực khi leo cầu thang.",
+"mono_chest_orange_introvert": "Ngực cứ tức nghẹn âm ỉ, mình phải ngồi tựa lưng thở chậm lại mới đỡ.",
+"mono_chest_orange_extrovert": "Tự nhiên thấy hồi hộp, ngực nóng rát khó chịu quá chừng.",
+"mono_chest_orange_daredevil": "Tim đập hơi loạn nhịp chút thôi, hít sâu một hơi là lại chạy tiếp được!",
+"mono_chest_orange_empathetic": "Lồng ngực thắt lại nặng nề, cảm giác bất an cứ dâng lên.",
+"mono_chest_orange_ambivert": "Ngực tức nghẹn, nóng rát vùng chấn thủy và hơi khó thở.",
+"mono_chest_red_critical": "Cơn đau thắt ngực dữ dội lan lên vai trái, mồ hôi vã ra như tắm — nguy kịch rồi!",
+"mono_lungs_yellow_mild": "Cổ họng hơi khô rát, thỉnh thoảng húng hắng ho khan.",
+"mono_lungs_orange_introvert": "Hít sâu vào thấy rát buốt lồng ngực, ho khan kéo dài làm người mệt lả.",
+"mono_lungs_orange_extrovert": "Giọng khàn đặc và ho liên tục, chẳng nói chuyện nổi với ai.",
+"mono_lungs_orange_daredevil": "Khói bụi làm ngứa cổ chút đỉnh, khạc vài cái là xong ấy mà.",
+"mono_lungs_orange_empathetic": "Mỗi nhịp thở đều nặng nhọc và khò khè, lá phổi đang kêu cứu rồi.",
+"mono_lungs_orange_ambivert": "Hô hấp nặng nề, ho nhiều và dễ hụt hơi khi đi bộ nhanh.",
+"mono_lungs_red_critical": "Khó thở dữ dội, lồng ngực rít lên từng hồi không lấy nổi không khí!",
+"mono_head_yellow_mild": "Đầu hơi căng thẳng và mỏi mắt sau nhiều giờ tập trung.",
+"mono_head_orange_introvert": "Đầu đau nhức âm ỉ, chỉ muốn chui vào góc tối yên tĩnh nhắm mắt lại.",
+"mono_head_orange_extrovert": "Đầu óc quay cuồng, mắt hoa lên chẳng còn tâm trí đâu mà trò chuyện.",
+"mono_head_orange_daredevil": "Choáng váng nhẹ thôi, uống ngụm nước lạnh là tỉnh táo ngay.",
+"mono_head_orange_empathetic": "Cơn đau đầu giật từng nhịp khiến tâm trí rối bời và kiệt quệ.",
+"mono_head_orange_ambivert": "Đầu đau nhức từng cơn, mắt hoa lên mỗi khi đứng dậy đột ngột.",
+"mono_head_red_critical": "Đầu đau như búa bổ, mắt tối sầm lại sắp ngất xỉu đến nơi rồi!",
+"mono_back_yellow_mild": "Vùng thắt lưng hơi mỏi sau khi ngồi hoặc mang vác lâu.",
+"mono_back_orange_introvert": "Lưng và khớp gối nhức mỏi âm ỉ, mỗi bước đi đều phải rón rén.",
+"mono_back_orange_extrovert": "Đau lưng ê ẩm làm mình đi đứng khom khom, chẳng muốn ra ngoài chút nào.",
+"mono_back_orange_daredevil": "Căng cơ chút xíu thôi, vặn mình vài cái là lại bê vác bình thường!",
+"mono_back_orange_empathetic": "Xương khớp đau nhức rã rời, cơ thể đang oằn mình gánh chịu quá tải.",
+"mono_back_orange_ambivert": "Vùng thắt lưng và các khớp gối nhức mỏi, cúi xuống rất khó khăn.",
+"mono_back_red_critical": "Cột sống đau buốt như điện giật, hai chân tê cứng không thể đứng vững!",
+"mono_kidney_yellow_mild": "Vùng thắt lưng dưới hơi căng nhẹ do uống ít nước hoặc nhịn tiểu.",
+"mono_kidney_orange_warning": "Vùng thắt lưng dưới căng tức âm ỉ, người bứt rứt khó chịu.",
+"mono_kidney_red_critical": "Đau quặn vùng hông lưng dữ dội, cơ thể phù nề và kiệt sức!",
+"mono_skin_yellow_mild": "Da dẻ hơi nhờn rít và nổi vài nốt mẩn nhỏ.",
+"mono_skin_orange_warning": "Da dẻ bết rít, ngứa ngáy khó chịu vì bụi bẩn và mồ hôi tích tụ.",
+"mono_skin_red_critical": "Da viêm đỏ, ngứa rát toàn thân cực kỳ khó chịu!",
+"mono_menstrual_cramp_active": "Vùng bụng dưới đau âm ỉ từng cơn, lưng mỏi rã rời, người dễ cáu gắt.",
+"mono_pregnancy_nausea_active": "Cổ họng nôn nao khó chịu với mùi thức ăn, người mệt mỏi buồn ngủ.",
+"mono_dyslexia_letters_dancing": "Nhìn vào trang sách mà mặt chữ cứ nhảy múa, đọc mãi chẳng vào đầu...",
+"mono_clothes_feeling_tight": "Dạo này mặc quần áo thấy hơi chật chội, bước đi nặng nề hơn trước...",
+"item_pristine_introvert": "Đồ còn mới tinh, sạch sẽ và vận hành êm ái đúng ý mình.",
+"item_pristine_extrovert": "Đồ mới cứng nhìn sang hẳn ra, mang đi gặp bạn bè cũng tự tin!",
+"item_pristine_daredevil": "Hàng mới bóc hộp, cứ thế mà dùng hết công suất thôi!",
+"item_pristine_empathetic": "Món đồ mới tinh tươm, mình sẽ giữ gìn thật cẩn thận.",
+"item_pristine_ambivert": "Đồ còn mới nguyên, sử dụng rất mượt mà và ổn định.",
+"item_good_standard": "Món đồ vẫn hoạt động ổn định, chưa có dấu hiệu hư hỏng gì.",
+"item_worn_introvert": "Món đồ đã có dấu hiệu xuống cấp, dùng hơi bất tiện nhưng vẫn ráng giữ gìn được.",
+"item_worn_extrovert": "Nhìn hơi cũ kỹ rồi, đem ra chỗ đông người thấy hơi ngại...",
+"item_worn_daredevil": "Trầy xước chút đỉnh ăn thua gì, vẫn chạy tốt chán!",
+"item_worn_empathetic": "Dùng lâu nên cũng sờn cũ theo năm tháng, gắn bó với mình bao nhiêu kỷ niệm.",
+"item_worn_ambivert": "Đồ đã hơi cũ và kêu nhẹ khi dùng, chắc sắp tới phải để ý bảo dưỡng.",
+"item_decayed_introvert": "Sắp hỏng đến nơi rồi, mỗi lần dùng đều thấy bất an.",
+"item_decayed_extrovert": "Cũ nát quá rồi, phải đi sửa hoặc thay mới thôi chứ xấu hổ chết mất.",
+"item_decayed_daredevil": "Kêu cọt kẹt sắp rụng rời rồi nhưng cứ ráng vắt kiệt nốt hôm nay xem sao!",
+"item_decayed_empathetic": "Món đồ đã rệu rã lắm rồi, ép nó chạy thêm nữa thật tội nghiệp.",
+"item_decayed_ambivert": "Thiết bị xuống cấp trầm trọng, có thể hỏng bất cứ lúc nào nếu không sửa.",
+"item_broken_unusable": "Đã hỏng hoàn toàn, không thể tiếp tục sử dụng nếu chưa sửa chữa.",
+"need_bladder_moderate": "Bàng quang bắt đầu căng tức, nên tìm nhà vệ sinh sớm.",
+"need_bladder_critical_hold_warning": "Buồn đi vệ sinh đến mức không thể tập trung làm gì được nữa!",
+"need_hygiene_sweaty": "Người bết mồ hôi khó chịu, cần được tắm rửa cho tỉnh táo.",
+"need_hygiene_dirty_odor": "Quần áo và cơ thể bắt đầu bốc mùi, người xung quanh chắc chắn sẽ nhận ra.",
+"need_sleep_groggy": "Mí mắt nặng trĩu, đầu óc chậm chạp vì thiếu ngủ.",
+"need_sleep_microsleep_danger": "Cơn buồn ngủ ập tới từng chập, mắt hoa lên — cực kỳ nguy hiểm nếu đang chạy xe!",
+"env_home_dusty_messy": "Nhà cửa bừa bộn và đầy bụi, hít thở thấy ngột ngạt.",
+"veh_fuel_needle_low": "Kim xăng đã chạm vạch đỏ, nên ghé Trạm Xăng Dầu tiếp nhiên liệu sớm.",
+"veh_fuel_empty_pushing": "Xe hết sạch xăng giữa đường, đành phải xuống dắt bộ tìm cây xăng...",
+"sky_dawn_early_mist": "Sương sớm tan dần, chân trời bắt đầu hửng sáng...",
+"sky_morning_clear_sun": "Nắng sớm rải nhẹ ngoài hiên...",
+"sky_noon_blazing_vertical": "Nắng đã đứng bóng, không khí oi ả...",
+"sky_afternoon_slanting_light": "Nắng chiều ngả bóng dài...",
+"sky_dusk_chilly_wind": "Bầu trời nhá nhem tối, gió lạnh thổi nhẹ...",
+"sky_night_pitch_dark": "Màn đêm tĩnh mịch bao trùm...",
+"env_throat_itchy_smog": "Không khí đặc quánh khói bụi, hít vào thấy rát cổ họng.",
+"mono_numb_no_pain_warning": "Cơ thể tê dại không thấy đau đớn gì, nhưng cảm giác sức lực đang cạn kiệt ngầm..."
+}
+}

@@ -1,0 +1,153 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "CharacterGeneratorRules",
+"description": "Bộ quy tắc sinh ngẫu nhiên dùng chung cho cả Player (chỉ chọn năm sinh, random từ 0 tuổi) và Procedural NPC (sinh ngẫu nhiên hoàn toàn cả sinh học lẫn bối cảnh xã hội khi gặp ngoài đời).",
+"version": "1.1.0",
+"generation_pipeline": {
+"step_1_origin_and_sex": {
+"biological_sex_weights": { "MALE": 0.5, "FEMALE": 0.5 },
+"socioeconomic_tier_weights": {
+"Q1": 0.25,
+"Q2": 0.30,
+"Q3": 0.25,
+"Q4": 0.15,
+"Q5": 0.05
+}
+},
+"step_2_innate_traits_roll": {
+"max_traits_per_entity": 2,
+"probability_table": {
+"ADHD": 0.06,
+"DYSLEXIA": 0.05,
+"ASD": 0.03,
+"FAST_LEARNER": 0.08,
+"SUPERIOR_PHYSIQUE": 0.07,
+"QUICK_REFLEXES": 0.07,
+"COGNITIVE_DECLINE": 0.04,
+"GENETIC_HEART_WEAKNESS": 0.05,
+"GENETIC_ASTHMA": 0.06,
+"GENETIC_MYOPIA": 0.15,
+"ADDICTION_PRONE": 0.10
+}
+},
+"step_3_age_bracket_baselines": [
+{
+"bracket_id": "NEWBORN_0",
+"min_age": 0.0,
+"max_age": 0.99,
+"biometrics_range": {
+"height_cm": [47.0, 53.0],
+"weight_kg": [2.7, 4.2]
+},
+"organ_baseline_range": [88.0, 100.0],
+"sensory_baseline_range": [90.0, 100.0],
+"personality_locked": false,
+"puberty_status": "PRE_PUBERTY",
+"notes": "Áp dụng mặc định khi khởi tạo Nhân vật chính lúc 0 tuổi (người chơi chỉ chọn năm sinh, mọi thứ còn lại random 100%)."
+},
+{
+"bracket_id": "CHILD_1_10",
+"min_age": 1.0,
+"max_age": 10.99,
+"biometrics_range": {
+"height_cm": [75.0, 142.0],
+"weight_kg": [9.5, 36.0]
+},
+"organ_baseline_range": [85.0, 98.0],
+"sensory_baseline_range": [85.0, 100.0],
+"personality_locked": true,
+"puberty_status": "PRE_PUBERTY"
+},
+{
+"bracket_id": "ADOLESCENT_11_17",
+"min_age": 11.0,
+"max_age": 17.99,
+"biometrics_range": {
+"height_cm": [140.0, 178.0],
+"weight_kg": [34.0, 72.0]
+},
+"organ_baseline_range": [82.0, 98.0],
+"sensory_baseline_range": [75.0, 100.0],
+"personality_locked": true,
+"puberty_status": "IN_PUBERTY",
+"skin_acne_penalty_range": [-25.0, -5.0]
+},
+{
+"bracket_id": "YOUNG_ADULT_18_35",
+"min_age": 18.0,
+"max_age": 35.99,
+"biometrics_range": {
+"MALE": { "height_cm": [160.0, 185.0], "weight_kg": [52.0, 88.0] },
+"FEMALE": { "height_cm": [150.0, 172.0], "weight_kg": [43.0, 70.0] }
+},
+"organ_baseline_range": [70.0, 95.0],
+"sensory_baseline_range": [70.0, 98.0],
+"personality_locked": true,
+"puberty_status": "MATURE",
+"lifestyle_wear_variance": {
+"liver_alcohol_penalty_chance": 0.25,
+"lungs_smoking_penalty_chance": 0.20,
+"ptsd_trauma_chance": 0.08
+}
+},
+{
+"bracket_id": "MIDDLE_AGED_36_59",
+"min_age": 36.0,
+"max_age": 59.99,
+"biometrics_range": {
+"MALE": { "height_cm": [159.0, 183.0], "weight_kg": [55.0, 95.0] },
+"FEMALE": { "height_cm": [149.0, 170.0], "weight_kg": [46.0, 78.0] }
+},
+"organ_baseline_range": [52.0, 82.0],
+"sensory_baseline_range": [60.0, 88.0],
+"personality_locked": true,
+"puberty_status": "MATURE",
+"female_menopause_age_threshold": 50.0
+},
+{
+"bracket_id": "SENIOR_60_PLUS",
+"min_age": 60.0,
+"max_age": 105.0,
+"biometrics_range": {
+"MALE": { "height_cm": [155.0, 178.0], "weight_kg": [48.0, 82.0] },
+"FEMALE": { "height_cm": [145.0, 165.0], "weight_kg": [40.0, 70.0] }
+},
+"organ_baseline_range": [22.0, 62.0],
+"sensory_baseline_range": [30.0, 72.0],
+"personality_locked": true,
+"puberty_status": "MENOPAUSE_ANDROPAUSE",
+"notes": "Nếu brain < 25.0 khi spawn NPC cao tuổi, tự động bật trạng thái Sa sút trí tuệ."
+}
+],
+"step_4_procedural_npc_social_roll": {
+"description": "Áp dụng riêng khi spawn NPC ngẫu nhiên ngoài thế giới (không phải kịch bản cố định). Toàn bộ thông tin này bị che qua lớp Masked View (0-100 điểm thân thiết).",
+"initial_bonding_score_range": [0, 15],
+"first_impression_bmi_health_bonus": "+15 điểm nếu Player có BMI cân đối và Đèn sức khỏe Xanh Lá/Xanh Biển.",
+"marital_status_by_age": {
+"18_24": { "SINGLE": 0.90, "MARRIED": 0.10, "DIVORCED": 0.00 },
+"25_35": { "SINGLE": 0.45, "MARRIED": 0.50, "DIVORCED": 0.05 },
+"36_59": { "SINGLE": 0.10, "MARRIED": 0.78, "DIVORCED": 0.12 },
+"60_PLUS": { "SINGLE": 0.05, "MARRIED": 0.65, "WIDOWED_DIVORCED": 0.30 }
+},
+"net_worth_and_debt_by_tier_vnd": {
+"Q1": { "cash_range": [-20000000, 15000000], "has_hidden_black_market_debt_chance": 0.25 },
+"Q2": { "cash_range": [5000000, 80000000], "has_hidden_black_market_debt_chance": 0.10 },
+"Q3": { "cash_range": [50000000, 400000000], "has_hidden_black_market_debt_chance": 0.03 },
+"Q4": { "cash_range": [400000000, 2500000000], "has_hidden_black_market_debt_chance": 0.01 },
+"Q5": { "cash_range": [2500000000, 30000000000], "has_hidden_black_market_debt_chance": 0.00 }
+},
+"context_role_matching": "Nếu spawn tại Bệnh viện -> ép nghề Bác sĩ/Y tá; spawn tại Công ty -> ép đồng nghiệp/Sếp; spawn ngoài đường/quán ăn -> random toàn bộ bảng nghề nghiệp."
+}
+},
+"sensory_symptom_mapping_rules": {
+"health_color_thresholds": {
+"BLUE": [85.0, 100.0],
+"GREEN": [65.0, 84.99],
+"YELLOW": [45.0, 64.99],
+"ORANGE": [25.0, 44.99],
+"RED": [0.0, 24.99]
+},
+"bottleneck_formula": "min(brain, heart, lungs, liver, digestive, musculoskeletal, kidneys)",
+"pain_perception_modifier": "Nếu tactile_nociception.pain_sensitivity_pct < 30.0, chỉ phát cảnh báo triệu chứng khi tạng rơi xuống mức RED (tăng nguy cơ đột tử bất ngờ)."
+}
+}

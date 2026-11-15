@@ -1,0 +1,136 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeFoodAndDrinkCatalog",
+"description": "Danh mục đồ ăn và thức uống (nhóm CONSUMABLE - tiêu thụ theo khẩu phần), gắn liền với địa điểm sử dụng và tác động lên 6 tạng + Thận + Bàng quang.",
+"version": "1.0.0",
+"daily_nutrition_rules": {
+"starvation_organ_drain_per_hour": {
+"digestive": -0.8,
+"brain": -0.5,
+"musculoskeletal": -0.4
+},
+"dehydration_organ_drain_per_hour": {
+"kidneys": -1.2,
+"brain": -0.7,
+"integumentary_skin": -0.4
+}
+},
+"items": [
+{
+"item_def_id": "ITEM_FOOD_HOME_COOKED_MEAL",
+"name_key": "Cơm nhà tự nấu (Đủ đạm & rau)",
+"usage_type": "CONSUMABLE",
+"max_servings": 1,
+"weight_kg": 0.6,
+"base_price_vnd": 35000,
+"allowed_location_ids": ["LOC_HOME"],
+"required_sub_node_ids": ["HOME_KITCHEN_DINING", "HOME_LIVING_ROOM"],
+"interactable_actions": [
+{
+"action_id": "ACT_EAT_MEAL",
+"label_key": "Ngồi ăn đàng hoàng (+20 phút)",
+"duration_minutes": 20,
+"effects": {
+"hunger_restore": 55,
+"organ_deltas": { "digestive": 2.0, "liver": 1.0 },
+"happiness_delta": 4.0
+}
+},
+{
+"action_id": "ACT_STORE_IN_FRIDGE",
+"label_key": "Cất hộp vào tủ lạnh (+2 phút)",
+"duration_minutes": 2,
+"requires_furniture_id": "FURN_FRIDGE_STANDARD"
+}
+]
+},
+{
+"item_def_id": "ITEM_FOOD_INSTANT_NOODLES",
+"name_key": "Mì tôm ăn liền",
+"usage_type": "CONSUMABLE",
+"max_servings": 1,
+"weight_kg": 0.1,
+"base_price_vnd": 8000,
+"allowed_location_ids": ["LOC_HOME", "LOC_WORK_OFFICE_MNC", "LOC_WORK_SME_FACTORY"],
+"interactable_actions": [
+{
+"action_id": "ACT_COOK_EAT_NOODLES",
+"label_key": "Chế nước sôi ăn nhanh (+8 phút)",
+"duration_minutes": 8,
+"effects": {
+"hunger_restore": 35,
+"organ_deltas": { "digestive": -1.5, "kidneys": -1.2, "liver": -0.8 },
+"happiness_delta": -1.0
+}
+}
+]
+},
+{
+"item_def_id": "ITEM_DRINK_FILTERED_WATER",
+"name_key": "Chai nước lọc tinh khiết (500ml)",
+"usage_type": "CONSUMABLE",
+"max_servings": 2,
+"weight_kg": 0.5,
+"base_price_vnd": 6000,
+"allowed_location_ids": ["ANY_LOCATION"],
+"interactable_actions": [
+{
+"action_id": "ACT_DRINK_WATER_SIP",
+"label_key": "Uống nửa chai giải khát (+1 phút)",
+"duration_minutes": 1,
+"effects": {
+"thirst_restore": 35,
+"bladder_fill_delta": 22,
+"organ_deltas": { "kidneys": 1.5, "integumentary_skin": 0.5 }
+}
+}
+]
+},
+{
+"item_def_id": "ITEM_DRINK_ICED_MILK_COFFEE",
+"name_key": "Cà phê sữa đá vỉa hè",
+"usage_type": "CONSUMABLE",
+"max_servings": 1,
+"weight_kg": 0.35,
+"base_price_vnd": 25000,
+"allowed_location_ids": ["ANY_LOCATION"],
+"interactable_actions": [
+{
+"action_id": "ACT_DRINK_COFFEE",
+"label_key": "Nhâm nhi ly cà phê (+10 phút)",
+"duration_minutes": 10,
+"effects": {
+"thirst_restore": 20,
+"bladder_fill_delta": 30,
+"temporary_alertness_hours": 4,
+"organ_deltas": { "brain": 2.0, "heart": -1.5, "digestive": -1.0 },
+"happiness_delta": 5.0
+}
+}
+]
+},
+{
+"item_def_id": "ITEM_DRINK_BEER_CAN",
+"name_key": "Lon bia ướp lạnh",
+"usage_type": "CONSUMABLE",
+"max_servings": 1,
+"weight_kg": 0.35,
+"base_price_vnd": 18000,
+"allowed_location_ids": ["LOC_HOME", "LOC_EATERY_RESTAURANT", "LOC_BAR_PUB"],
+"interactable_actions": [
+{
+"action_id": "ACT_DRINK_BEER",
+"label_key": "Uống một lon bia (+15 phút)",
+"duration_minutes": 15,
+"effects": {
+"thirst_restore": 15,
+"bladder_fill_delta": 40,
+"intoxication_delta": 18,
+"organ_deltas": { "liver": -3.5, "kidneys": -1.5, "brain": -1.0 },
+"happiness_delta": 8.0
+}
+}
+]
+}
+]
+}

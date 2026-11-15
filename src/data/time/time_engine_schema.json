@@ -1,0 +1,79 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "TimeEngineStateSchema",
+"description": "Trạng thái trục thời gian liên tục (Continuous Time Engine) và dữ liệu chiếu ra UI.",
+"type": "object",
+"properties": {
+"simulation_mode": {
+"type": "string",
+"enum": ["CHILDHOOD_FAST_FORWARD", "REALTIME_ACTIVE", "EVENT_POPUP_FROZEN", "DEMENTIA_AUTOPILOT"],
+"description": "CHILDHOOD_FAST_FORWARD: 0-5 tuổi khóa đồng hồ. EVENT_POPUP_FROZEN: Dừng thế giới khi bật sự kiện."
+},
+"clock_data": {
+"type": "object",
+"properties": {
+"total_elapsed_game_minutes": { "type": "integer", "minimum": 0 },
+"year": { "type": "integer", "minimum": 1970 },
+"month": { "type": "integer", "minimum": 1, "maximum": 12 },
+"day": { "type": "integer", "minimum": 1, "maximum": 31 },
+"hour": { "type": "integer", "minimum": 0, "maximum": 23 },
+"minute": { "type": "integer", "minimum": 0, "maximum": 59 },
+"day_of_week": {
+"type": "string",
+"enum": ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+},
+"season": {
+"type": "string",
+"enum": ["SPRING", "SUMMER", "AUTUMN", "WINTER"]
+},
+"is_rush_hour": { "type": "boolean", "default": false }
+},
+"required": ["total_elapsed_game_minutes", "year", "month", "day", "hour", "minute", "season", "is_rush_hour"]
+},
+"playback_controls": {
+"type": "object",
+"properties": {
+"current_speed_multiplier": {
+"type": "integer",
+"enum": [0, 1, 2, 4],
+"description": "0 = Pause, 1 = 1x (1s thực = 1p game), 2 = 2x, 4 = 4x"
+},
+"is_speed_locked_by_state": {
+"type": "boolean",
+"default": false,
+"description": "True khi đang mở Event Popup (ép 0) hoặc khi Lú lẫn tuổi già (ép >= 1, cấm Pause)"
+}
+},
+"required": ["current_speed_multiplier", "is_speed_locked_by_state"]
+},
+"sensory_time_ui_projection": {
+"type": "object",
+"description": "Dữ liệu hiển thị lên Vùng 1 (Top-Bar) tuân thủ quy tắc Mù thông tin.",
+"properties": {
+"perception_tier": {
+"type": "string",
+"enum": ["BLIND_NATURE_CUES", "WRISTWATCH_TIME_ONLY", "SMARTPHONE_FULL_DATA"],
+"description": "BLIND: Không có đồng hồ/ĐT hết pin. WRISTWATCH: Có đồng hồ. SMARTPHONE: ĐT còn pin > 0%."
+},
+"formatted_time_string": {
+"type": ["string", "null"],
+"description": "Ví dụ: '18:15'. Null nếu ở trạng thái BLIND_NATURE_CUES."
+},
+"formatted_date_string": {
+"type": ["string", "null"],
+"description": "Ví dụ: 'Thứ Ba, 13/03/2018'. Null nếu BLIND."
+},
+"weather_and_pm25_string": {
+"type": ["string", "null"],
+"description": "Ví dụ: 'Mưa rào | PM2.5: 145 (Cao)'. Chỉ hiện khi có SMARTPHONE_FULL_DATA."
+},
+"diegetic_sky_monologue_key": {
+"type": "string",
+"description": "Câu cảm quan thay thế khi không có thiết bị (VD: 'sky_dusk_chilly_wind', 'sky_noon_blazing_sun')."
+}
+},
+"required": ["perception_tier", "diegetic_sky_monologue_key"]
+}
+},
+"required": ["simulation_mode", "clock_data", "playback_controls", "sensory_time_ui_projection"]
+}

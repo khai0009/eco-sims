@@ -1,0 +1,58 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_CHILDHOOD_0_5",
+"description": "Các cột mốc tự sự tuổi thơ từ 1 đến 5 tuổi để thu thập phiếu tính cách trước khi mở khóa đồng hồ lúc 6 tuổi.",
+"events": [
+{
+"event_id": "EVT_CHILDHOOD_AGE_3_RAIN_NIGHT",
+"category": "CHILDHOOD_MILESTONE",
+"environment_filter": "INDOOR",
+"is_repeatable": false,
+"base_weight": 100.0,
+"trigger_conditions": {
+"exact_milestone_age": 3,
+"age_range": [3.0, 3.99],
+"allowed_location_ids": ["LOC_HOME"]
+},
+"presentation": {
+"title_key": "evt_child_3_title",
+"narrative_body_key": "evt_child_3_body_blackout_storm",
+"base_countdown_seconds": null
+},
+"choices": [
+{
+"choice_id": "CHOICE_A_FLASHLIGHT",
+"label_key": "evt_child_3_choice_a_introvert",
+"outcomes": {
+"personality_vote_group": "INTROVERT",
+"journal_log_entry_key": "log_child_3_quiet_flashlight"
+}
+},
+{
+"choice_id": "CHOICE_B_CALL_PARENTS",
+"label_key": "evt_child_3_choice_b_extrovert",
+"outcomes": {
+"personality_vote_group": "EXTROVERT",
+"journal_log_entry_key": "log_child_3_called_family"
+}
+},
+{
+"choice_id": "CHOICE_C_EXPLORE_DARK",
+"label_key": "evt_child_3_choice_c_daredevil",
+"outcomes": {
+"personality_vote_group": "DAREDEVIL",
+"journal_log_entry_key": "log_child_3_explored_dark"
+}
+},
+{
+"choice_id": "CHOICE_D_HUG_TOY",
+"label_key": "evt_child_3_choice_d_empathetic",
+"outcomes": {
+"personality_vote_group": "EMPATHETIC",
+"journal_log_entry_key": "log_child_3_comforted_bear"
+}
+}
+]
+}
+]
+}

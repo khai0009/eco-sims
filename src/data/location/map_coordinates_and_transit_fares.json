@@ -1,0 +1,118 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.1.0",
+"description": "Tọa độ (map_x_km, map_y_km) của các địa điểm trên bản đồ khu vực và công thức tính quãng đường Manhattan + giá vé công cộng.",
+"distance_formula_rule": "distance_km = Math.abs(x1 - x2) + Math.abs(y1 - y2) (tối thiểu 0.5 km cho các điểm cùng cụm)."
+},
+"location_coordinates": {
+"LOC_HOME": {
+"district_zone": "RESIDENTIAL_ZONE",
+"map_x_km": 2.0,
+"map_y_km": 2.0
+},
+"LOC_SUPERMARKET_MARKET": {
+"district_zone": "RESIDENTIAL_ZONE",
+"map_x_km": 2.8,
+"map_y_km": 2.5
+},
+"LOC_PHARMACY": {
+"district_zone": "RESIDENTIAL_ZONE",
+"map_x_km": 3.0,
+"map_y_km": 2.2
+},
+"LOC_GAS_STATION": {
+"district_zone": "TRANSIT_ARTERIAL",
+"map_x_km": 3.5,
+"map_y_km": 3.0
+},
+"LOC_VEHICLE_REPAIR": {
+"district_zone": "TRANSIT_ARTERIAL",
+"map_x_km": 3.8,
+"map_y_km": 3.2
+},
+"LOC_SCHOOL_PRIMARY": {
+"district_zone": "EDUCATION_ZONE",
+"map_x_km": 2.5,
+"map_y_km": 3.5
+},
+"LOC_SCHOOL_SECONDARY": {
+"district_zone": "EDUCATION_ZONE",
+"map_x_km": 3.2,
+"map_y_km": 4.0
+},
+"LOC_SCHOOL_HIGHSCHOOL": {
+"district_zone": "EDUCATION_ZONE",
+"map_x_km": 4.5,
+"map_y_km": 5.0
+},
+"LOC_UNIVERSITY_VOCATIONAL": {
+"district_zone": "EDUCATION_ZONE",
+"map_x_km": 7.0,
+"map_y_km": 6.5
+},
+"LOC_HOSPITAL": {
+"district_zone": "MEDICAL_CIVIC_ZONE",
+"map_x_km": 6.0,
+"map_y_km": 5.5
+},
+"LOC_POLICE_STATION": {
+"district_zone": "MEDICAL_CIVIC_ZONE",
+"map_x_km": 5.5,
+"map_y_km": 5.0
+},
+"LOC_BANK_FINANCE": {
+"district_zone": "DOWNTOWN_CENTER",
+"map_x_km": 8.0,
+"map_y_km": 7.5
+},
+"LOC_TECH_STORE": {
+"district_zone": "DOWNTOWN_CENTER",
+"map_x_km": 8.2,
+"map_y_km": 7.0
+},
+"LOC_APPLIANCE_REPAIR_SHOP": {
+"district_zone": "COMMERCIAL_ZONE",
+"map_x_km": 5.0,
+"map_y_km": 4.2
+},
+"LOC_SECONDHAND_ELECTRONICS": {
+"district_zone": "COMMERCIAL_ZONE",
+"map_x_km": 4.8,
+"map_y_km": 4.5
+},
+"LOC_WORK_SME": {
+"district_zone": "INDUSTRIAL_OFFICE_ZONE",
+"map_x_km": 9.5,
+"map_y_km": 8.0
+},
+"LOC_WORK_OFFICE_MNC": {
+"district_zone": "DOWNTOWN_CENTER",
+"map_x_km": 8.5,
+"map_y_km": 8.5
+},
+"LOC_WORK_SME_FACTORY": {
+"district_zone": "INDUSTRIAL_OFFICE_ZONE",
+"map_x_km": 11.5,
+"map_y_km": 4.0
+}
+},
+"public_transit_fare_rules": {
+"TRANSIT_PUBLIC_BUS": {
+"pricing_type": "DISTANCE_TIERED_FLAT",
+"tiers": [
+{ "max_distance_km": 5.0, "fare_vnd": 7000 },
+{ "max_distance_km": 12.0, "fare_vnd": 10000 },
+{ "max_distance_km": 999.0, "fare_vnd": 15000 }
+],
+"student_discount_multiplier": 0.5
+},
+"TRANSIT_RIDE_HAIL_BIKE": {
+"pricing_type": "BASE_PLUS_PER_KM",
+"base_fare_vnd": 12000,
+"base_included_km": 2.0,
+"extra_fare_per_km_vnd": 4500,
+"rain_or_rush_hour_surge_multiplier": 1.3
+}
+}
+}

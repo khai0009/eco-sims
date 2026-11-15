@@ -1,0 +1,253 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_SCHOOL_AND_STUDY",
+"description": "Sự kiện học đường tại Trường Tiểu học, THCS, THPT và Đại học: mượn vở, khảo bài, kiểm tra 15p, kiểm tra 1 tiết/thi học kỳ, hội thao thể chất và đo sức khỏe định kỳ.",
+"events": [
+{
+"event_id": "EVT_SCHOOL_FRIEND_BORROW_NOTEBOOK",
+"category": "DAILY_GRAY",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 70.0,
+"trigger_conditions": {
+"age_range": [6.0, 22.0],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+]
+},
+"presentation": {
+"title_key": "evt_school_borrow_note_title",
+"narrative_body_key": "evt_school_borrow_note_body",
+"base_countdown_seconds": 10.0
+},
+"choices": [
+{
+"choice_id": "LEND_NOTEBOOK_WARMLY",
+"label_key": "evt_school_borrow_choice_lend",
+"outcomes": {
+"time_elapsed_minutes": 5,
+"happiness_delta": 4.0,
+"journal_log_entry_key": null
+}
+},
+{
+"choice_id": "REFUSE_NEED_TO_REVIEW",
+"label_key": "evt_school_borrow_choice_refuse",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 0,
+"happiness_delta": -2.0
+}
+}
+]
+},
+{
+"event_id": "EVT_SCHOOL_ORAL_RECITATION_CALL",
+"category": "DAILY_GRAY",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 75.0,
+"trigger_conditions": {
+"age_range": [6.0, 17.99],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL"
+]
+},
+"presentation": {
+"title_key": "evt_school_oral_call_title",
+"narrative_body_key": "evt_school_oral_call_body",
+"base_countdown_seconds": 8.0
+},
+"choices": [
+{
+"choice_id": "ANSWER_CONFIDENTLY",
+"label_key": "evt_school_oral_choice_confident",
+"unlock_requirements": {
+"required_innate_traits": ["TRAIT_FAST_LEARNER"]
+},
+"outcomes": {
+"time_elapsed_minutes": 10,
+"happiness_delta": 8.0
+}
+},
+{
+"choice_id": "STAMMER_AND_BLUSH",
+"label_key": "evt_school_oral_choice_nervous",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 10,
+"happiness_delta": -7.0,
+"organ_deltas": { "digestive": -1.5 }
+}
+}
+]
+},
+{
+"event_id": "EVT_SCHOOL_SURPRISE_15MIN_QUIZ",
+"category": "DAILY_GRAY",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 65.0,
+"trigger_conditions": {
+"age_range": [11.0, 22.0],
+"allowed_location_ids": [
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+]
+},
+"presentation": {
+"title_key": "evt_school_quiz_15m_title",
+"narrative_body_key": "evt_school_quiz_15m_body",
+"base_countdown_seconds": 9.0
+},
+"choices": [
+{
+"choice_id": "FOCUS_WRITE_OWN_WORK",
+"label_key": "evt_school_quiz_15m_choice_focus",
+"outcomes": {
+"time_elapsed_minutes": 15,
+"happiness_delta": 2.0,
+"organ_deltas": { "brain": -0.5 }
+}
+},
+{
+"choice_id": "PEEK_NEIGHBOR_PAPER",
+"label_key": "evt_school_quiz_15m_choice_peek",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 15,
+"happiness_delta": -10.0,
+"journal_log_entry_key": "log_caught_peeking_quiz"
+}
+}
+]
+},
+{
+"event_id": "EVT_SCHOOL_MIDTERM_AND_FINAL_EXAM",
+"category": "DANGER_RED",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 60.0,
+"trigger_conditions": {
+"age_range": [6.0, 24.0],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+]
+},
+"presentation": {
+"title_key": "evt_school_major_exam_title",
+"narrative_body_key": "evt_school_major_exam_body",
+"cutscene_clip_asset": "clip_study_flipping_book",
+"cutscene_caption_key": "ACT_STUDY_BOOK",
+"base_countdown_seconds": 10.0
+},
+"choices": [
+{
+"choice_id": "SOLVE_METHODICALLY",
+"label_key": "evt_school_exam_choice_calm",
+"outcomes": {
+"time_elapsed_minutes": 60,
+"happiness_delta": 10.0,
+"organ_deltas": { "brain": -1.5 },
+"journal_log_entry_key": "log_passed_major_school_exam"
+}
+},
+{
+"choice_id": "BLANK_OUT_FROM_SLEEP_DEBT",
+"label_key": "evt_school_exam_choice_panic",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 60,
+"happiness_delta": -15.0,
+"organ_deltas": { "brain": -2.5, "digestive": -2.0 },
+"journal_log_entry_key": "log_struggled_in_major_exam"
+}
+}
+]
+},
+{
+"event_id": "EVT_SCHOOL_SPORTS_FESTIVAL",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "OUTDOOR",
+"is_repeatable": true,
+"base_weight": 55.0,
+"trigger_conditions": {
+"age_range": [8.0, 22.0],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+],
+"required_weather": ["CLEAR"]
+},
+"presentation": {
+"title_key": "evt_school_sports_title",
+"narrative_body_key": "evt_school_sports_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "JOIN_RELAY_RACE",
+"label_key": "evt_school_sports_choice_compete",
+"outcomes": {
+"time_elapsed_minutes": 45,
+"happiness_delta": 12.0,
+"organ_deltas": { "heart": 2.0, "lungs": 2.0, "musculoskeletal": 1.5 },
+"journal_log_entry_key": "log_joined_school_sports_day"
+}
+},
+{
+"choice_id": "CHEER_FROM_SHADE",
+"label_key": "evt_school_sports_choice_cheer",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 30,
+"happiness_delta": 5.0
+}
+}
+]
+},
+{
+"event_id": "EVT_SCHOOL_ANNUAL_HEALTH_CHECKUP",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 80.0,
+"trigger_conditions": {
+"age_range": [6.0, 18.0],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL"
+]
+},
+"presentation": {
+"title_key": "evt_school_health_check_title",
+"narrative_body_key": "evt_school_health_check_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "MEASURE_HEIGHT_WEIGHT_VISION",
+"label_key": "evt_school_health_choice_measure",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 25,
+"happiness_delta": 2.0,
+"journal_log_entry_key": "log_school_biometric_measured"
+}
+}
+]
+}
+]
+}

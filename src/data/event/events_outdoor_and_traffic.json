@@ -1,0 +1,101 @@
+
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_OUTDOOR_AND_TRAFFIC",
+"description": "Sự kiện chỉ xảy ra ở môi trường ngoài trời (OUTDOOR) hoặc trên tuyến đường di chuyển (LOC_TRANSIT_ROAD).",
+"events": [
+{
+"event_id": "EVT_OUTDOOR_TRAFFIC_SPLASH",
+"category": "DAILY_GRAY",
+"environment_filter": "OUTDOOR",
+"is_repeatable": true,
+"base_weight": 65.0,
+"trigger_conditions": {
+"age_range": [6.0, 95.0],
+"allowed_location_ids": ["LOC_TRANSIT_ROAD"]
+},
+"presentation": {
+"title_key": "evt_bus_puddle_splash_title",
+"narrative_body_key": "evt_bus_puddle_splash_body",
+"base_countdown_seconds": 10.0
+},
+"choices": [
+{
+"choice_id": "DODGE_QUICKLY",
+"label_key": "evt_bus_splash_choice_dodge",
+"outcomes": {
+"time_elapsed_minutes": 5,
+"happiness_delta": -2.0
+}
+},
+{
+"choice_id": "GET_SPLASHED",
+"label_key": "evt_bus_splash_choice_wet",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 15,
+"happiness_delta": -10.0
+}
+}
+]
+},
+{
+"event_id": "EVT_TRAFFIC_BRAKE_FAILURE_RAIN",
+"category": "DANGER_RED",
+"environment_filter": "OUTDOOR",
+"is_repeatable": true,
+"base_weight": 90.0,
+"trigger_conditions": {
+"age_range": [16.0, 85.0],
+"allowed_location_ids": ["LOC_TRANSIT_ROAD"],
+"required_weather": ["RAIN", "STORM"],
+"biological_and_item_triggers": {
+"required_active_condition": "VEHICLE_BRAKE_DECAYED"
+}
+},
+"presentation": {
+"title_key": "evt_brake_fail_title",
+"narrative_body_key": "evt_brake_fail_body",
+"cutscene_clip_asset": "clip_truck_headlights_rain",
+"base_countdown_seconds": 3.5
+},
+"choices": [
+{
+"choice_id": "PANIC_LOCK_HANDLEBAR",
+"label_key": "evt_brake_choice_panic",
+"is_default_timeout_penalty": true,
+"is_dementia_habit_choice": true,
+"outcomes": {
+"time_elapsed_minutes": 240,
+"happiness_delta": -40.0,
+"organ_deltas": {
+"musculoskeletal": -45.0,
+"brain": -20.0,
+"liver": -10.0
+},
+"ptsd_trauma_severity": 75.0,
+"triggers_hospitalization": true,
+"journal_log_entry_key": "log_severe_traffic_accident"
+}
+},
+{
+"choice_id": "DOWNSHIFT_ENGINE_BRAKE",
+"label_key": "evt_brake_choice_expert_downshift",
+"unlock_requirements": {
+"min_years_experience": 3.0,
+"required_innate_traits": ["QUICK_REFLEXES"]
+},
+"outcomes": {
+"time_elapsed_minutes": 20,
+"happiness_delta": -5.0,
+"organ_deltas": {
+"musculoskeletal": -5.0
+},
+"ptsd_trauma_severity": 15.0,
+"journal_log_entry_key": "log_survived_brake_failure_skillfully"
+}
+}
+]
+}
+]
+}

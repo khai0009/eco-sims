@@ -1,0 +1,99 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "ItemAndDiegeticSensationSchema",
+"description": "Định nghĩa vật phẩm, tác động sinh học ngầm và hệ thống cảm quan hóa độ bền theo tính cách (tuyệt đối không hiện % trên UI).",
+"type": "object",
+"properties": {
+"item_def_id": { "type": "string" },
+"name_key": { "type": "string" },
+"description_key": { "type": "string" },
+"category": {
+"type": "string",
+"enum": [
+"FOOD_FRESH",
+"FOOD_PROCESSED",
+"MEDICINE_OTC",
+"MEDICINE_PRESCRIPTION",
+"ELECTRONIC_DEVICE",
+"HEALTH_TOOL",
+"PERSONAL_CARE",
+"VEHICLE_PART",
+"SKILL_BOOK",
+"MEDICAL_REPORT"
+]
+},
+"physical_stats": {
+"type": "object",
+"properties": {
+"base_price_vnd": { "type": "integer", "minimum": 0 },
+"weight_kg": { "type": "number", "minimum": 0.0, "maximum": 50.0 },
+"is_equippable_or_storable_home": { "type": "boolean", "default": false, "description": "VD: Cân sức khỏe đặt trong nhà tắm, thực phẩm cất tủ lạnh." },
+"requires_prescription": { "type": "boolean", "default": false }
+},
+"required": ["base_price_vnd", "weight_kg"]
+},
+"hidden_durability_rules": {
+"type": "object",
+"description": "Chỉ số hao mòn ngầm 0 - 100% do Backend quản lý",
+"properties": {
+"has_durability_or_expiry": { "type": "boolean", "default": true },
+"decay_type": { "type": "string", "enum": ["BATTERY_PCT", "FRESHNESS_EXPIRY", "MECHANICAL_WEAR", "CONSUMABLE_USES", "NONE"] },
+"permanent_max_cap_loss_on_repair_pct": {
+"type": "number",
+"default": 0.0,
+"description": "Mỗi lần đại tu sửa chữa, độ bền tối đa giảm vĩnh viễn 5-10% (Module 3.11)."
+}
+},
+"required": ["has_durability_or_expiry", "decay_type"]
+},
+"biological_effects_on_use": {
+"type": ["object", "null"],
+"description": "Tác động trực tiếp lên Hộp đen sinh học & Giác quan khi sử dụng",
+"properties": {
+"organ_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" },
+"description": "VD: Thuốc giảm đau OTC -> { 'liver': -5.0 }, Sữa rửa mặt -> { 'integumentary_skin': 8.0 }"
+},
+"suppress_symptom_hours": {
+"type": "integer",
+"default": 0,
+"description": "Cái bẫy thuốc giảm đau: Tắt cảnh báo triệu chứng trên UI trong 6h trong khi bệnh thật vẫn nặng thêm."
+},
+"unlocks_capability_flag": {
+"type": ["string", "null"],
+"description": "VD: 'is_biometrics_decoded' (khi đặt Cân thước ở nhà), 'is_clock_visible' (đeo Đồng hồ), 'is_time_management_unlocked' (đọc sách kỹ năng)."
+}
+}
+},
+"diegetic_sensation_matrix": {
+"type": "object",
+"description": "Chuyển đổi % độ bền ngầm thành 5 bậc chữ và câu độc thoại phản ánh tính cách người chơi",
+"properties": {
+"grade_thresholds": {
+"type": "object",
+"properties": {
+"PRISTINE": [85.0, 100.0],
+"GOOD": [60.0, 84.99],
+"WORN": [30.0, 59.99],
+"DECAYED": [10.0, 29.99],
+"BROKEN": [0.0, 9.99]
+}
+},
+"personality_monologue_keys": {
+"type": "object",
+"description": "Ví dụ cùng trạng thái WORN của xe cũ: INTROVERT thấy bất tiện, EXTROVERT thấy xấu hổ, DAREDEVIL thấy chạy lết bánh rất ngầu.",
+"properties": {
+"INTROVERT": { "type": "string" },
+"EXTROVERT": { "type": "string" },
+"DAREDEVIL": { "type": "string" },
+"EMPATHETIC": { "type": "string" },
+"AMBIVERT": { "type": "string" }
+}
+}
+},
+"required": ["grade_thresholds", "personality_monologue_keys"]
+}
+},
+"required": ["item_def_id", "name_key", "category", "physical_stats", "hidden_durability_rules", "diegetic_sensation_matrix"]
+}

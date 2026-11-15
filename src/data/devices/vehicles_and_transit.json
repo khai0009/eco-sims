@@ -1,0 +1,300 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.1.0",
+"description": "Dữ liệu phương tiện cá nhân (3 cụm linh kiện Phanh/Lốp/Động cơ với 3 hạng chất lượng Thường/Trung/Cao cấp, hệ thống bình xăng & trạm đổ xăng) và giao thông công cộng"
+},
+"part_quality_tiers": {
+"STANDARD_NORMAL": {
+"tier_id": "STANDARD_NORMAL",
+"name_key": "Phụ tùng loại Thường (Giá rẻ)",
+"price_multiplier": 0.7,
+"wear_rate_multiplier": 1.35,
+"wet_grip_penalty_points": 2.0,
+"description": "Chi phí thay thế rẻ nhưng nhanh mòn và bám đường kém hơn khi trời mưa."
+},
+"MEDIUM_OEM": {
+"tier_id": "MEDIUM_OEM",
+"name_key": "Phụ tùng loại Trung (Tiêu chuẩn hãng)",
+"price_multiplier": 1.0,
+"wear_rate_multiplier": 1.0,
+"wet_grip_penalty_points": 0.0,
+"description": "Độ bền và độ an toàn cân bằng chuẩn theo thông số nhà sản xuất."
+},
+"PREMIUM_GENUINE": {
+"tier_id": "PREMIUM_GENUINE",
+"name_key": "Phụ tùng loại Cao cấp (Hiệu năng cao)",
+"price_multiplier": 1.8,
+"wear_rate_multiplier": 0.6,
+"wet_grip_penalty_points": -3.0,
+"description": "Rất bền bỉ, tản nhiệt tốt và giảm điểm rủi ro trượt bánh khi phanh gấp."
+}
+},
+"refueling_station_rules": {
+"location_id": "LOC_GAS_STATION",
+"location_name_key": "Trạm Xăng Dầu",
+"fuel_price_per_liter_vnd": 21500,
+"refuel_duration_minutes": 5,
+"refuel_options": [
+{
+"option_id": "REFUEL_50K",
+"label_key": "Đổ lẻ 50.000 đ",
+"fixed_cost_vnd": 50000
+},
+{
+"option_id": "REFUEL_FULL_TANK",
+"label_key": "Đổ đầy bình xăng",
+"fill_to_max": true
+}
+],
+"empty_tank_penalty": {
+"cannot_drive": true,
+"push_bike_speed_kmh": 3.5,
+"push_bike_musculoskeletal_wear_per_km": -0.4,
+"narrative_key": "Xe hết sạch xăng giữa đường, đành phải xuống dắt bộ tìm cây xăng..."
+}
+},
+"transit_modes": [
+{
+"vehicle_def_id": "TRANSIT_WALK",
+"name_key": "Đi bộ",
+"category": "FOOT_TRANSIT",
+"usage_type": "NON_ITEM_DEFAULT",
+"base_speed_kmh": 5.0,
+"rush_hour_multiplier": 1.0,
+"rain_weather_multiplier": 1.25,
+"storm_flood_multiplier": 2.0,
+"ticket_fare_vnd": 0,
+"trunk_capacity_kg": 0.0,
+"requires_license_id": null,
+"organ_impact_per_hour": {
+"musculoskeletal": -1.5,
+"lungs": 0.5
+}
+},
+{
+"vehicle_def_id": "TRANSIT_PUBLIC_BUS",
+"name_key": "Xe buýt công cộng",
+"category": "PUBLIC_TRANSIT",
+"usage_type": "TICKET_SERVICE",
+"base_speed_kmh": 22.0,
+"rush_hour_multiplier": 2.5,
+"rain_weather_multiplier": 1.3,
+"storm_flood_multiplier": 3.0,
+"ticket_fare_vnd": 7000,
+"waiting_time_minutes": 12,
+"trunk_capacity_kg": 0.0,
+"requires_license_id": null,
+"organ_impact_per_hour": {
+"brain": -0.5
+}
+}
+],
+"ownable_vehicles": [
+{
+"vehicle_def_id": "VEH_BICYCLE_BASIC",
+"name_key": "Xe đạp phổ thông",
+"category": "PERSONAL_VEHICLE",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "VEHICLE_PARKING_GARAGE",
+"base_price_vnd": 2200000,
+"sold_at_location_ids": ["LOC_SUPERMARKET_MARKET", "LOC_SECONDHAND_ELECTRONICS"],
+"repair_at_location_ids": ["LOC_VEHICLE_REPAIR"],
+"base_speed_kmh": 15.0,
+"rush_hour_multiplier": 1.2,
+"rain_weather_multiplier": 1.35,
+"storm_flood_multiplier": 2.5,
+"uses_fuel": false,
+"fuel_tank_capacity_liters": 0,
+"fuel_consumption_liters_per_km": 0,
+"trunk_capacity_kg": 5.0,
+"requires_license_id": null,
+"organ_impact_per_hour": {
+"heart": 1.0,
+"musculoskeletal": -1.0
+},
+"sub_components": {
+"brakes": {
+"component_id": "COMP_BIKE_BRAKE",
+"name_key": "Má phanh xe đạp",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.04,
+"rain_wear_multiplier": 1.6,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 80000,
+"accident_hazard_bonus_when_worn": 2.5
+},
+"tires": {
+"component_id": "COMP_BIKE_TIRE",
+"name_key": "Lốp xe đạp",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.03,
+"rain_wear_multiplier": 1.4,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 180000,
+"accident_hazard_bonus_when_worn": 2.0
+},
+"engine": {
+"component_id": "COMP_BIKE_CHAIN",
+"name_key": "Xích & Lip truyền động",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.035,
+"rain_wear_multiplier": 1.8,
+"warning_threshold_pct": 25.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 150000,
+"flood_hydro_lock_immune": true
+}
+}
+},
+{
+"vehicle_def_id": "VEH_MOTORBIKE_COMMUTER",
+"name_key": "Xe máy số phổ thông",
+"category": "PERSONAL_VEHICLE",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "VEHICLE_PARKING_GARAGE",
+"base_price_vnd": 21000000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"repair_at_location_ids": ["LOC_VEHICLE_REPAIR"],
+"base_speed_kmh": 38.0,
+"rush_hour_multiplier": 1.8,
+"rain_weather_multiplier": 1.3,
+"storm_flood_multiplier": 2.8,
+"uses_fuel": true,
+"fuel_tank_capacity_liters": 4.2,
+"fuel_consumption_liters_per_km": 0.022,
+"low_fuel_warning_liters": 0.8,
+"trunk_capacity_kg": 10.0,
+"requires_license_id": "CERT_DRIVING_A1",
+"organ_impact_per_hour": {
+"lungs": -0.8
+},
+"sub_components": {
+"brakes": {
+"component_id": "COMP_MOTO_BRAKE",
+"name_key": "Má phanh xe máy",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.03,
+"rain_wear_multiplier": 1.7,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 160000,
+"accident_hazard_bonus_when_worn": 4.5
+},
+"tires": {
+"component_id": "COMP_MOTO_TIRE",
+"name_key": "Cặp lốp xe máy",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.02,
+"rain_wear_multiplier": 1.4,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 650000,
+"accident_hazard_bonus_when_worn": 4.0
+},
+"engine": {
+"component_id": "COMP_MOTO_ENGINE",
+"name_key": "Động cơ xăng 110cc",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.015,
+"rain_wear_multiplier": 1.8,
+"warning_threshold_pct": 25.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 2500000,
+"flood_hydro_lock_immune": false
+}
+}
+},
+{
+"vehicle_def_id": "VEH_SEDAN_CAR",
+"name_key": "Ô tô con 4 chỗ",
+"category": "PERSONAL_VEHICLE",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "VEHICLE_PARKING_GARAGE",
+"base_price_vnd": 520000000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"repair_at_location_ids": ["LOC_VEHICLE_REPAIR"],
+"base_speed_kmh": 45.0,
+"rush_hour_multiplier": 2.8,
+"rain_weather_multiplier": 1.15,
+"storm_flood_multiplier": 3.0,
+"uses_fuel": true,
+"fuel_tank_capacity_liters": 45.0,
+"fuel_consumption_liters_per_km": 0.075,
+"low_fuel_warning_liters": 6.0,
+"trunk_capacity_kg": 80.0,
+"requires_license_id": "CERT_DRIVING_B2",
+"organ_impact_per_hour": {
+"musculoskeletal": -0.5
+},
+"sub_components": {
+"brakes": {
+"component_id": "COMP_CAR_BRAKE",
+"name_key": "Hệ thống phanh đĩa ô tô",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.02,
+"rain_wear_multiplier": 1.6,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 1800000,
+"accident_hazard_bonus_when_worn": 4.5
+},
+"tires": {
+"component_id": "COMP_CAR_TIRE",
+"name_key": "Bộ 4 lốp ô tô",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.015,
+"rain_wear_multiplier": 1.4,
+"warning_threshold_pct": 30.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 6400000,
+"accident_hazard_bonus_when_worn": 4.0
+},
+"engine": {
+"component_id": "COMP_CAR_ENGINE",
+"name_key": "Động cơ ô tô 1.5L",
+"quality_tier": "MEDIUM_OEM",
+"max_durability_pct": 100.0,
+"wear_per_km_pct": 0.01,
+"rain_wear_multiplier": 1.8,
+"warning_threshold_pct": 25.0,
+"broken_threshold_pct": 5.0,
+"base_replace_cost_vnd": 18000000,
+"flood_hydro_lock_immune": false
+}
+}
+}
+],
+"accident_risk_rules": {
+"description": "Quy tắc cộng dồn điểm rủi ro tai nạn bằng phép cộng/nhân cơ bản (không dùng hàm mũ)",
+"base_accident_score": 5.0,
+"weather_hazard_points": {
+"CLEAR": 0.0,
+"HEATWAVE": 3.0,
+"RAIN": 18.0,
+"STORM_FLOOD": 35.0,
+"PM25_HIGH": 5.0
+},
+"impairment_points": {
+"drunk_or_alcohol_active": 40.0,
+"sleep_debt_over_20h": 25.0,
+"missing_required_license": 20.0,
+"ptsd_panic_active": 15.0
+},
+"flood_hydro_lock_rule": {
+"trigger_weather": "STORM_FLOOD",
+"engine_durability_drop_pct": 95.0,
+"narrative_key": "Nước ngập tràn vào cổ hút gió khiến xe chết máy thủy kích giữa đường!"
+}
+}
+}

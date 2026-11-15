@@ -1,0 +1,106 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "LocationAndVendorSchema",
+"description": "Cấu trúc địa điểm, phòng chức năng (Sub-node), gắn nhãn môi trường (INDOOR/OUTDOOR) và ràng buộc danh mục thương mại điểm bán.",
+"type": "object",
+"properties": {
+"location_id": {
+"type": "string",
+"enum": [
+"LOC_HOME",
+"LOC_TRANSIT_ROAD",
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL",
+"LOC_WORK_OFFICE_MNC",
+"LOC_WORK_SME_FACTORY",
+"LOC_HOSPITAL",
+"LOC_PHARMACY",
+"LOC_POLICE_STATION",
+"LOC_SUPERMARKET_MARKET",
+"LOC_TECH_STORE",
+"LOC_VEHICLE_REPAIR",
+"LOC_BANK_TAX_NOTARY",
+"LOC_MILITARY_COMMAND",
+"LOC_HOME_FRIEND",
+"LOC_EATERY_RESTAURANT",
+"LOC_BAR_PUB",
+"LOC_BLACK_MARKET_LOAN",
+"LOC_GAS_STATION"
+]
+},
+"cluster_group": {
+"type": "string",
+"enum": ["RESIDENTIAL", "TRANSIT", "EDUCATION", "COMMERCIAL", "DINING_VICE", "MEDICAL_LEGAL_MILITARY", "FINANCE", "WORKPLACE"]
+},
+"location_name_key": { "type": "string" },
+"base_travel_minutes": {
+"type": "integer",
+"minimum": 0,
+"description": "Thời gian di chuyển cơ bản (chưa nhân hệ số kẹt xe 2.5x hoặc quá tải balo 1.3x)"
+},
+"base_transit_cost_vnd": { "type": "integer", "minimum": 0 },
+"sub_nodes": {
+"type": "array",
+"description": "Các phòng hoặc khu vực cụ thể bên trong địa điểm",
+"items": {
+"type": "object",
+"properties": {
+"sub_node_id": { "type": "string" },
+"label_key": { "type": "string" },
+"environment_exposure": {
+"type": "string",
+"enum": ["INDOOR", "OUTDOOR"],
+"description": "Quyết định việc chịu ảnh hưởng của bụi mịn PM2.5, mưa bão và lọc sự kiện INDOOR/OUTDOOR."
+},
+"required_house_level": {
+"type": ["integer", "null"],
+"minimum": 1,
+"maximum": 4,
+"description": "Chỉ dùng cho LOC_HOME (VD: Hồ bơi yêu cầu nhà Cấp 4)."
+},
+"available_service_actions": {
+"type": "array",
+"description": "Các dịch vụ chỉ thực hiện được khi đứng tại phòng/quầy này (VD: Khám 6 nội tạng, Lập di chúc, Báo mất đồ).",
+"items": {
+"type": "object",
+"properties": {
+"service_id": { "type": "string" },
+"label_key": { "type": "string" },
+"base_duration_minutes": { "type": "integer" },
+"base_fee_vnd": { "type": "integer" },
+"insurance_discount_pct": { "type": "number", "default": 0.0, "description": "VD: 0.80 (giảm 80% nếu có BHXH)" },
+"required_age_min": { "type": "number", "default": 0 }
+},
+"required": ["service_id", "label_key", "base_duration_minutes", "base_fee_vnd"]
+}
+},
+"vendor_catalog": {
+"type": ["object", "null"],
+"description": "Quầy bán hàng vật lý. Null nếu khu vực này không bán đồ.",
+"properties": {
+"vendor_id": { "type": "string" },
+"vendor_name_key": { "type": "string" },
+"is_open_24h": { "type": "boolean", "default": false },
+"opening_time": { "type": "string", "default": "07:00" },
+"closing_time": { "type": "string", "default": "21:00" },
+"accepted_payments": {
+"type": "array",
+"items": { "type": "string", "enum": ["CASH", "BANK_CARD", "HEALTH_INSURANCE"] }
+},
+"sold_item_ids": {
+"type": "array",
+"items": { "type": "string" },
+"description": "Danh sách ID vật phẩm duy nhất được phép mua tại quầy này."
+}
+},
+"required": ["vendor_id", "vendor_name_key", "accepted_payments", "sold_item_ids"]
+}
+},
+"required": ["sub_node_id", "label_key", "environment_exposure"]
+}
+}
+},
+"required": ["location_id", "cluster_group", "location_name_key", "base_travel_minutes", "sub_nodes"]
+}

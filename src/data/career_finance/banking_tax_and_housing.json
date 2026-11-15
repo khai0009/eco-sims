@@ -1,0 +1,137 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.1.0",
+"description": "Dữ liệu nhà ở cấp 1-4, quyền tự do ở chung với cha mẹ hoặc ra ở riêng từ 18 tuổi, thuế thu nhập cá nhân, BHXH, ngân hàng, tín dụng đen, vé số và di chúc"
+},
+"young_adult_living_rules": {
+"mandatory_move_out_at_18": false,
+"allow_live_with_parents_indefinitely": true,
+"description": "Từ 18 tuổi trở lên người chơi được tự do lựa chọn tiếp tục sống chung nhà với cha mẹ hoặc dọn ra thuê/mua nhà riêng bất cứ lúc nào.",
+"parent_home_contribution_by_tier_vnd": {
+"Q1": 500000,
+"Q2": 800000,
+"Q3": 1000000,
+"Q4": 0,
+"Q5": 0
+},
+"move_out_action_id": "ACT_MOVE_OUT_INDEPENDENT",
+"move_back_with_parents_action_id": "ACT_MOVE_BACK_PARENTS_HOME"
+},
+"housing_tiers": [
+{
+"house_tier": 1,
+"name_key": "Phòng trọ cấp 1 ẩm thấp",
+"monthly_rent_vnd": 1800000,
+"purchase_price_vnd": 350000000,
+"rent_due_day_of_month": 5,
+"grace_period_days": 7,
+"eviction_penalty_happiness": -25,
+"storm_flood_damage_risk": true,
+"unlocked_sub_nodes": ["HOME_LIVING_ROOM", "HOME_KITCHEN", "HOME_BATHROOM"]
+},
+{
+"house_tier": 2,
+"name_key": "Chung cư cũ cấp 2",
+"monthly_rent_vnd": 4500000,
+"purchase_price_vnd": 1400000000,
+"rent_due_day_of_month": 5,
+"grace_period_days": 10,
+"eviction_penalty_happiness": -20,
+"storm_flood_damage_risk": false,
+"unlocked_sub_nodes": ["HOME_LIVING_ROOM", "HOME_KITCHEN", "HOME_BEDROOM", "HOME_BATHROOM"]
+},
+{
+"house_tier": 3,
+"name_key": "Nhà phố khang trang cấp 3",
+"monthly_rent_vnd": 11000000,
+"purchase_price_vnd": 4200000000,
+"rent_due_day_of_month": 5,
+"grace_period_days": 15,
+"eviction_penalty_happiness": -15,
+"storm_flood_damage_risk": false,
+"unlocked_sub_nodes": [
+"HOME_LIVING_ROOM",
+"HOME_KITCHEN",
+"HOME_BEDROOM",
+"HOME_BATHROOM",
+"HOME_BALCONY",
+"HOME_GARAGE"
+]
+},
+{
+"house_tier": 4,
+"name_key": "Biệt thự sân vườn có hồ bơi cấp 4",
+"monthly_rent_vnd": 35000000,
+"purchase_price_vnd": 15000000000,
+"rent_due_day_of_month": 5,
+"grace_period_days": 15,
+"eviction_penalty_happiness": -10,
+"storm_flood_damage_risk": false,
+"unlocked_sub_nodes": [
+"HOME_LIVING_ROOM",
+"HOME_KITCHEN",
+"HOME_BEDROOM",
+"HOME_BATHROOM",
+"HOME_BALCONY",
+"HOME_GARAGE",
+"HOME_POOL"
+]
+}
+],
+"tax_and_social_insurance": {
+"tax_office_location_id": "LOC_BANK_FINANCE",
+"personal_income_tax": {
+"personal_deduction_vnd": 11000000,
+"dependent_deduction_vnd": 4400000,
+"brackets": [
+{ "max_taxable_vnd": 5000000, "tax_rate": 0.05 },
+{ "max_taxable_vnd": 10000000, "tax_rate": 0.1 },
+{ "max_taxable_vnd": 18000000, "tax_rate": 0.15 },
+{ "max_taxable_vnd": 9999999999, "tax_rate": 0.2 }
+],
+"tax_evasion_audit_chance_per_year": 0.25,
+"tax_evasion_fine_multiplier": 3.0
+},
+"social_insurance": {
+"employee_contribution_rate": 0.105,
+"voluntary_monthly_fee_vnd": 650000,
+"hospital_bill_discount_rate": 0.8,
+"pension_min_contribution_years": 20,
+"pension_payout_ratio": 0.65
+},
+"sin_tax_rates": {
+"alcohol_and_tobacco_tax_pct": 0.35
+}
+},
+"banking_and_credit": {
+"bank_location_id": "LOC_BANK_FINANCE",
+"savings_annual_interest_rate": 0.06,
+"early_withdrawal_annual_rate": 0.001,
+"bank_loan_annual_interest_rate": 0.11,
+"max_loan_to_net_worth_ratio": 0.6,
+"loan_shark": {
+"location_id": "LOC_TRANSIT_ROAD",
+"monthly_interest_rate": 0.25,
+"default_grace_days": 7,
+"harassment_organ_damage": {
+"musculoskeletal": -15.0,
+"brain": -10.0
+}
+}
+},
+"lottery_rules": {
+"ticket_price_vnd": 10000,
+"draw_hour": 16,
+"draw_minute": 30,
+"jackpot_prize_vnd": 2000000000,
+"jackpot_win_chance": 0.000001,
+"consolation_prize_vnd": 100000,
+"consolation_win_chance": 0.02
+},
+"will_and_inheritance": {
+"notary_location_id": "LOC_BANK_FINANCE",
+"notary_fee_vnd": 500000,
+"inheritance_tax_rate": 0.1
+}
+}

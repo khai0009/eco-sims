@@ -1,0 +1,101 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.0.0",
+"description": "Quy tắc lão hóa từ 60 tuổi, chế độ tự hành khi lú lẫn, điều kiện tử vong, bia mộ và 5 chương nhật ký đời người"
+},
+"aging_progression": {
+"senescence_start_age": 60,
+"annual_organ_decay_pct": 2.0,
+"senior_carry_capacity_multiplier": 0.7,
+"senior_walking_speed_multiplier": 0.75
+},
+"dementia_autopilot_rules": {
+"trigger_min_age": 65,
+"trigger_brain_health_below": 25.0,
+"lock_player_manual_actions": true,
+"autopilot_tick_interval_minutes": 120,
+"autopilot_routine_actions": [
+{
+"action_id": "AUTO_SIT_PORCH",
+"log_key": "Ngồi thẫn thờ bên hiên nhà nhìn nắng chiều trôi qua..."
+},
+{
+"action_id": "AUTO_EAT_SIMPLE",
+"log_key": "Được người nhà dọn cho chén cháo nóng, ăn chậm rãi..."
+},
+{
+"action_id": "AUTO_NAP_BED",
+"log_key": "Mệt mỏi thiếp đi trên chiếc giường quen thuộc..."
+},
+{
+"action_id": "AUTO_FORGET_NAME",
+"log_key": "Nhìn tấm ảnh cũ trên bàn mà mãi chẳng nhớ ra tên người trong hình..."
+}
+]
+},
+"death_conditions": [
+{
+"cause_id": "DEATH_KAROSHI_STROKE",
+"cause_label_vi": "Đột quỵ do kiệt sức lao động (Karoshi)",
+"trigger_rule": "sleep_debt_hours >= 72 AND heart <= 10",
+"epitaph_template_vi": "Cả đời miệt mài bươn chải không ngơi nghỉ, nay đã được yên giấc ngàn thu."
+},
+{
+"cause_id": "DEATH_ORGAN_FAILURE",
+"cause_label_vi": "Suy đa tạng nặng",
+"trigger_rule": "ANY_ORGAN <= 0",
+"epitaph_template_vi": "Thân xác hao mòn sau bao năm tháng gió sương, nay trở về với cát bụi."
+},
+{
+"cause_id": "DEATH_TRAFFIC_ACCIDENT",
+"cause_label_vi": "Tai nạn giao thông nghiêm trọng",
+"trigger_rule": "ACCIDENT_FATAL_ROLL",
+"epitaph_template_vi": "Một chuyến đi dang dở giữa dòng đời tấp nập, để lại bao tiếc thương."
+},
+{
+"cause_id": "DEATH_OLD_AGE",
+"cause_label_vi": "Tuổi cao sức yếu, an nghỉ tự nhiên",
+"trigger_rule": "age >= 85 AND min_organ <= 15",
+"epitaph_template_vi": "Sống trọn một kiếp người bình dị, thanh thản nhắm mắt xuôi tay."
+}
+],
+"memoir_chapters": [
+{
+"chapter_index": 1,
+"title_vi": "Chương I: Thuở Ấu Thơ & Nếp Nhà",
+"min_age": 0,
+"max_age": 11
+},
+{
+"chapter_index": 2,
+"title_vi": "Chương II: Tuổi Trẻ & Ngưỡng Cửa Vào Đời",
+"min_age": 12,
+"max_age": 24
+},
+{
+"chapter_index": 3,
+"title_vi": "Chương III: Bươn Chải & Lập Nghiệp",
+"min_age": 25,
+"max_age": 44
+},
+{
+"chapter_index": 4,
+"title_vi": "Chương IV: Chín Chắn & Gia Đình",
+"min_age": 45,
+"max_age": 59
+},
+{
+"chapter_index": 5,
+"title_vi": "Chương V: Xế Chiều & Dấu Lặng Cuối Đời",
+"min_age": 60,
+"max_age": 120
+}
+],
+"memorial_honorific_rules": {
+"young_death_max_age": 49,
+"young_death_label_vi": "Hưởng dương {age} tuổi",
+"old_death_min_age": 50,
+"old_death_label_vi": "Hưởng thọ {age} tuổi"
+}
+}

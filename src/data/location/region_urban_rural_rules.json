@@ -1,0 +1,67 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.0.0",
+"description": "Phân tách điều kiện sống, chi phí, môi trường, việc làm và chuyển vùng giữa Nông Thôn (RURAL) và Thành Thị (URBAN)."
+},
+"region_types": {
+"RURAL": {
+"region_id": "RURAL",
+"name_key": "region_rural_name",
+"rent_cost_multiplier": 0.5,
+"food_price_multiplier": 0.75,
+"base_wage_multiplier": 0.7,
+"rush_hour_traffic_multiplier": 1.1,
+"daily_pm25_base": 18,
+"lungs_daily_recovery_bonus": 0.4,
+"npc_bonding_gain_multiplier": 1.35,
+"unlocked_job_tiers": ["TIER_1_INFORMAL", "TIER_2_SME", "TIER_4_GOVERNMENT"],
+"locked_location_ids": ["LOC_WORK_OFFICE_MNC", "LOC_UNIVERSITY_VOCATIONAL"],
+"home_self_sufficiency": {
+"allow_backyard_garden_and_poultry": true,
+"daily_garden_harvest_food_value_vnd": 25000,
+"garden_tend_duration_minutes": 30,
+"happiness_bonus_on_harvest": 3.0
+}
+},
+"URBAN": {
+"region_id": "URBAN",
+"name_key": "region_urban_name",
+"rent_cost_multiplier": 1.0,
+"food_price_multiplier": 1.0,
+"base_wage_multiplier": 1.0,
+"rush_hour_traffic_multiplier": 2.5,
+"daily_pm25_base": 65,
+"lungs_daily_wear_penalty": -0.35,
+"npc_bonding_gain_multiplier": 0.85,
+"unlocked_job_tiers": ["TIER_1_INFORMAL", "TIER_2_SME", "TIER_3_MNC", "TIER_4_GOVERNMENT"],
+"locked_location_ids": [],
+"home_self_sufficiency": {
+"allow_backyard_garden_and_poultry": false
+}
+}
+},
+"migration_actions": [
+{
+"action_id": "ACT_MIGRATE_RURAL_TO_URBAN",
+"label_key": "act_migrate_to_city_label",
+"from_region": "RURAL",
+"to_region": "URBAN",
+"min_age": 18,
+"ticket_cost_vnd": 350000,
+"travel_duration_minutes": 180,
+"journal_log_entry_key": "log_migrated_to_urban_city"
+},
+{
+"action_id": "ACT_MIGRATE_URBAN_TO_RURAL",
+"label_key": "act_return_to_countryside_label",
+"from_region": "URBAN",
+"to_region": "RURAL",
+"min_age": 18,
+"ticket_cost_vnd": 350000,
+"travel_duration_minutes": 180,
+"burnout_relief_bonus": 20.0,
+"journal_log_entry_key": "log_returned_to_rural_home"
+}
+]
+}

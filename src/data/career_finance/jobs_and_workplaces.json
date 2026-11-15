@@ -1,0 +1,186 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.0.0",
+"description": "Dữ liệu các cấp học chính quy, chứng chỉ nghề, kỹ năng quản lý thời gian và điều kiện mở khóa khiếm khuyết ẩn"
+},
+"formal_degrees": [
+{
+"degree_id": "EDU_PRIMARY",
+"name_key": "Tiểu học",
+"location_id": "LOC_SCHOOL_PRIMARY",
+"min_age": 6,
+"max_age": 10,
+"duration_years": 5,
+"tuition_per_year_vnd": 0,
+"required_prev_degree_id": null,
+"daily_study_minutes": 240,
+"neuro_screening_chance_per_term": 0.25
+},
+{
+"degree_id": "EDU_SECONDARY",
+"name_key": "Trung học cơ sở (THCS)",
+"location_id": "LOC_SCHOOL_SECONDARY",
+"min_age": 11,
+"max_age": 14,
+"duration_years": 4,
+"tuition_per_year_vnd": 1200000,
+"required_prev_degree_id": "EDU_PRIMARY",
+"daily_study_minutes": 300,
+"neuro_screening_chance_per_term": 0.2
+},
+{
+"degree_id": "EDU_HIGH_SCHOOL",
+"name_key": "Trung học phổ thông (THPT)",
+"location_id": "LOC_SCHOOL_HIGHSCHOOL",
+"min_age": 15,
+"max_age": 17,
+"duration_years": 3,
+"tuition_per_year_vnd": 2400000,
+"required_prev_degree_id": "EDU_SECONDARY",
+"daily_study_minutes": 360,
+"neuro_screening_chance_per_term": 0.15
+},
+{
+"degree_id": "EDU_BACHELOR",
+"name_key": "Cử nhân Đại học",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 18,
+"max_age": 99,
+"duration_years": 4,
+"tuition_per_year_vnd": 18000000,
+"required_prev_degree_id": "EDU_HIGH_SCHOOL",
+"daily_study_minutes": 240,
+"military_deferment_eligible": true
+},
+{
+"degree_id": "EDU_MASTER",
+"name_key": "Thạc sĩ chuyên ngành",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 22,
+"max_age": 99,
+"duration_years": 2,
+"tuition_per_year_vnd": 32000000,
+"required_prev_degree_id": "EDU_BACHELOR",
+"daily_study_minutes": 180,
+"military_deferment_eligible": false
+},
+{
+"degree_id": "EDU_DOCTORATE",
+"name_key": "Tiến sĩ nghiên cứu",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 24,
+"max_age": 99,
+"duration_years": 3,
+"tuition_per_year_vnd": 45000000,
+"required_prev_degree_id": "EDU_MASTER",
+"daily_study_minutes": 240,
+"military_deferment_eligible": false
+}
+],
+"vocational_certificates": [
+{
+"cert_id": "CERT_DRIVING_A1",
+"name_key": "Bằng lái xe máy A1",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 18,
+"tuition_vnd": 850000,
+"required_study_hours": 12,
+"required_prev_degree_id": null,
+"free_with_military_voucher": true
+},
+{
+"cert_id": "CERT_DRIVING_B2",
+"name_key": "Bằng lái xe ô tô B2",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 18,
+"tuition_vnd": 14500000,
+"required_study_hours": 80,
+"required_prev_degree_id": null,
+"free_with_military_voucher": true
+},
+{
+"cert_id": "CERT_CULINARY_BASIC",
+"name_key": "Chứng chỉ Đầu bếp & Pha chế",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 16,
+"tuition_vnd": 6500000,
+"required_study_hours": 60,
+"required_prev_degree_id": null,
+"free_with_military_voucher": true
+},
+{
+"cert_id": "CERT_AUTO_MECHANIC",
+"name_key": "Chứng chỉ Kỹ thuật Cơ khí & Sửa xe",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 16,
+"tuition_vnd": 8000000,
+"required_study_hours": 90,
+"required_prev_degree_id": "EDU_SECONDARY",
+"free_with_military_voucher": true
+},
+{
+"cert_id": "CERT_FOREIGN_LANG_B2",
+"name_key": "Chứng chỉ Ngoại ngữ Quốc tế",
+"location_id": "LOC_UNIVERSITY_VOCATIONAL",
+"min_age": 15,
+"tuition_vnd": 9500000,
+"required_study_hours": 120,
+"required_prev_degree_id": "EDU_SECONDARY",
+"free_with_military_voucher": false
+}
+],
+"time_management_skill_rules": {
+"description": "Quy tắc rèn luyện kỹ năng Quản lý thời gian bằng phép cộng/trừ đơn giản",
+"initial_score": 0.0,
+"unlock_threshold": 1.0,
+"gain_sources": [
+{
+"source_id": "SRC_READ_TIME_BOOK",
+"name_key": "Đọc sách Kỹ năng Quản lý Thời gian",
+"gain_per_session": 0.25,
+"duration_minutes": 90
+},
+{
+"source_id": "SRC_USE_WATCH_DAILY",
+"name_key": "Đeo đồng hồ hoặc xem giờ trên Smartphone mỗi ngày",
+"gain_per_day": 0.05
+},
+{
+"source_id": "SRC_MILITARY_SERVICE",
+"name_key": "Hoàn thành 24 tháng Nghĩa vụ quân sự",
+"gain_flat": 0.6
+}
+],
+"effects_when_unlocked": {
+"cancels_action_time_overrun": true,
+"shows_exact_action_minutes_on_buttons": true
+}
+},
+"neuro_trait_modifiers": {
+"TRAIT_ADHD": {
+"name_key": "Rối loạn Tăng động Giảm chú ý (ADHD)",
+"academic_study_time_multiplier": 1.3,
+"hobby_hyperfocus_time_multiplier": 0.65,
+"hobby_hyperfocus_quality_multiplier": 1.5,
+"unlock_methods": ["TEACHER_OBSERVATION_SCHOOL", "HOSPITAL_PSYCH_EVAL"]
+},
+"TRAIT_DYSLEXIA": {
+"name_key": "Chứng Khó Đọc (Dyslexia)",
+"reading_and_paperwork_time_multiplier": 1.45,
+"practical_craft_time_multiplier": 0.8,
+"unlock_methods": ["TEACHER_OBSERVATION_SCHOOL", "HOSPITAL_PSYCH_EVAL"]
+},
+"TRAIT_ASD": {
+"name_key": "Hội chứng Phổ Tự Kỷ (ASD)",
+"social_interview_stress_multiplier": 1.4,
+"solo_technical_work_output_multiplier": 1.35,
+"unlock_methods": ["TEACHER_OBSERVATION_SCHOOL", "HOSPITAL_PSYCH_EVAL"]
+},
+"TRAIT_FAST_LEARNER": {
+"name_key": "Tư Duy Tiếp Thu Nhanh",
+"all_study_time_multiplier": 0.75,
+"unlock_methods": ["EXAM_TOP_SCORE", "HOSPITAL_PSYCH_EVAL"]
+}
+}
+}

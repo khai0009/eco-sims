@@ -1,0 +1,187 @@
+
+{
+"version": "1.0.0",
+"locations_registry": [
+{
+"location_id": "LOC_HOSPITAL",
+"cluster_group": "MEDICAL_LEGAL_MILITARY",
+"location_name_key": "loc_general_hospital",
+"base_travel_minutes": 25,
+"base_transit_cost_vnd": 15000,
+"sub_nodes": [
+{
+"sub_node_id": "HOSP_DIAGNOSTIC_LAB",
+"label_key": "sub_hosp_lab",
+"environment_exposure": "INDOOR",
+"available_service_actions": [
+{
+"service_id": "SRV_FULL_ORGAN_SCAN",
+"label_key": "srv_scan_6_organs_and_senses",
+"base_duration_minutes": 180,
+"base_fee_vnd": 1200000,
+"insurance_discount_pct": 0.80,
+"required_age_min": 0
+},
+{
+"service_id": "SRV_PSYCH_EVALUATION",
+"label_key": "srv_psych_test_ptsd_neuro",
+"base_duration_minutes": 120,
+"base_fee_vnd": 600000,
+"insurance_discount_pct": 0.80,
+"required_age_min": 6
+}
+],
+"vendor_catalog": null
+},
+{
+"sub_node_id": "HOSP_PHARMACY_COUNTER",
+"label_key": "sub_hosp_pharmacy",
+"environment_exposure": "INDOOR",
+"available_service_actions": [],
+"vendor_catalog": {
+"vendor_id": "VND_HOSP_PHARM",
+"vendor_name_key": "vnd_hospital_dispensary",
+"is_open_24h": true,
+"accepted_payments": ["CASH", "BANK_CARD", "HEALTH_INSURANCE"],
+"sold_item_ids": ["ITEM_MED_HEPATITIS_RX", "ITEM_MED_CARDIAC_RX", "ITEM_GLASSES_CORRECTIVE"]
+}
+}
+]
+},
+{
+"location_id": "LOC_PHARMACY",
+"cluster_group": "MEDICAL_LEGAL_MILITARY",
+"location_name_key": "loc_street_pharmacy",
+"base_travel_minutes": 10,
+"base_transit_cost_vnd": 5000,
+"sub_nodes": [
+{
+"sub_node_id": "PHARM_RETAIL_COUNTER",
+"label_key": "sub_pharm_counter",
+"environment_exposure": "INDOOR",
+"available_service_actions": [],
+"vendor_catalog": {
+"vendor_id": "VND_STREET_PHARM",
+"vendor_name_key": "vnd_street_pharmacy",
+"is_open_24h": false,
+"opening_time": "06:30",
+"closing_time": "22:30",
+"accepted_payments": ["CASH", "BANK_CARD"],
+"sold_item_ids": ["ITEM_MED_PAINKILLER_OTC", "ITEM_SANITARY_PADS", "ITEM_PREGNANCY_TEST"]
+}
+}
+]
+},
+{
+"location_id": "LOC_VEHICLE_REPAIR",
+"cluster_group": "COMMERCIAL",
+"location_name_key": "loc_mechanic_garage",
+"base_travel_minutes": 15,
+"base_transit_cost_vnd": 0,
+"sub_nodes": [
+{
+"sub_node_id": "GARAGE_OPEN_BAY",
+"label_key": "sub_garage_bay",
+"environment_exposure": "OUTDOOR",
+"available_service_actions": [
+{
+"service_id": "SRV_OVERHAUL_BRAKES_TIRES",
+"label_key": "srv_fix_brakes_and_tires",
+"base_duration_minutes": 90,
+"base_fee_vnd": 450000,
+"insurance_discount_pct": 0.0,
+"required_age_min": 16
+}
+],
+"vendor_catalog": {
+"vendor_id": "VND_GARAGE_PARTS",
+"vendor_name_key": "vnd_garage_parts",
+"is_open_24h": false,
+"opening_time": "07:30",
+"closing_time": "18:30",
+"accepted_payments": ["CASH", "BANK_CARD"],
+"sold_item_ids": ["ITEM_BRAKE_PAD_SET"]
+}
+}
+]
+}
+],
+"items_catalog": [
+{
+"item_def_id": "ITEM_MED_PAINKILLER_OTC",
+"name_key": "item_painkiller_otc_name",
+"description_key": "item_painkiller_otc_desc",
+"category": "MEDICINE_OTC",
+"physical_stats": {
+"base_price_vnd": 35000,
+"weight_kg": 0.1,
+"is_equippable_or_storable_home": false,
+"requires_prescription": false
+},
+"hidden_durability_rules": {
+"has_durability_or_expiry": true,
+"decay_type": "CONSUMABLE_USES",
+"permanent_max_cap_loss_on_repair_pct": 0.0
+},
+"biological_effects_on_use": {
+"organ_deltas": { "liver": -5.0, "kidneys": -2.0 },
+"suppress_symptom_hours": 6,
+"unlocks_capability_flag": null
+},
+"diegetic_sensation_matrix": {
+"grade_thresholds": {
+"PRISTINE": [80.0, 100.0],
+"GOOD": [50.0, 79.99],
+"WORN": [20.0, 49.99],
+"DECAYED": [1.0, 19.99],
+"BROKEN": [0.0, 0.99]
+},
+"personality_monologue_keys": {
+"INTROVERT": "monologue_med_otc_introvert",
+"EXTROVERT": "monologue_med_otc_extrovert",
+"DAREDEVIL": "monologue_med_otc_daredevil",
+"EMPATHETIC": "monologue_med_otc_empathetic",
+"AMBIVERT": "monologue_med_otc_ambivert"
+}
+}
+},
+{
+"item_def_id": "ITEM_SMARTPHONE_BASIC",
+"name_key": "item_smartphone_name",
+"description_key": "item_smartphone_desc",
+"category": "ELECTRONIC_DEVICE",
+"physical_stats": {
+"base_price_vnd": 3500000,
+"weight_kg": 0.25,
+"is_equippable_or_storable_home": false,
+"requires_prescription": false
+},
+"hidden_durability_rules": {
+"has_durability_or_expiry": true,
+"decay_type": "BATTERY_PCT",
+"permanent_max_cap_loss_on_repair_pct": 5.0
+},
+"biological_effects_on_use": {
+"organ_deltas": {},
+"suppress_symptom_hours": 0,
+"unlocks_capability_flag": "SMARTPHONE_FULL_DATA"
+},
+"diegetic_sensation_matrix": {
+"grade_thresholds": {
+"PRISTINE": [85.0, 100.0],
+"GOOD": [50.0, 84.99],
+"WORN": [20.0, 49.99],
+"DECAYED": [1.0, 19.99],
+"BROKEN": [0.0, 0.99]
+},
+"personality_monologue_keys": {
+"INTROVERT": "monologue_phone_introvert",
+"EXTROVERT": "monologue_phone_extrovert",
+"DAREDEVIL": "monologue_phone_daredevil",
+"EMPATHETIC": "monologue_phone_empathetic",
+"AMBIVERT": "monologue_phone_ambivert"
+}
+}
+}
+]
+}

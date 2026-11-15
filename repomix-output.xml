@@ -1,0 +1,3808 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  favicon.svg
+  icons.svg
+src/
+  assets/
+    hero.png
+    react.svg
+    vite.svg
+  components/
+    hud/
+      SensoryHUD.tsx
+    layout/
+      MainCanvas.tsx
+    stage/
+      ChildhoodStage.tsx
+  data/
+    events.json
+    items.json
+    locations.json
+    milestones.json
+    npcs.json
+  engine/
+    AccidentMatrix.ts
+    BlackBoxEngine.ts
+    ChildhoodEngine.ts
+    EventBus.ts
+    SaveSystem.ts
+    TimeEngine.ts
+    VendorEngine.ts
+  hooks/
+    useLifeSim.ts
+  locales/
+    vi-VN.json
+  types/
+    bus.ts
+    events.ts
+    game.ts
+    world.ts
+  App.css
+  App.tsx
+  index.css
+  main.tsx
+  types.ts
+.gitignore
+eslint.config.js
+fetch-data.ts
+index.html
+package.json
+README.md
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+world-data.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="src/assets/react.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+</file>
+
+<file path="src/assets/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="77" height="47" fill="none" aria-labelledby="vite-logo-title" viewBox="0 0 77 47"><title id="vite-logo-title">Vite</title><style>.parenthesis{fill:#000}@media (prefers-color-scheme:dark){.parenthesis{fill:#fff}}</style><path fill="#9135ff" d="M40.151 45.71c-.663.844-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.493c-.92 0-1.457-1.04-.92-1.788l7.479-10.471c1.07-1.498 0-3.578-1.842-3.578H15.443c-.92 0-1.456-1.04-.92-1.788l9.696-13.576c.213-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.472c-1.07 1.497 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.087.89 1.83L40.153 45.712z"/><mask id="a" width="48" height="47" x="14" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M40.047 45.71c-.663.843-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.389c-.92 0-1.457-1.04-.92-1.788l7.479-10.472c1.07-1.497 0-3.578-1.842-3.578H15.34c-.92 0-1.456-1.04-.92-1.788l9.696-13.575c.213-.297.556-.474.92-.474H53.93c.92 0 1.456 1.04.92 1.788L47.37 13.03c-1.07 1.498 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.088.89 1.831L40.049 45.712z"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#eee6ff" rx="5.508" ry="14.704" transform="rotate(269.814 20.96 11.29)scale(-1 1)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#eee6ff" rx="10.399" ry="29.851" transform="rotate(89.814 -16.902 -8.275)scale(1 -1)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#8900ff" rx="5.508" ry="30.487" transform="rotate(89.814 -19.197 -7.127)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.928 4.177)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.738 5.52)scale(1 -1)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#eee6ff" rx="14.072" ry="22.078" transform="rotate(93.35 31.245 55.578)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx="14.592" cy="9.743" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(39.51 14.592 9.743)"/></g><g filter="url(#k)"><ellipse cx="61.728" cy="-5.321" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 61.728 -5.32)"/></g><g filter="url(#l)"><ellipse cx="55.618" cy="7.104" fill="#00c2ff" rx="5.971" ry="9.665" transform="rotate(37.892 55.618 7.104)"/></g><g filter="url(#m)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#n)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#o)"><ellipse cx="49.857" cy="30.678" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 49.857 30.678)"/></g><g filter="url(#p)"><ellipse cx="52.623" cy="33.171" fill="#00c2ff" rx="5.971" ry="15.297" transform="rotate(37.892 52.623 33.17)"/></g></g><path d="M6.919 0c-9.198 13.166-9.252 33.575 0 46.789h6.215c-9.25-13.214-9.196-33.623 0-46.789zm62.424 0h-6.215c9.198 13.166 9.252 33.575 0 46.789h6.215c9.25-13.214 9.196-33.623 0-46.789" class="parenthesis"/><defs><filter id="b" width="60.045" height="41.654" x="-5.564" y="16.92" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-40.407" y="-6.762" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-35.435" y="2.801" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-30.84" y="20.8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-29.307" y="21.949" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="29.961" y="-17.13" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-13.43" y="-22.082" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="34.321" y="-37.644" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="38.847" y="-10.552" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="22.45" y="-1.645" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="32.919" y="11.36" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="src/components/hud/SensoryHUD.tsx">
+import React from 'react';
+import type { RootGameState, SensoryColor } from '../../types/game';
+
+interface SensoryHUDProps {
+  state: RootGameState;
+  onSetSpeed: (speed: 0 | 1 | 2 | 4) => void;
+  onOpenMap: () => void;
+  onOpenJournal: () => void;
+}
+
+// Bảng màu chuẩn mực theo tài liệu thiết kế
+const SENSORY_COLOR_MAP: Record<SensoryColor, { bg: string; text: string; labelVi: string }> = {
+  BLUE: { bg: '#3498DB', text: '#FFFFFF', labelVi: 'Xuất Sắc / Viên Mãn' },
+  GREEN: { bg: '#2ECC71', text: '#FFFFFF', labelVi: 'Tốt / Vui Vẻ' },
+  YELLOW: { bg: '#F1C40F', text: '#2C1810', labelVi: 'Tạm Được / Bình Lặng' },
+  ORANGE: { bg: '#E67E22', text: '#FFFFFF', labelVi: 'Không Ổn / Uất Ức' },
+  RED: { bg: '#E74C3C', text: '#FFFFFF', labelVi: 'Nguy Kịch / Tuyệt Vọng' },
+};
+
+export const SensoryHUD: React.FC<SensoryHUDProps> = ({
+  state,
+  onSetSpeed,
+  onOpenMap,
+  onOpenJournal,
+}) => {
+  const { player, timeEngine, environment } = state;
+  const { sensoryProjection, capabilities } = player;
+
+  const healthStyle = SENSORY_COLOR_MAP[sensoryProjection.healthColor];
+  const happinessStyle = SENSORY_COLOR_MAP[sensoryProjection.happinessColor];
+
+  // Định dạng tiền tệ LORE_VND
+  const formattedCash = new Intl.NumberFormat('vi-VN').format(player.finances.cashVnd) + ' đ';
+
+  return (
+    <div className="w-full flex flex-col gap-3 font-serif select-none">
+      {/* =========================================================================
+          TOP BAR: THỜI GIAN CẢM QUAN, THỜI TIẾT, TIỀN MẶT & ĐIỀU TỐC
+          ========================================================================= */}
+      <header className="w-full bg-[#E8D7B8] border-2 border-[#5C4033] px-5 py-3 rounded-sm shadow-md flex items-center justify-between">
+        {/* Nhận thức Thời Gian & Môi trường */}
+        <div className="flex flex-col">
+          {capabilities.isClockVisible ? (
+            <div className="text-[#3E2723] text-base font-bold">
+              Ngày {timeEngine.totalGameDays} •{' '}
+              {String(timeEngine.exactHour).padStart(2, '0')}:
+              {String(timeEngine.exactMinute).padStart(2, '0')}
+            </div>
+          ) : (
+            <div className="text-[#5D4037] text-sm italic">
+              "Trời ngả về chiều, bóng nắng dần tắt trên mái ngói..."
+            </div>
+          )}
+
+          <div className="text-xs text-[#795548] mt-0.5">
+            Thời tiết: {environment.weatherType} • PM2.5: {environment.pm25Value > 100 ? 'Bụi mịt mù' : 'Trong lành'}
+          </div>
+        </div>
+
+        {/* Tiền mặt & Nút Chức Năng Bản Đồ */}
+        <div className="flex items-center gap-5">
+          <div className="text-right">
+            <span className="block text-[11px] text-[#795548] uppercase tracking-wider">Tiền mặt</span>
+            <span className="text-base font-bold text-[#1B5E20]">{formattedCash}</span>
+          </div>
+
+          <button
+            onClick={onOpenMap}
+            className="bg-[#8D6E63] hover:bg-[#6D4C41] text-[#FFF] text-xs px-3.5 py-2 rounded shadow transition active:scale-95 uppercase font-medium"
+          >
+            ► Ra Bản Đồ
+          </button>
+
+          {/* Cụm Nút Tốc Độ */}
+          <div className="flex items-center bg-[#D7C4A5] border border-[#5C4033] rounded overflow-hidden">
+            {[0, 1, 2, 4].map((scale) => (
+              <button
+                key={scale}
+                onClick={() => onSetSpeed(scale as 0 | 1 | 2 | 4)}
+                className={`px-2.5 py-1 text-xs font-mono font-bold transition ${
+                  timeEngine.timeScale === scale
+                    ? 'bg-[#5C4033] text-[#FFF]'
+                    : 'text-[#3E2723] hover:bg-[#C5B08E]'
+                }`}
+              >
+                {scale === 0 ? '❚❚' : `x${scale}`}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* =========================================================================
+          BOTTOM BAR: ĐÈN CẢM QUAN 5 MÀU, ĐỘC THOẠI CƠ THỂ & SINH TRẮC HỌC
+          ========================================================================= */}
+      <footer className="w-full bg-[#E8D7B8] border-2 border-[#5C4033] p-4 rounded-sm shadow-md flex flex-wrap items-center justify-between gap-4">
+        {/* Cụm Đèn Cảm Quan Không Số */}
+        <div className="flex items-center gap-6">
+          {/* Đèn Sức Khỏe */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs text-[#5D4037] font-semibold">Sức Khỏe:</span>
+            <div
+              className="px-3 py-1 rounded text-xs font-bold shadow-sm"
+              style={{ backgroundColor: healthStyle.bg, color: healthStyle.text }}
+            >
+              ● {healthStyle.labelVi}
+            </div>
+          </div>
+
+          {/* Đèn Hạnh Phúc */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs text-[#5D4037] font-semibold">Hạnh Phúc:</span>
+            <div
+              className="px-3 py-1 rounded text-xs font-bold shadow-sm"
+              style={{ backgroundColor: happinessStyle.bg, color: happinessStyle.text }}
+            >
+              ● {happinessStyle.labelVi}
+            </div>
+          </div>
+        </div>
+
+        {/* Độc thoại triệu chứng cơ thể (Bottleneck Monologue) */}
+        <div className="flex-1 max-w-md bg-[#F4ECD8] border border-[#A88C6D] px-3.5 py-1.5 rounded text-xs text-[#4E342E] italic">
+          "{sensoryProjection.bodyMonologueKey}"
+        </div>
+
+        {/* Sinh trắc học & Nhật ký */}
+        <div className="flex items-center gap-4">
+          <div className="text-right text-xs text-[#5D4037]">
+            <span className="block text-[10px] uppercase text-[#8D6E63]">Sinh trắc vóc dáng</span>
+            <strong>{sensoryProjection.biometricsDisplayString}</strong>
+          </div>
+
+          <button
+            onClick={onOpenJournal}
+            className="bg-[#5C4033] hover:bg-[#3E2723] text-[#F5EBD7] text-xs px-3.5 py-2 rounded shadow transition active:scale-95"
+          >
+            📖 Sổ Nhật Ký
+          </button>
+        </div>
+      </footer>
+    </div>
+  );
+};
+</file>
+
+<file path="src/components/layout/MainCanvas.tsx">
+import React from 'react';
+import type { SuddenGameEvent, GameEventOption } from '../../types/events';
+
+interface MainCanvasProps {
+  currentSubNodeId: string;
+  staticBackgroundAsset: string;
+  activeCutscene: { isPlaying: boolean; caption: string; assetKey: string } | null;
+  activePopupEvent: {
+    event: SuddenGameEvent;
+    remainingTime: number;
+    initialDuration: number;
+    isFrozen: boolean;
+  } | null;
+  onHotspotClick: (actionId: string, baseMinutes: number, cutsceneKey?: string, caption?: string) => void;
+  onSelectEventOption: (key: 'A' | 'B' | 'C' | 'D') => void;
+}
+
+export const MainCanvas: React.FC<MainCanvasProps> = ({
+  currentSubNodeId,
+  staticBackgroundAsset,
+  activeCutscene,
+  activePopupEvent,
+  onHotspotClick,
+  onSelectEventOption,
+}) => {
+  return (
+    <div className="relative w-full h-[520px] bg-[#EAD8B7] border-2 border-[#5C4033] rounded-sm shadow-inner overflow-hidden select-none font-serif">
+      {/* Lớp nền vân Giấy Dó mực nho */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center transition-all duration-700 filter sepia-[0.35] contrast-[1.05]"
+        style={{ backgroundImage: `url('/assets/images/backgrounds/${staticBackgroundAsset}')` }}
+      >
+        {/* Lớp phủ mực nho tạo sắc độ cổ kính */}
+        <div className="absolute inset-0 bg-[#3A2A1A] opacity-15 pointer-events-none mix-blend-multiply" />
+      </div>
+
+      {/* =========================================================================
+          TRẠNG THÁI 1: KHUNG CẢNH TĨNH & CÁC ĐIỂM TƯƠNG TÁC (HOTSPOTS)
+          ========================================================================= */}
+      {!activeCutscene && !activePopupEvent && (
+        <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between">
+          <div className="inline-block bg-[#F4ECD8]/90 border border-[#8C6D53] px-3 py-1.5 rounded text-xs text-[#3E2723] tracking-wider uppercase font-semibold">
+            Không Gian: {currentSubNodeId}
+          </div>
+
+          {/* Danh sách các tương tác điểm nhấn nhanh trên sân khấu */}
+          <div className="flex flex-wrap gap-3 mt-auto">
+            {currentSubNodeId === 'HOME_KITCHEN' && (
+              <button
+                onClick={() =>
+                  onHotspotClick(
+                    'COOK_SOLO',
+                    45,
+                    'cutscene_cook_solo.webp',
+                    'Đang nấu bữa cơm đạm bạc một mình bên bếp lửa...'
+                  )
+                }
+                className="bg-[#D7C4A5] hover:bg-[#C5B08E] border border-[#5C4033] text-[#2C1810] px-4 py-2 text-sm rounded shadow transition active:scale-95"
+              >
+                🍳 Nấu bữa trưa (-45p)
+              </button>
+            )}
+
+            {currentSubNodeId === 'HOME_BATHROOM' && (
+              <button
+                onClick={() =>
+                  onHotspotClick(
+                    'MEASURE_BODY',
+                    15,
+                    'cutscene_scale.webp',
+                    'Đang đứng lên bàn cân và đo lại vóc dáng...'
+                  )
+                }
+                className="bg-[#D7C4A5] hover:bg-[#C5B08E] border border-[#5C4033] text-[#2C1810] px-4 py-2 text-sm rounded shadow transition active:scale-95"
+              >
+                ⚖️ Cân đo thể trạng (-15p)
+              </button>
+            )}
+
+            {currentSubNodeId === 'HOME_LIVING_ROOM' && (
+              <button
+                onClick={() =>
+                  onHotspotClick(
+                    'PET_DOG',
+                    20,
+                    'cutscene_pet.webp',
+                    'Vuốt ve âu yếm người bạn nhỏ trên sàn gạch...'
+                  )
+                }
+                className="bg-[#D7C4A5] hover:bg-[#C5B08E] border border-[#5C4033] text-[#2C1810] px-4 py-2 text-sm rounded shadow transition active:scale-95"
+              >
+                🐕 Nựng thú cưng (-20p)
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          TRẠNG THÁI 2: MINI CUTSCENE 3 GIÂY - CHỮ ĐỀ TRỰC TIẾP TRÊN MẶT TRANH
+          ========================================================================= */}
+      {activeCutscene && activeCutscene.isPlaying && (
+        <div className="absolute inset-0 z-20 flex flex-col justify-between p-8 bg-black/40 backdrop-blur-[1px] animate-fade-in">
+          {/* Dòng chữ đề thơ/lạc khoản mực nho khắc trực tiếp lên góc tranh */}
+          <div className="self-end max-w-md bg-[#2C1810]/85 border-l-4 border-[#C5A059] p-4 text-[#F4ECD8] shadow-2xl">
+            <p className="text-base italic leading-relaxed tracking-wide font-medium">
+              "{activeCutscene.caption}"
+            </p>
+            <span className="block mt-2 text-[11px] text-[#C5A059] tracking-widest uppercase">
+              • Hoạt cảnh đời thường (3 giây) •
+            </span>
+          </div>
+
+          {/* Thanh chỉ báo thời gian 3s mảnh khảnh chạy ngầm */}
+          <div className="w-full bg-[#3E2723]/60 h-1 rounded-full overflow-hidden">
+            <div className="h-full bg-[#C5A059] animate-[cutsceneProgress_3s_linear_forwards]" />
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          TRẠNG THÁI 3: HỘP THOẠI SỰ KIỆN BẤT NGỜ (EVENT POPUP) ĐẾM NGƯỢC
+          ========================================================================= */}
+      {activePopupEvent && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fade-in">
+          <div
+            className={`w-full max-w-lg bg-[#F5EBD7] border-4 p-6 shadow-2xl rounded-sm ${
+              activePopupEvent.event.severity === 'RED_DANGER'
+                ? 'border-[#B71C1C]'
+                : activePopupEvent.event.severity === 'BLUE_OPPORTUNITY'
+                ? 'border-[#0D47A1]'
+                : 'border-[#4A3B32]'
+            }`}
+          >
+            {/* Tiêu đề sự kiện */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#8C6D53]">
+              <h3
+                className={`text-lg font-bold uppercase tracking-wider ${
+                  activePopupEvent.event.severity === 'RED_DANGER'
+                    ? 'text-[#B71C1C]'
+                    : activePopupEvent.event.severity === 'BLUE_OPPORTUNITY'
+                    ? 'text-[#0D47A1]'
+                    : 'text-[#3E2723]'
+                }`}
+              >
+                {activePopupEvent.event.titleKey}
+              </h3>
+
+              {/* Thông báo Đóng Băng Phản Xạ PTSD */}
+              {activePopupEvent.isFrozen && (
+                <span className="bg-[#B71C1C] text-[#FFF] text-[10px] px-2 py-0.5 rounded font-sans uppercase animate-pulse">
+                  ❄ PTSD Đóng Băng (2s)
+                </span>
+              )}
+            </div>
+
+            {/* Nội dung mô tả sự kiện */}
+            <p className="py-4 text-[#3E2723] text-sm leading-relaxed">
+              {activePopupEvent.event.descriptionKey}
+            </p>
+
+            {/* Thanh thời gian đếm ngược trực tiếp */}
+            <div className="mb-4">
+              <div className="flex justify-between text-xs text-[#5D4037] mb-1 font-sans">
+                <span>Cửa sổ phản xạ sinh tồn</span>
+                <span className="font-bold text-[#B71C1C]">
+                  {activePopupEvent.remainingTime.toFixed(1)}s
+                </span>
+              </div>
+              <div className="w-full bg-[#D7C4A5] h-2.5 rounded-full overflow-hidden border border-[#8C6D53]">
+                <div
+                  className="h-full bg-[#B71C1C] transition-all duration-100 ease-linear"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      (activePopupEvent.remainingTime / activePopupEvent.initialDuration) * 100
+                    )}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Danh sách lựa chọn A / B / C / D */}
+            <div className="space-y-2.5">
+              {activePopupEvent.event.options.map((opt: GameEventOption) => (
+                <button
+                  key={opt.key}
+                  disabled={activePopupEvent.isFrozen && activePopupEvent.remainingTime > activePopupEvent.initialDuration - 2.0}
+                  onClick={() => onSelectEventOption(opt.key)}
+                  className={`w-full text-left p-3 text-sm rounded border transition flex items-center justify-between ${
+                    opt.isDefaultFailure
+                      ? 'bg-[#FFEBEE] border-[#EF9A9A] text-[#B71C1C] hover:bg-[#FFCDD2]'
+                      : 'bg-[#EFE3C8] border-[#A88C6D] text-[#2C1810] hover:bg-[#DFD1B3]'
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  <span>
+                    <strong>[{opt.key}]</strong> {opt.labelKey}
+                  </span>
+                  {opt.isDefaultFailure && (
+                    <span className="text-[10px] uppercase font-sans text-[#C62828] font-bold">
+                      Mặc định khi hết giờ
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+</file>
+
+<file path="src/components/stage/ChildhoodStage.tsx">
+import React, { useState } from 'react';
+import { ChildhoodEngine, type MilestoneEvent, type MilestoneOption, type PersonalityResolution } from '../../engine/ChildhoodEngine';
+
+interface ChildhoodStageProps {
+  currentMilestoneAge: number; // 1 -> 5
+  accumulatedChoices: Array<'A' | 'B' | 'C' | 'D'>;
+  onSelectMilestoneChoice: (choiceKey: 'A' | 'B' | 'C' | 'D') => void;
+  onFinishGraduationToAge6: () => void;
+}
+
+export const ChildhoodStage: React.FC<ChildhoodStageProps> = ({
+  currentMilestoneAge,
+  accumulatedChoices,
+  onSelectMilestoneChoice,
+  onFinishGraduationToAge6,
+}) => {
+  const [selectedOption, setSelectedOption] = useState<MilestoneOption | null>(null);
+  const [graduationResult, setGraduationResult] = useState<PersonalityResolution | null>(null);
+
+  const activeMilestone: MilestoneEvent | undefined = ChildhoodEngine.getMilestoneForAge(currentMilestoneAge);
+
+  // Khi người chơi xác nhận lựa chọn của cột mốc
+  const handleConfirmChoice = () => {
+    if (!selectedOption) return;
+
+    const nextChoices = [...accumulatedChoices, selectedOption.key];
+    onSelectMilestoneChoice(selectedOption.key);
+    setSelectedOption(null);
+
+    // Nếu đã hoàn tất mốc 5 tuổi -> Hiển thị kết quả khóa tính cách 6 tuổi
+    if (currentMilestoneAge >= 5) {
+      const res = ChildhoodEngine.calculatePersonality(nextChoices);
+      setGraduationResult(res);
+    }
+  };
+
+  return (
+    <div className="relative w-full min-h-[560px] bg-[#E7D6B5] border-4 border-[#4A3222] rounded-sm p-6 flex flex-col justify-between font-serif select-none shadow-2xl overflow-hidden">
+      {/* Nền giấy Dó cổ kính */}
+      <div className="absolute inset-0 bg-[radial-gradient(#D2B48C_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
+
+      {/* =========================================================================
+          TIÊU ĐỀ GIAI ĐOẠN TUỔI THƠ & THANH TIẾN ĐỘ 5 NĂM
+          ========================================================================= */}
+      <header className="relative z-10 flex flex-wrap items-center justify-between pb-4 border-b-2 border-[#8C6D53]">
+        <div>
+          <span className="text-[11px] uppercase tracking-widest text-[#795548] font-bold block">
+            Giai Đoạn Ấu Thơ (Tua Nhanh Tự Sự • 0 - 5 Tuổi)
+          </span>
+          <h2 className="text-xl font-bold text-[#2C1810] tracking-wide mt-0.5">
+            {activeMilestone ? `Mốc ${activeMilestone.ageYear} Tuổi: ${activeMilestone.titleKey}` : 'Định Hình Tính Cách Đầu Đời'}
+          </h2>
+        </div>
+
+        {/* Thanh đánh dấu 5 cột mốc tuổi thơ */}
+        <div className="flex items-center gap-2 mt-2 sm:mt-0">
+          {[1, 2, 3, 4, 5].map((age) => {
+            const isCompleted = accumulatedChoices.length >= age;
+            const isCurrent = currentMilestoneAge === age;
+            return (
+              <div
+                key={age}
+                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition ${
+                  isCompleted
+                    ? 'bg-[#5C4033] text-[#F5EBD7] border-[#3E2723]'
+                    : isCurrent
+                    ? 'bg-[#C5A059] text-[#2C1810] border-[#8C6D53] ring-2 ring-[#5C4033] scale-110'
+                    : 'bg-[#D7C4A5] text-[#8D6E63] border-[#A88C6D] opacity-60'
+                }`}
+              >
+                {age}t
+              </div>
+            );
+          })}
+        </div>
+      </header>
+
+      {/* =========================================================================
+          NỘI DUNG BỐI CẢNH & KHUNG 4 LỰA CHỌN A / B / C / D
+          ========================================================================= */}
+      {!graduationResult && activeMilestone && (
+        <div className="relative z-10 flex-1 flex flex-col justify-center my-4 space-y-5">
+          {/* Hộp mô tả bối cảnh văn tự Dó */}
+          <div className="bg-[#F4ECD8]/90 border border-[#8C6D53] p-4 rounded shadow-sm">
+            <p className="text-sm md:text-base text-[#3E2723] leading-relaxed italic">
+              "{activeMilestone.contextDescription}"
+            </p>
+          </div>
+
+          {/* Danh sách 4 lựa chọn hành vi */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {activeMilestone.options.map((option) => {
+              const isSelected = selectedOption?.key === option.key;
+              return (
+                <button
+                  key={option.key}
+                  onClick={() => setSelectedOption(option)}
+                  className={`p-3.5 text-left rounded border transition relative flex flex-col justify-between ${
+                    isSelected
+                      ? 'bg-[#5C4033] text-[#F5EBD7] border-[#2C1810] shadow-md scale-[1.01]'
+                      : 'bg-[#EFE3C8] hover:bg-[#E5D5B5] text-[#2C1810] border-[#A88C6D] shadow-sm'
+                  }`}
+                >
+                  <div className="flex items-start gap-2.5">
+                    <span
+                      className={`inline-block w-6 h-6 rounded-full text-center text-xs font-bold leading-6 shrink-0 ${
+                        isSelected ? 'bg-[#C5A059] text-[#2C1810]' : 'bg-[#D7C4A5] text-[#3E2723]'
+                      }`}
+                    >
+                      {option.key}
+                    </span>
+                    <span className="text-sm font-medium leading-snug">{option.label}</span>
+                  </div>
+
+                  {isSelected && (
+                    <div className="mt-2.5 pt-2 border-t border-[#8C6D53]/60 text-[11px] italic text-[#E0D0B5]">
+                      • {option.sensoryFeedback}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          NÚT XÁC NHẬN LỰA CHỌN CỦA TỪNG NĂM
+          ========================================================================= */}
+      {!graduationResult && (
+        <footer className="relative z-10 flex justify-end pt-3 border-t border-[#8C6D53]/60">
+          <button
+            disabled={!selectedOption}
+            onClick={handleConfirmChoice}
+            className="bg-[#5C4033] hover:bg-[#3E2723] disabled:opacity-40 disabled:cursor-not-allowed text-[#F5EBD7] px-6 py-2.5 rounded text-sm font-semibold tracking-wider uppercase shadow-md transition active:scale-95"
+          >
+            Khắc Ghi Quyết Định Năm {currentMilestoneAge} Tuổi ►
+          </button>
+        </footer>
+      )}
+
+      {/* =========================================================================
+          POPUP VINH DANH KHÓA TÍNH CÁCH VĨNH VIỄN & MỞ KHÓA MỐC 6 TUỔI
+          ========================================================================= */}
+      {graduationResult && (
+        <div className="absolute inset-0 z-30 bg-[#2C1810]/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="w-full max-w-lg bg-[#F5EBD7] border-4 border-[#C5A059] p-6 shadow-2xl rounded text-center font-serif relative">
+            <span className="text-[11px] uppercase tracking-widest text-[#795548] font-bold block">
+              ✦ Cột Mốc Cuộc Đời: Tròn 6 Tuổi ✦
+            </span>
+            <h3 className="text-2xl font-bold text-[#3E2723] mt-1 mb-3">
+              {graduationResult.personalityTitleVi}
+            </h3>
+
+            <div className="bg-[#EAD8B7] border border-[#8C6D53] p-4 rounded text-left text-sm text-[#4E342E] leading-relaxed mb-4">
+              <p className="mb-2 italic">"{graduationResult.personalityDescriptionVi}"</p>
+              <div className="text-xs text-[#795548] font-sans pt-2 border-t border-[#C5A059]/50 flex justify-between">
+                <span>Tần suất lựa chọn:</span>
+                <span>
+                  A: {graduationResult.distribution.A} | B: {graduationResult.distribution.B} | C:{' '}
+                  {graduationResult.distribution.C} | D: {graduationResult.distribution.D}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1.5 text-left text-xs text-[#5D4037] bg-[#FFF8E7] p-3 rounded border border-[#E0D0B5] mb-5">
+              <div className="font-semibold text-[#2C1810] mb-1">🎁 Mở khóa năng lực khi lên 6 tuổi:</div>
+              <div>✔ Mở khóa mục <strong>Sở Thích Cá Nhân</strong> trên bảng thông tin.</div>
+              <div>✔ Kích hoạt <strong>Đồng hồ thời gian thật</strong> (24 phút thực = 24 giờ game).</div>
+              <div>✔ Nhập học <strong>Trường Tiểu Học</strong> và bắt đầu nhận tiền tiêu vặt hàng tuần.</div>
+              <div>✔ Mở khóa toàn quyền <strong>Di chuyển và Nhận thức tự chủ</strong>.</div>
+            </div>
+
+            <button
+              onClick={onFinishGraduationToAge6}
+              className="w-full bg-[#5C4033] hover:bg-[#3E2723] text-[#F5EBD7] py-3 rounded text-sm font-bold uppercase tracking-wider shadow-lg transition active:scale-95"
+            >
+              Bước Vào Lớp Một & Bắt Đầu Hành Trình Độc Lập ►
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+</file>
+
+<file path="src/data/events.json">
+[
+  {
+    "eventId": "EVT_BRAKE_FAILURE_TRUCK",
+    "titleKey": "evt_brake_failure_title",
+    "descriptionKey": "evt_brake_failure_desc",
+    "category": "ROAD_TRAFFIC",
+    "severity": "RED_DANGER",
+    "baseTimerSec": 4.0,
+    "options": [
+      {
+        "key": "A",
+        "labelKey": "evt_brake_failure_opt_a",
+        "isDefaultFailure": false,
+        "outcomes": {
+          "deltaTimeMinutes": 45,
+          "deltaCash": -500000,
+          "organDeltas": { "musculoskeletal": -15, "brain": -5 },
+          "deltaTraumaPoints": 10,
+          "journalLog": {
+            "category": "HEALTH_TRAUMA",
+            "titleKey": "log_accident_avoided_title",
+            "narrativeKey": "log_accident_avoided_desc"
+          }
+        }
+      },
+      {
+        "key": "B",
+        "labelKey": "evt_brake_failure_opt_b",
+        "isDefaultFailure": true,
+        "outcomes": {
+          "deltaTimeMinutes": 240,
+          "deltaCash": -15000000,
+          "organDeltas": { "musculoskeletal": -60, "liver": -20, "heart": -25 },
+          "deltaTraumaPoints": 45,
+          "journalLog": {
+            "category": "HEALTH_TRAUMA",
+            "titleKey": "log_accident_severe_title",
+            "narrativeKey": "log_accident_severe_desc"
+          }
+        }
+      }
+    ]
+  }
+]
+</file>
+
+<file path="src/data/items.json">
+[
+  {
+    "itemId": "SCALE_TAPE",
+    "nameKey": "item_scale_tape_name",
+    "descriptionKey": "item_scale_tape_desc",
+    "category": "TOOL_DEVICE",
+    "basePriceVnd": 350000,
+    "weightKg": 1.2,
+    "durabilityConfig": { "maxDurability": 100, "decayPerUse": 0.2 },
+    "legalAndAgeRestrictions": { "minBuyerAge": 0, "requiresPrescription": false },
+    "allowedSaleLocations": [
+      { "locationId": "LOC_SUPERMARKET", "subNodeIds": ["SUPERMARKET_STORE"] }
+    ]
+  },
+  {
+    "itemId": "MED_PRESCRIPTION_HEPATITIS",
+    "nameKey": "item_med_hepatitis_name",
+    "descriptionKey": "item_med_hepatitis_desc",
+    "category": "MEDICINE_PRESCRIPTION",
+    "basePriceVnd": 1200000,
+    "weightKg": 0.1,
+    "durabilityConfig": { "maxDurability": 100, "decayPerUse": 10.0 },
+    "legalAndAgeRestrictions": { "minBuyerAge": 16, "requiresPrescription": true },
+    "allowedSaleLocations": [
+      { "locationId": "LOC_HOSPITAL", "subNodeIds": ["HOSPITAL_EXAMINATION_ROOM"] }
+    ]
+  },
+  {
+    "itemId": "PAD_SANITARY",
+    "nameKey": "item_pad_sanitary_name",
+    "descriptionKey": "item_pad_sanitary_desc",
+    "category": "HOUSEHOLD_DEVICE",
+    "basePriceVnd": 45000,
+    "weightKg": 0.2,
+    "durabilityConfig": { "maxDurability": 100, "decayPerUse": 20.0 },
+    "legalAndAgeRestrictions": { "minBuyerAge": 10, "requiresPrescription": false },
+    "allowedSaleLocations": [
+      { "locationId": "LOC_SUPERMARKET", "subNodeIds": ["SUPERMARKET_STORE"] }
+    ]
+  }
+]
+</file>
+
+<file path="src/data/locations.json">
+[
+  {
+    "locationId": "LOC_HOME",
+    "locationNameKey": "loc_home_title",
+    "category": "RESIDENTIAL",
+    "subNodes": [
+      {
+        "subNodeId": "HOME_LIVING_ROOM",
+        "labelKey": "sub_home_living_room",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_living_room.webp",
+        "availableActionIds": ["WATCH_TV", "RELAX_SOFA", "INTERACT_PET"],
+        "vendorConfig": null
+      },
+      {
+        "subNodeId": "HOME_KITCHEN",
+        "labelKey": "sub_home_kitchen",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_kitchen.webp",
+        "availableActionIds": ["COOK_MEAL", "OPEN_FRIDGE"],
+        "vendorConfig": null
+      },
+      {
+        "subNodeId": "HOME_BATHROOM",
+        "labelKey": "sub_home_bathroom",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_home_bathroom.webp",
+        "availableActionIds": ["TAKE_SHOWER", "USE_BODY_SCALE"],
+        "vendorConfig": null
+      }
+    ]
+  },
+  {
+    "locationId": "LOC_HOSPITAL",
+    "locationNameKey": "loc_hospital_title",
+    "category": "HEALTHCARE",
+    "subNodes": [
+      {
+        "subNodeId": "HOSPITAL_EXAMINATION_ROOM",
+        "labelKey": "sub_hospital_exam_room",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_hospital_room.webp",
+        "availableActionIds": ["FULL_BODY_CHECKUP", "PSYCHOLOGY_CONSULTATION"],
+        "vendorConfig": {
+          "vendorNameKey": "vendor_hospital_pharmacy",
+          "is24h": true,
+          "openingTime": "00:00",
+          "closingTime": "23:59",
+          "acceptedPaymentMethods": ["CASH", "HEALTH_INSURANCE"],
+          "availableItemIds": ["MED_PRESCRIPTION_HEPATITIS", "MED_ANTIDEPRESSANT"]
+        }
+      }
+    ]
+  },
+  {
+    "locationId": "LOC_SUPERMARKET",
+    "locationNameKey": "loc_supermarket_title",
+    "category": "COMMERCIAL",
+    "subNodes": [
+      {
+        "subNodeId": "SUPERMARKET_STORE",
+        "labelKey": "sub_supermarket_checkout",
+        "isAccessible": true,
+        "staticBackgroundAsset": "bg_supermarket.webp",
+        "availableActionIds": ["BROWSE_GROCERIES"],
+        "vendorConfig": {
+          "vendorNameKey": "vendor_supermarket_counter",
+          "is24h": false,
+          "openingTime": "07:00",
+          "closingTime": "21:30",
+          "acceptedPaymentMethods": ["CASH", "BANK_TRANSFER"],
+          "availableItemIds": ["SCALE_TAPE", "FOOD_RICE_EGG", "PAD_SANITARY"]
+        }
+      }
+    ]
+  }
+]
+</file>
+
+<file path="src/data/milestones.json">
+[
+  {
+    "milestoneIndex": 1,
+    "ageYear": 1,
+    "titleKey": "Tiệc Thôi Nôi & Món Đồ Chơi Đầu Đời",
+    "backgroundAsset": "bg_childhood_age1_thoinoi.webp",
+    "contextDescription": "Khách khứa và người thân đến chúc mừng thôi nôi rất đông đúc, rộn rã tiếng cười nói. Trước mặt bé là một khay đựng nhiều đồ chơi và vật phẩm tượng trưng.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Bò vào góc yên tĩnh, tự xếp các khối gỗ một mình",
+        "narrativeExcerpt": "Bé lẳng lặng bò tránh khỏi chỗ đông người, ngồi xếp từng khối gỗ chồng lên nhau không một tiếng khóc quấy.",
+        "sensoryFeedback": "Bé cảm thấy an tâm nhất khi được tự do chìm đắm trong thế giới riêng."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Cười khanh khách, đưa tay đòi mọi người bế truyền tay nhau",
+        "narrativeExcerpt": "Bé toe toét cười rạng rỡ, liên tục nhoài người sang tay các cô chú bác, rất thích thú khi được mọi người tung hứng.",
+        "sensoryFeedback": "Tiếng cười đùa và sự hiện diện của mọi người khiến bé phấn khích tột độ."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Chộp lấy món đồ chơi phát nhạc to nhất rồi ném thử xem có vỡ không",
+        "narrativeExcerpt": "Bé giật chiếc lục lạc phát âm thanh chát chúa nhất, ném mạnh xuống sàn gỗ rồi vỗ tay thích thú khi thấy nó bật nảy.",
+        "sensoryFeedback": "Bé tò mò vô hạn với những thứ chuyển động mạnh và tạo ra tiếng động lớn."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Nép chặt vào lòng mẹ, quan sát vẻ mặt từng người rồi mới chạm vào gấu bông",
+        "narrativeExcerpt": "Bé ôm ghì lấy cổ mẹ, đôi mắt tròn xoe quan sát kỹ từng gương mặt người lớn xung quanh rồi mới rụt rè chạm tay vào chú gấu bông mềm mại.",
+        "sensoryFeedback": "Bé nhạy bén với cảm xúc của người chăm sóc trước khi bắt đầu tiếp xúc thế giới."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 2,
+    "ageYear": 2,
+    "titleKey": "Buổi Chiều Ở Công Viên Lộng Gió",
+    "backgroundAsset": "bg_childhood_age2_park.webp",
+    "contextDescription": "Mẹ đưa bé ra bãi cỏ công viên dạo mát. Phía trước có một chú chó nhỏ đang chạy lại gần và các bạn nhỏ đang chơi cầu trượt.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Ngồi yên dưới gốc cây nhặt lá vàng và chăm chú ngắm đàn kiến bò",
+        "narrativeExcerpt": "Bé ngồi bệt dưới bóng râm mát, tỉ mẩn xếp những chiếc lá vàng rơi và ngắm nhìn hàng kiến tha mồi về tổ.",
+        "sensoryFeedback": "Không gian tĩnh lặng của tự nhiên giúp bé tập trung sâu sắc."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Chạy ùa ra kéo áo các bạn nhỏ lạ để rủ chơi chung ngay lập tức",
+        "narrativeExcerpt": "Không chút e dè, bé lon ton chạy lại bập bênh, kéo tay bạn nhỏ đang đứng gần đó đòi chơi chung.",
+        "sensoryFeedback": "Bé hòa nhập tức thì với bạn bè đồng trang lứa mà không cần người lớn dỗ dành."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Lao thẳng lên bậc thang cầu trượt cao nhất mà không cần mẹ đỡ",
+        "narrativeExcerpt": "Mẹ chưa kịp chớp mắt, bé đã thoăn thoắt leo lên bậc thang trượt cao nhất rồi lao vút xuống bãi cát cười nắc nẻ.",
+        "sensoryFeedback": "Cảm giác tốc độ và sự mạo hiểm đem lại niềm vui bất tận cho bé."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Đứng lại xem bạn nhỏ vừa bị ngã và đưa chiếc khăn tay của mình cho bạn",
+        "narrativeExcerpt": "Thấy bạn nhỏ bên cạnh vấp ngã khóc nhè, bé dừng bước chạy lại xoa đầu bạn rồi chìa chiếc khăn tay mẹ vừa lau miệng cho mình.",
+        "sensoryFeedback": "Bé dễ dàng đồng cảm với nỗi đau của người khác ngay từ những bước đi chập chững."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 3,
+    "ageYear": 3,
+    "titleKey": "Ngày Đầu Tiên Đi Nhà Trẻ",
+    "backgroundAsset": "bg_childhood_age3_kindergarten.webp",
+    "contextDescription": "Cha mẹ vẫy tay tạm biệt ở cổng trường mầm non. Lớp học mới lạ lẫm với hàng chục bạn nhỏ đang vừa chơi vừa có bạn khóc đòi về.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Tự tìm một góc bàn có sách tranh và ngồi xem im lặng suốt buổi",
+        "narrativeExcerpt": "Bé ngoan ngoãn chọn chiếc ghế nhỏ ở góc giá sách, lật từng trang tranh vẽ động vật và tự thưởng thức trọn vẹn buổi sáng.",
+        "sensoryFeedback": "Thế giới hình ảnh và suy tưởng đem lại sự vững vàng tâm lý cho bé."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Nhanh chóng làm quen, kể chuyện líu lo với cô giáo và cả lớp",
+        "narrativeExcerpt": "Chỉ sau vài phút, bé đã đứng giữa nhóm đồ chơi, bi bô kể chuyện gia đình và chia kẹo cho các bạn xung quanh.",
+        "sensoryFeedback": "Bé là tâm điểm kết nối và lan tỏa năng lượng tích cực trong lớp học."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Lén mở cửa lớp chạy ra sân trường khám phá khu vườn phía sau",
+        "narrativeExcerpt": "Nhân lúc cô giáo đang dỗ bạn khác, bé đẩy nhẹ cánh cửa phụ, lén chạy ra bồn hoa đuổi bắt chuồn chuồn một cách dũng cảm.",
+        "sensoryFeedback": "Ranh giới và quy củ gò bó luôn thôi thúc bản năng thám hiểm của bé."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Ngồi ngay ngắn nghe lời cô và dỗ dành một bạn bên cạnh đang khóc nhớ mẹ",
+        "narrativeExcerpt": "Bé ngồi ngoan ngoãn trên ghế gỗ, vỗ về bờ vai bạn bên cạnh: 'Đừng khóc nữa, chiều bố mẹ lại đón mà!'",
+        "sensoryFeedback": "Sự an ủi của bé trở thành điểm tựa dịu dàng cho bạn bè xung quanh."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 4,
+    "ageYear": 4,
+    "titleKey": "Tranh Giành Đồ Chơi Trong Giờ Sinh Hoạt",
+    "backgroundAsset": "bg_childhood_age4_playfight.webp",
+    "contextDescription": "Bé đang cặm cụi lắp một tòa lâu đài đồ chơi dở dang thì một bạn nhỏ hung hăng khác lao tới giật mạnh món mảnh ghép chính trên tay.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Không đôi co, lặng lẽ lấy bộ đồ chơi khác và tự nghĩ cách lắp mô hình mới phức tạp hơn",
+        "narrativeExcerpt": "Bé không tranh cãi, thu mình sang góc khác lấy những thanh gỗ đơn sơ hơn và tự tạo ra một cấu trúc hoàn toàn mới.",
+        "sensoryFeedback": "Khả năng thích ứng nội tại và sức bền trí tuệ giúp bé vượt qua va chạm."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Gọi to các bạn xung quanh lại để phân xử và thuyết phục bạn kia chơi chung",
+        "narrativeExcerpt": "Bé cất tiếng gọi cô giáo và các bạn khác lại phân trần: 'Chúng mình cùng xây chung thành lũy khổng lồ sẽ vui hơn!'",
+        "sensoryFeedback": "Tư duy đàm phán cộng đồng và kỹ năng xã hội bộc lộ sắc bén."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Giật mạnh lại món đồ chơi ngay lập tức, nhất quyết không chịu nhượng bộ",
+        "narrativeExcerpt": "Bé trừng mắt cương quyết, dùng cả hai tay giật mạnh lại khối ghép của mình và khẳng định quyền sở hữu rõ ràng.",
+        "sensoryFeedback": "Ý chí cạnh tranh mạnh mẽ và tính khí khẳng khái không chịu khuất phục."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Nhường cho bạn chơi trước vì thấy bạn đang buồn, rồi kiên nhẫn chờ đến lượt",
+        "narrativeExcerpt": "Thấy bạn kia mếu máo vì không có đồ chơi đẹp, bé mỉm cười buông tay: 'Cậu chơi trước đi, lát đổi cho tớ nhé!'",
+        "sensoryFeedback": "Lòng vị tha và đức tính kiên nhẫn vượt trội so với lứa tuổi mẫu giáo."
+      }
+    ]
+  },
+  {
+    "milestoneIndex": 5,
+    "ageYear": 5,
+    "titleKey": "Đêm Giông Bão Sấm Sét Mất Điện",
+    "backgroundAsset": "bg_childhood_age5_storm.webp",
+    "contextDescription": "Bên ngoài trời mưa như trút nước, sấm chớp giật từng cơn rền vang. Toàn bộ khu phố đột ngột mất điện, căn nhà chìm vào bóng tối sâu thẳm.",
+    "options": [
+      {
+        "key": "A",
+        "archetype": "INTROVERT",
+        "label": "Tự bật chiếc đèn pin nhỏ, nằm trong chăn tưởng tượng ra các câu chuyện vũ trụ",
+        "narrativeExcerpt": "Bé tự tìm được chiếc đèn pin đồ chơi, trùm chăn kín đầu soi đèn lên trần nhà và mường tượng về những vì sao xa xôi.",
+        "sensoryFeedback": "Bóng tối kích thích trí tưởng tượng phong phú và chiều sâu tâm hồn của bé."
+      },
+      {
+        "key": "B",
+        "archetype": "EXTROVERT",
+        "label": "Gọi cả nhà quây quần lại phòng khách để cùng hát và chơi trò đố chữ",
+        "narrativeExcerpt": "Bé nắm tay bố mẹ kéo lại quanh ngọn nến sáng, khởi xướng trò chơi đố chữ râm ran tiếng cười xua tan nỗi sợ bóng đêm.",
+        "sensoryFeedback": "Khả năng gắn kết mọi người và mang lại niềm lạc quan trong nghịch cảnh."
+      },
+      {
+        "key": "C",
+        "archetype": "DAREDEVIL",
+        "label": "Đòi mở then cửa sổ ra ngoài hiên để tận mắt nhìn tia chớp và hứng nước mưa",
+        "narrativeExcerpt": "Bé nhón chân bên ô cửa kính, mắt mở to thích thú ngắm những lằn chớp xé rách bầu trời đêm mà không hề sợ hãi.",
+        "sensoryFeedback": "Sự dũng cảm bẩm sinh trước những hiện tượng dữ dội của tự nhiên."
+      },
+      {
+        "key": "D",
+        "archetype": "EMPATHETIC",
+        "label": "Ôm chặt lấy thú cưng đang run sợ và nhắc bố mẹ kiểm tra xem cửa nẻo đã đóng chặt chưa",
+        "narrativeExcerpt": "Bé bế gọn chú cún con đang co rúm vào lòng vỗ về, miệng nhỏ nhẹ nhắc mẹ: 'Mẹ ơi đóng cửa sổ gác lửng kẻo nước tạt vào nhà!'",
+        "sensoryFeedback": "Tinh thần trách nhiệm và lòng yêu thương bảo bọc những sinh linh bé nhỏ."
+      }
+    ]
+  }
+]
+</file>
+
+<file path="src/data/npcs.json">
+
+</file>
+
+<file path="src/engine/AccidentMatrix.ts">
+/**
+ * MA TRẬN TAI NẠN KHÔNG NGẪU NHIÊN & CƠ CHẾ ĐÓNG BĂNG PTSD
+ */
+
+export interface AccidentVariables {
+  environmentalHazard: number; // Thời tiết, ngập lụt (1.0 - 3.5)
+  toolWearFactor: number;       // Độ mòn phanh/lốp xe (1.0 - 5.0)
+  humanImpairment: number;      // Say rượu, thức đêm, ốm (1.0 - 8.0)
+  drivingSkillYears: number;    // Kinh nghiệm cầm lái
+}
+
+export class AccidentMatrix {
+  public static calculateAccidentProbability(vars: AccidentVariables): number {
+    const numerator = vars.environmentalHazard * vars.toolWearFactor * vars.humanImpairment;
+    const denominator = Math.max(1, vars.drivingSkillYears * 1.5 + 2.0);
+    const exponent = -(numerator / (denominator * 4.0));
+    const probability = 1 - Math.exp(exponent);
+    return Math.min(0.98, Math.max(0.01, probability));
+  }
+
+  public static calculateReactionWindow(baseTimerSec: number, ptsdScore: number, brainScore: number): {
+    actualWindowSec: number;
+    isFrozen: boolean;
+  } {
+    // Nếu PTSD >= 70, kích hoạt Đóng Băng Phản Xạ 2s
+    const isFrozen = ptsdScore >= 70;
+    const freezePenalty = isFrozen ? 2.0 : 0.0;
+    
+    const traumaReduction = Math.pow(Math.max(0, 1 - ptsdScore / 100), 1.5);
+    const brainFactor = Math.max(0.2, brainScore / 100);
+
+    const actualWindowSec = Math.max(0, (baseTimerSec * traumaReduction * brainFactor) - freezePenalty);
+    return {
+      actualWindowSec: Number(actualWindowSec.toFixed(2)),
+      isFrozen,
+    };
+  }
+}
+</file>
+
+<file path="src/engine/BlackBoxEngine.ts">
+/**
+ * BLACK BOX ENGINE: 6 Nội tạng giấu kín.
+ * Quy tắc Nút Thắt Cổ Chai (Bottleneck): Đèn màu lấy theo cơ quan yếu nhất.
+ */
+
+/**
+ * BLACK BOX ENGINE: 6 Nội tạng giấu kín.
+ * Quy tắc Nút Thắt Cổ Chai (Bottleneck): Đèn màu lấy theo cơ quan yếu nhất.
+ */
+import type { OrganBlackBox, SensoryColor, SensoryUIProjection, RootGameState } from '../types/game';
+import { eventBus } from './EventBus';
+
+export class BlackBoxEngine {
+  public static evaluateSensoryProjection(state: RootGameState): SensoryUIProjection {
+    const organs = state.player.blackBox.organs;
+    const organEntries = Object.entries(organs) as [keyof OrganBlackBox, number][];
+
+    // Tìm cơ quan có chỉ số thấp nhất
+    organEntries.sort((a, b) => a[1] - b[1]);
+    const [worstOrgan, worstScore] = organEntries[0];
+
+    // Xác định 5 mốc màu chuẩn
+    let healthColor: SensoryColor = 'BLUE';
+    if (worstScore < 20) healthColor = 'RED';
+    else if (worstScore < 40) healthColor = 'ORANGE';
+    else if (worstScore < 60) healthColor = 'YELLOW';
+    else if (worstScore < 80) healthColor = 'GREEN';
+
+    // Độc thoại cơ thể theo cơ quan bị đau nhất
+    const bodyMonologueKey = this.deriveMonologue(worstOrgan, worstScore, healthColor);
+
+    // Xử lý Hạnh phúc
+    const happinessScore = 100 - state.player.blackBox.mental.ptsdTraumaScore - (state.player.blackBox.mental.consecutiveSadnessDays * 2);
+    let happinessColor: SensoryColor = 'BLUE';
+    if (happinessScore < 20) happinessColor = 'RED';
+    else if (happinessScore < 40) happinessColor = 'ORANGE';
+    else if (happinessScore < 60) happinessColor = 'YELLOW';
+    else if (happinessScore < 80) happinessColor = 'GREEN';
+
+    // Sinh trắc học hiển thị
+    let biometricsDisplayString = 'Chưa rõ (chưa đo)';
+    if (state.player.capabilities.isBiometricsDecoded) {
+      const h = (state.player.identity.heightCm / 100).toFixed(2);
+      const w = state.player.identity.weightKg;
+      const bmi = state.player.identity.currentBmi.toFixed(1);
+      biometricsDisplayString = `${h}m • ${w}kg (BMI: ${bmi})`;
+    }
+
+    // Kiểm tra nguy kịch
+    if (worstScore <= 0) {
+      eventBus.emit('PLAYER_DEATH', { causeOfDeathKey: `DEATH_ORGAN_FAILURE_${worstOrgan.toUpperCase()}` });
+    }
+
+    return {
+      healthColor,
+      happinessColor,
+      bodyMonologueKey,
+      biometricsDisplayString,
+    };
+  }
+
+  private static deriveMonologue(organ: keyof OrganBlackBox, score: number, color: SensoryColor): string {
+    if (color === 'BLUE' || color === 'GREEN') return 'mono_body_fine';
+    switch (organ) {
+      case 'liver': return 'mono_liver_ache_nausea';
+      case 'heart': return 'mono_heart_palpitation_chest_tight';
+      case 'lungs': return 'mono_lungs_short_breath_cough';
+      case 'digestive': return 'mono_stomach_burning_cramps';
+      case 'brain': return 'mono_brain_dizziness_headache';
+      case 'musculoskeletal': return 'mono_spine_joints_stiff';
+      default: return 'mono_body_fatigue_general';
+    }
+  }
+
+  public static applyWearAndDecay(organs: OrganBlackBox, minutesPassed: number): void {
+    // Tự nhiên suy hao nhẹ theo thời gian sống (1 ngày game = 1440 phút)
+    const decayPerMinute = 0.001;
+    (Object.keys(organs) as (keyof OrganBlackBox)[]).forEach(k => {
+      organs[k] = Math.max(0, Number((organs[k] - decayPerMinute * minutesPassed).toFixed(3)));
+    });
+  }
+}
+</file>
+
+<file path="src/engine/ChildhoodEngine.ts">
+import type { RootGameState, LockedPersonality } from '../types/game';
+import milestonesData from '../data/milestones.json';
+
+export interface MilestoneOption {
+  key: 'A' | 'B' | 'C' | 'D';
+  archetype: 'INTROVERT' | 'EXTROVERT' | 'DAREDEVIL' | 'EMPATHETIC';
+  label: string;
+  narrativeExcerpt: string;
+  sensoryFeedback: string;
+}
+
+export interface MilestoneEvent {
+  milestoneIndex: number;
+  ageYear: number;
+  titleKey: string;
+  backgroundAsset: string;
+  contextDescription: string;
+  options: MilestoneOption[];
+}
+
+export interface PersonalityResolution {
+  lockedPersonality: LockedPersonality;
+  distribution: Record<'A' | 'B' | 'C' | 'D', number>;
+  maxCount: number;
+  isAmbivert: boolean;
+  personalityTitleVi: string;
+  personalityDescriptionVi: string;
+}
+
+export class ChildhoodEngine {
+  public static readonly MILESTONES: MilestoneEvent[] = milestonesData as MilestoneEvent[];
+
+  /**
+   * Lấy sự kiện cột mốc theo độ tuổi (1 -> 5)
+   */
+  public static getMilestoneForAge(age: number): MilestoneEvent | undefined {
+    return this.MILESTONES.find((m) => m.milestoneIndex === age);
+  }
+
+  /**
+   * Thuật toán khóa cứng tính cách vĩnh viễn (Module 3.14):
+   * Tổng cộng 5 lựa chọn:
+   * Nếu max(N_A, N_B, N_C, N_D) >= 3 (tức >= 60% > 50%) -> Khóa cứng nhóm đó.
+   * Nếu phân tán (ví dụ 2A - 2B - 1C) -> Khóa tính cách Ambivert (Linh Hoạt / Trung Hòa).
+   */
+  public static calculatePersonality(choices: Array<'A' | 'B' | 'C' | 'D'>): PersonalityResolution {
+    const counts: Record<'A' | 'B' | 'C' | 'D', number> = { A: 0, B: 0, C: 0, D: 0 };
+    choices.forEach((choice) => {
+      counts[choice] = (counts[choice] || 0) + 1;
+    });
+
+    let maxKey: 'A' | 'B' | 'C' | 'D' = 'A';
+    let maxCount = 0;
+
+    (Object.keys(counts) as Array<'A' | 'B' | 'C' | 'D'>).forEach((key) => {
+      if (counts[key] > maxCount) {
+        maxCount = counts[key];
+        maxKey = key;
+      }
+    });
+
+    // Ràng buộc >= 3 lần (60%)
+    if (maxCount >= 3) {
+      switch (maxKey) {
+        case 'A':
+          return {
+            lockedPersonality: 'INTROVERT',
+            distribution: counts,
+            maxCount,
+            isAmbivert: false,
+            personalityTitleVi: 'Hướng Nội & Trầm Lặng (Introvert)',
+            personalityDescriptionVi:
+              'Có chiều sâu nội tâm, thích làm việc độc lập, kiên trì suy ngẫm giải quyết vấn đề phức tạp, hồi phục năng lượng trong không gian yên bình.',
+          };
+        case 'B':
+          return {
+            lockedPersonality: 'EXTROVERT',
+            distribution: counts,
+            maxCount,
+            isAmbivert: false,
+            personalityTitleVi: 'Hướng Ngoại & Xã Giao (Extrovert)',
+            personalityDescriptionVi:
+              'Năng nổ, hoạt bát, dễ dàng tạo dựng mối quan hệ trong xã hội, tiếp thêm sinh lực khi tương tác cùng tập thể.',
+          };
+        case 'C':
+          return {
+            lockedPersonality: 'DAREDEVIL',
+            distribution: counts,
+            maxCount,
+            isAmbivert: false,
+            personalityTitleVi: 'Phiêu Lưu & Táo Bạo (Daredevil)',
+            personalityDescriptionVi:
+              'Dũng cảm, quyết đoán, không ngại rủi ro và thử thách mới, phản xạ nhanh nhạy trước các bước ngoặt cuộc sống.',
+          };
+        case 'D':
+          return {
+            lockedPersonality: 'EMPATHETIC',
+            distribution: counts,
+            maxCount,
+            isAmbivert: false,
+            personalityTitleVi: 'Cẩn Trọng & Thấu Cảm (Empathetic)',
+            personalityDescriptionVi:
+              'Chu đáo, giàu lòng trắc ẩn, nhạy bén với cảm xúc của người khác, luôn suy nghĩ thấu đáo trước khi đưa ra quyết định.',
+          };
+      }
+    }
+
+    // Trường hợp phân tán (ví dụ: 2A - 2B - 1C)
+    return {
+      lockedPersonality: 'AMBIVERT',
+      distribution: counts,
+      maxCount,
+      isAmbivert: true,
+      personalityTitleVi: 'Linh Hoạt & Trung Hòa (Ambivert)',
+      personalityDescriptionVi:
+        'Biết cân bằng uyển chuyển giữa không gian cá nhân và giao tiếp tập thể, dễ dàng thích ứng với đa dạng hoàn cảnh xã hội.',
+    };
+  }
+
+  /**
+   * Chuyển giao sang tuổi lên 6 (UC-02):
+   * Mở khóa nhận thức độc lập, tiền tiêu vặt theo gia cảnh, mở mục sở thích và kích hoạt đồng hồ thật.
+   */
+  public static graduateToAgeSix(
+    state: RootGameState,
+    choices: Array<'A' | 'B' | 'C' | 'D'>
+  ): PersonalityResolution {
+    const resolution = this.calculatePersonality(choices);
+
+    state.player.identity.exactAgeYears = 6.0;
+    state.timeEngine.totalGameDays = 2190; // 6 năm x 365 ngày
+    state.player.identity.lockedPersonality = resolution.lockedPersonality;
+
+    // Mở khóa các cờ năng lực
+    state.player.capabilities.canActIndependently = true;
+    state.player.identity.educationLevel = 'PRIMARY';
+
+    // Bắt đầu chạy đồng hồ thời gian thật (1s = 1 phút game)
+    state.timeEngine.timeScale = 1;
+    state.timeEngine.exactHour = 7;
+    state.timeEngine.exactMinute = 0;
+
+    // Cập nhật chỉ số cơ thể khi lên 6 tuổi (chuẩn thể trạng trung bình)
+    state.player.identity.heightCm = 115.0;
+    state.player.identity.weightKg = 20.5;
+    state.player.identity.currentBmi = Number((20.5 / Math.pow(1.15, 2)).toFixed(1));
+
+    // Thêm ghi chép trang trọng vào Sổ Nhật Ký Đời Người
+    const birthYear = state.journal.entries[0]?.year || 1990;
+    state.journal.entries.push({
+      entryId: `JRN_AGE_6_GRADUATION`,
+      year: birthYear + 6,
+      age: 6,
+      category: 'CHILDHOOD',
+      titleKey: 'Tròn 6 Tuổi - Ngày Đầu Bước Vào Trường Lớp',
+      narrativeKey: `Đã khép lại thời thơ ấu với thiên hướng tính cách [${resolution.personalityTitleVi}]. Bắt đầu cắp sách tới trường Tiểu học với bao bỡ ngỡ và niềm tự lập đầu đời.`,
+    });
+
+    return resolution;
+  }
+}
+</file>
+
+<file path="src/engine/EventBus.ts">
+/**
+ * TRỤC ĐIỀU PHỐI EVENT-DRIVEN CHÍNH CỦA GAME (PUB/SUB PATTERN)
+ */
+
+export type GameEventMap = {
+  // Đồng hồ & Vòng lặp
+  'TIME_TICK': { minutesPassed: number };
+  'SPEED_CHANGED': { newSpeed: 0 | 1 | 2 | 4 };
+  
+  // Tương tác địa điểm & Không gian
+  'LOCATION_CHANGE_REQUEST': { targetLocationId: string; targetSubNodeId: string };
+  'LOCATION_CHANGED': { locationId: string; subNodeId: string };
+  
+  // Hành động & Cutscenes
+  'TRIGGER_ACTION': { actionId: string; baseMinutes: number; cutsceneKey?: string };
+  'ACTION_COMPLETED': { actionId: string; elapsedMinutes: number };
+  
+  // Sự kiện ngẫu nhiên & Đếm ngược
+  'POPUP_EVENT_TRIGGERED': { event: import('../types/events').SuddenGameEvent };
+  'POPUP_OPTION_SELECTED': { eventId: string; optionKey: 'A' | 'B' | 'C' | 'D'; isTimeout: boolean };
+  
+  // Cơ thể & Hộp đen
+  'BLACK_BOX_UPDATED': { worstOrgan: string; worstScore: number };
+  'DIAGNOSTIC_COMPLETED': { reportSheetItemId: string };
+  'ORGAN_CRITICAL_COLLAPSE': { organ: string };
+  
+  // Sinh tử & Kết thúc
+  'PLAYER_DEATH': { causeOfDeathKey: string };
+};
+
+type EventCallback<T> = (data: T) => void;
+
+class GameEventBus {
+  private static instance: GameEventBus;
+  private listeners: Map<keyof GameEventMap, Set<EventCallback<any>>> = new Map();
+
+  private constructor() {}
+
+  public static getInstance(): GameEventBus {
+    if (!GameEventBus.instance) {
+      GameEventBus.instance = new GameEventBus();
+    }
+    return GameEventBus.instance;
+  }
+
+  public on<K extends keyof GameEventMap>(event: K, callback: EventCallback<GameEventMap[K]>): () => void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+    this.listeners.get(event)!.add(callback);
+    return () => this.off(event, callback);
+  }
+
+  public off<K extends keyof GameEventMap>(event: K, callback: EventCallback<GameEventMap[K]>): void {
+    const callbacks = this.listeners.get(event);
+    if (callbacks) {
+      callbacks.delete(callback);
+    }
+  }
+
+  public emit<K extends keyof GameEventMap>(event: K, data: GameEventMap[K]): void {
+    const callbacks = this.listeners.get(event);
+    if (callbacks) {
+      callbacks.forEach(cb => {
+        try {
+          cb(data);
+        } catch (error) {
+          console.error(`[EventBus] Error executing handler for event: ${String(event)}`, error);
+        }
+      });
+    }
+  }
+}
+
+export const eventBus = GameEventBus.getInstance();
+</file>
+
+<file path="src/engine/SaveSystem.ts">
+/**
+ * HỆ THỐNG LƯU TRỮ VÀ BẢO MẬT CHỐNG SAVE-SCUMMING
+ */
+
+/**
+ * HỆ THỐNG LƯU TRỮ VÀ BẢO MẬT CHỐNG SAVE-SCUMMING
+ */
+import type { RootGameState } from '../types/game';
+
+export class SaveSystem {
+  private static readonly STORAGE_PREFIX = 'DONG_DOI_SAVE_';
+
+  public static generateSignature(state: RootGameState): string {
+    const raw = `${state.sessionMeta.profileId}_${state.timeEngine.totalGameDays}_${state.player.finances.cashVnd}`;
+    // Băm chuỗi đơn giản cho client (hoặc băm SHA-256 qua Web Crypto API)
+    let hash = 0;
+    for (let i = 0; i < raw.length; i++) {
+      hash = (hash << 5) - hash + raw.charCodeAt(i);
+      hash |= 0;
+    }
+    return `SEC_${Math.abs(hash)}`;
+  }
+
+  public static saveGame(state: RootGameState): { success: boolean; message?: string } {
+    // NGHIÊM CẤM LƯU KHI SỰ KIỆN KHẨN CẤP ĐANG MỞ
+    if (state.sessionMeta.isEventLockActive) {
+      return { success: false, message: 'Đang trong tình huống nguy hiểm, không thể lưu game!' };
+    }
+
+    state.sessionMeta.antiScumHash = this.generateSignature(state);
+    const payload = JSON.stringify(state);
+    localStorage.setItem(`${this.STORAGE_PREFIX}${state.sessionMeta.saveSlotId}`, payload);
+    return { success: true };
+  }
+
+  public static loadGame(slotId: string): RootGameState | null {
+    const raw = localStorage.getItem(`${this.STORAGE_PREFIX}${slotId}`);
+    if (!raw) return null;
+
+    try {
+      const state: RootGameState = JSON.parse(raw);
+      const expectedHash = this.generateSignature(state);
+      if (state.sessionMeta.antiScumHash !== expectedHash) {
+        console.warn('[Anti-Scumming] Dữ liệu lưu đã bị chỉnh sửa bất hợp pháp!');
+      }
+      return state;
+    } catch {
+      return null;
+    }
+  }
+}
+</file>
+
+<file path="src/engine/TimeEngine.ts">
+/**
+ * TIME ENGINE: 24 phút thực = 24 giờ game.
+ * 1s thực = 1 phút game (tại x1).
+ */
+
+/**
+ * TIME ENGINE: 24 phút thực = 24 giờ game.
+ * 1s thực = 1 phút game (tại x1).
+ */
+import type { RootGameState } from '../types/game';
+import { eventBus } from './EventBus';
+
+export class TimeEngine {
+  private intervalTimer: ReturnType<typeof setTimeout> | null = null;
+  private state: RootGameState;
+
+  constructor(initialState: RootGameState) {
+    this.state = initialState;
+  }
+
+  public start(): void {
+    if (this.intervalTimer) return;
+    this.intervalTimer = setInterval(() => {
+      this.tick();
+    }, 1000);
+  }
+
+  public stop(): void {
+    if (this.intervalTimer) {
+      clearInterval(this.intervalTimer);
+      this.intervalTimer = null;
+    }
+  }
+
+  public setSpeed(scale: 0 | 1 | 2 | 4): void {
+    this.state.timeEngine.timeScale = scale;
+    eventBus.emit('SPEED_CHANGED', { newSpeed: scale });
+  }
+
+  private tick(): void {
+    const scale = this.state.timeEngine.timeScale;
+    if (scale === 0) return; // Đang tạm dừng
+
+    const deltaGameMinutes = 1 * scale;
+    this.advanceMinutes(deltaGameMinutes);
+  }
+
+  public advanceMinutes(minutes: number): void {
+    let { totalGameDays, exactHour, exactMinute } = this.state.timeEngine;
+
+    exactMinute += minutes;
+    while (exactMinute >= 60) {
+      exactMinute -= 60;
+      exactHour += 1;
+    }
+
+    while (exactHour >= 24) {
+      exactHour -= 24;
+      totalGameDays += 1;
+      this.checkAnnualMilestone(totalGameDays);
+    }
+
+    this.state.timeEngine.totalGameDays = totalGameDays;
+    this.state.timeEngine.exactHour = exactHour;
+    this.state.timeEngine.exactMinute = exactMinute;
+
+    eventBus.emit('TIME_TICK', { minutesPassed: minutes });
+  }
+
+  public calculateActionOverrun(baseMinutes: number): number {
+    const hasSkill = this.state.player.capabilities.isTimeManagementUnlocked;
+    if (hasSkill) {
+      // Có kỹ năng: thời gian tối ưu, không bị lố
+      return Math.round(baseMinutes * 0.85);
+    }
+    // Chưa có kỹ năng: trôi lố ngẫu nhiên 10% - 60%
+    const overrunFactor = 1 + (Math.random() * 0.5 + 0.1);
+    return Math.round(baseMinutes * overrunFactor);
+  }
+
+  private checkAnnualMilestone(days: number): void {
+    const age = Math.floor(days / 365);
+    this.state.player.identity.exactAgeYears = Number((days / 365).toFixed(1));
+    
+    // Mở khóa nhận thức độc lập khi bước sang 6 tuổi
+    if (age >= 6 && !this.state.player.capabilities.canActIndependently) {
+      this.state.player.capabilities.canActIndependently = true;
+    }
+  }
+}
+</file>
+
+<file path="src/engine/VendorEngine.ts">
+/**
+ * QUẢN LÝ GIAO DỊCH THƯƠNG MẠI RÀNG BUỘC ĐỊA ĐIỂM
+ * Nghiêm cấm mua đồ không đúng địa điểm chức năng.
+ */
+
+/**
+ * QUẢN LÝ GIAO DỊCH THƯƠNG MẠI RÀNG BUỘC ĐỊA ĐIỂM
+ * Nghiêm cấm mua đồ không đúng địa điểm chức năng.
+ */
+import type { RootGameState } from '../types/game';
+
+export interface BuyValidationResult {
+  canPurchase: boolean;
+  errorCode?: 'VENDOR_CLOSED' | 'WRONG_LOCATION' | 'NOT_ENOUGH_CASH' | 'OVERBURDENED' | 'PRESCRIPTION_REQUIRED';
+}
+
+export class VendorEngine {
+  public static validatePurchase(
+    state: RootGameState,
+    targetLocationId: string,
+    targetSubNodeId: string,
+    itemPriceVnd: number,
+    itemWeightKg: number,
+    requiresPrescription: boolean,
+    vendorHours: { openingTime: string; closingTime: string; is24h: boolean }
+  ): BuyValidationResult {
+    // 1. Kiểm tra vị trí đứng hiện tại
+    if (state.activeLocation.locationId !== targetLocationId || state.activeLocation.subNodeId !== targetSubNodeId) {
+      return { canPurchase: false, errorCode: 'WRONG_LOCATION' };
+    }
+
+    // 2. Kiểm tra giờ mở cửa
+    if (!vendorHours.is24h) {
+      const currentMinutes = state.timeEngine.exactHour * 60 + state.timeEngine.exactMinute;
+      const [oH, oM] = vendorHours.openingTime.split(':').map(Number);
+      const [cH, cM] = vendorHours.closingTime.split(':').map(Number);
+      const openMinutes = oH * 60 + oM;
+      const closeMinutes = cH * 60 + cM;
+
+      if (currentMinutes < openMinutes || currentMinutes > closeMinutes) {
+        return { canPurchase: false, errorCode: 'VENDOR_CLOSED' };
+      }
+    }
+
+    // 3. Kiểm tra tiền mặt
+    if (state.player.finances.cashVnd < itemPriceVnd) {
+      return { canPurchase: false, errorCode: 'NOT_ENOUGH_CASH' };
+    }
+
+    // 4. Kiểm tra tải trọng túi đồ
+    const currentWeight = state.player.inventory.items.length * 1.0; // demo ước tính
+    if (currentWeight + itemWeightKg > state.player.inventory.maxWeightKg) {
+      return { canPurchase: false, errorCode: 'OVERBURDENED' };
+    }
+
+    // 5. Kiểm tra toa thuốc bệnh viện
+    if (requiresPrescription && !state.player.capabilities.hasHospitalMedicalReport) {
+      return { canPurchase: false, errorCode: 'PRESCRIPTION_REQUIRED' };
+    }
+
+    return { canPurchase: true };
+  }
+}
+</file>
+
+<file path="src/hooks/useLifeSim.ts">
+import { useState, useEffect, useRef, useCallback } from 'react';
+import type { RootGameState, SensoryColor } from '../types/game';
+import type { SuddenGameEvent, GameEventOption } from '../types/events';
+import { eventBus } from '../engine/EventBus';
+import { TimeEngine } from '../engine/TimeEngine';
+import { BlackBoxEngine } from '../engine/BlackBoxEngine';
+import { AccidentMatrix } from '../engine/AccidentMatrix';
+import { SaveSystem } from '../engine/SaveSystem';
+
+export interface UseLifeSimReturn {
+  gameState: RootGameState;
+  activeCutscene: { isPlaying: boolean; caption: string; assetKey: string } | null;
+  activePopupEvent: {
+    event: SuddenGameEvent;
+    remainingTime: number;
+    initialDuration: number;
+    isFrozen: boolean;
+  } | null;
+  // Các hàm điều khiển từ UI
+  setTimeSpeed: (speed: 0 | 1 | 2 | 4) => void;
+  navigateToSubNode: (subNodeId: string) => void;
+  performHotspotAction: (actionId: string, baseMinutes: number, cutsceneKey?: string, caption?: string) => void;
+  resolveEventOption: (optionKey: 'A' | 'B' | 'C' | 'D') => void;
+  saveCurrentGame: () => { success: boolean; message?: string };
+}
+
+export const useLifeSim = (initialState: RootGameState): UseLifeSimReturn => {
+  const [gameState, setGameState] = useState<RootGameState>(initialState);
+  const stateRef = useRef<RootGameState>(initialState);
+  stateRef.current = gameState;
+
+  const timeEngineRef = useRef<TimeEngine | null>(null);
+
+  // Quản lý Mini Cutscene 3 giây
+  const [activeCutscene, setActiveCutscene] = useState<{
+    isPlaying: boolean;
+    caption: string;
+    assetKey: string;
+  } | null>(null);
+
+  // Quản lý Popup Sự kiện Khẩn cấp đếm ngược
+  const [activePopupEvent, setActivePopupEvent] = useState<{
+    event: SuddenGameEvent;
+    remainingTime: number;
+    initialDuration: number;
+    isFrozen: boolean;
+  } | null>(null);
+
+  const countdownIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 1. Khởi tạo TimeEngine và lắng nghe Bus
+  useEffect(() => {
+    const engine = new TimeEngine(stateRef.current);
+    timeEngineRef.current = engine;
+    engine.start();
+
+    // Lắng nghe nhịp trôi thời gian
+    const unsubscribeTime = eventBus.on('TIME_TICK', ({ minutesPassed }) => {
+      setGameState((prev) => {
+        const next = { ...prev };
+        // Suy hao tự nhiên theo nhịp sống
+        BlackBoxEngine.applyWearAndDecay(next.player.blackBox.organs, minutesPassed);
+        // Cập nhật cảm quan chiếu lên HUD
+        next.player.sensoryProjection = BlackBoxEngine.evaluateSensoryProjection(next);
+        return { ...next };
+      });
+    });
+
+    // Lắng nghe kích hoạt sự kiện bất ngờ
+    const unsubscribePopup = eventBus.on('POPUP_EVENT_TRIGGERED', ({ event }) => {
+      triggerSuddenEvent(event);
+    });
+
+    // Lắng nghe khi nhân vật kiệt quệ / qua đời
+    const unsubscribeDeath = eventBus.on('PLAYER_DEATH', ({ causeOfDeathKey }) => {
+      handleCharacterDeath(causeOfDeathKey);
+    });
+
+    return () => {
+      engine.stop();
+      unsubscribeTime();
+      unsubscribePopup();
+      unsubscribeDeath();
+      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+    };
+  }, []);
+
+  // 2. Kích hoạt Popup Sự kiện với cơ chế trừ cửa sổ phản xạ & đóng băng PTSD
+  const triggerSuddenEvent = useCallback((event: SuddenGameEvent) => {
+    const currentState = stateRef.current;
+    
+    // Auto-Pause đồng hồ game khi có biến cố đỏ
+    if (event.severity === 'RED_DANGER' && timeEngineRef.current) {
+      timeEngineRef.current.setSpeed(0);
+    }
+
+    // Khóa cờ chống Save-Scumming
+    currentState.sessionMeta.isEventLockActive = true;
+
+    // Tính toán cửa sổ phản xạ thực tế qua AccidentMatrix
+    const ptsd = currentState.player.blackBox.mental.ptsdTraumaScore;
+    const brain = currentState.player.blackBox.organs.brain;
+    const { actualWindowSec, isFrozen } = AccidentMatrix.calculateReactionWindow(
+      event.baseTimerSec,
+      ptsd,
+      brain
+    );
+
+    setActivePopupEvent({
+      event,
+      remainingTime: actualWindowSec,
+      initialDuration: actualWindowSec,
+      isFrozen,
+    });
+
+    // Bắt đầu đếm ngược thời gian thực (100ms tick)
+    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+
+    const stepMs = 100;
+    countdownIntervalRef.current = setInterval(() => {
+      setActivePopupEvent((curr) => {
+        if (!curr) return null;
+        const nextTime = curr.remainingTime - stepMs / 1000;
+
+        if (nextTime <= 0) {
+          // Hết giờ: Tự động phạt phương án thất bại mặc định
+          if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+          const defaultOpt = curr.event.options.find((o) => o.isDefaultFailure) || curr.event.options[0];
+          executeEventResolution(curr.event, defaultOpt.key, true);
+          return null;
+        }
+
+        return { ...curr, remainingTime: nextTime };
+      });
+    }, stepMs);
+  }, []);
+
+  // 3. Xử lý hoàn tất lựa chọn sự kiện
+  const executeEventResolution = useCallback(
+    (event: SuddenGameEvent, optionKey: 'A' | 'B' | 'C' | 'D', isTimeout: boolean) => {
+      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+      setActivePopupEvent(null);
+
+      const option = event.options.find((o) => o.key === optionKey);
+      if (!option) return;
+
+      const outcome = option.outcomes;
+
+      setGameState((prev) => {
+        const next = { ...prev };
+        next.sessionMeta.isEventLockActive = false; // Mở khóa lưu game
+
+        // Áp dụng trôi thời gian do sự kiện
+        if (outcome.deltaTimeMinutes && timeEngineRef.current) {
+          timeEngineRef.current.advanceMinutes(outcome.deltaTimeMinutes);
+        }
+
+        // Áp dụng biến thiên tiền tệ
+        next.player.finances.cashVnd = Math.max(0, next.player.finances.cashVnd + outcome.deltaCash);
+
+        // Áp dụng biến thiên nội tạng
+        if (outcome.organDeltas) {
+          Object.entries(outcome.organDeltas).forEach(([organ, delta]) => {
+            const orgKey = organ as keyof typeof next.player.blackBox.organs;
+            next.player.blackBox.organs[orgKey] = Math.min(
+              100,
+              Math.max(0, next.player.blackBox.organs[orgKey] + (delta || 0))
+            );
+          });
+        }
+
+        // Tích lũy PTSD Trauma Score
+        if (outcome.deltaTraumaPoints) {
+          next.player.blackBox.mental.ptsdTraumaScore = Math.min(
+            100,
+            Math.max(0, next.player.blackBox.mental.ptsdTraumaScore + outcome.deltaTraumaPoints)
+          );
+        }
+
+        // Ghi nhật ký cuộc đời nếu có
+        if (outcome.journalLog) {
+          next.journal.entries.push({
+            entryId: `JRN_${Date.now()}`,
+            year: Math.floor(next.timeEngine.totalGameDays / 365) + 1990,
+            age: Math.floor(next.player.identity.exactAgeYears),
+            category: outcome.journalLog.category,
+            titleKey: outcome.journalLog.titleKey,
+            narrativeKey: outcome.journalLog.narrativeKey,
+          });
+        }
+
+        next.player.sensoryProjection = BlackBoxEngine.evaluateSensoryProjection(next);
+        return { ...next };
+      });
+
+      eventBus.emit('POPUP_OPTION_SELECTED', { eventId: event.eventId, optionKey, isTimeout });
+    },
+    []
+  );
+
+  const resolveEventOption = useCallback(
+    (optionKey: 'A' | 'B' | 'C' | 'D') => {
+      if (!activePopupEvent) return;
+      executeEventResolution(activePopupEvent.event, optionKey, false);
+    },
+    [activePopupEvent, executeEventResolution]
+  );
+
+  // 4. Xử lý thao tác Point & Click kèm Mini Cutscene 3 giây
+  const performHotspotAction = useCallback(
+    (actionId: string, baseMinutes: number, cutsceneKey?: string, caption?: string) => {
+      if (gameState.sessionMeta.isEventLockActive) return; // Đang kẹt sự kiện
+
+      // Tính toán trôi lố thời gian (Time Overrun) nếu chưa có kỹ năng
+      const actualMinutes = timeEngineRef.current
+        ? timeEngineRef.current.calculateActionOverrun(baseMinutes)
+        : baseMinutes;
+
+      // Kích hoạt Mini Cutscene 3 giây (3000ms), không có lựa chọn
+      if (cutsceneKey && caption) {
+        setActiveCutscene({
+          isPlaying: true,
+          caption,
+          assetKey: cutsceneKey,
+        });
+
+        setTimeout(() => {
+          setActiveCutscene(null);
+          // Sau khi kết thúc 3s, trừ thời gian và giải quyết kết quả
+          if (timeEngineRef.current) {
+            timeEngineRef.current.advanceMinutes(actualMinutes);
+          }
+          eventBus.emit('ACTION_COMPLETED', { actionId, elapsedMinutes: actualMinutes });
+        }, 3000);
+      } else {
+        if (timeEngineRef.current) {
+          timeEngineRef.current.advanceMinutes(actualMinutes);
+        }
+        eventBus.emit('ACTION_COMPLETED', { actionId, elapsedMinutes: actualMinutes });
+      }
+    },
+    [gameState.sessionMeta.isEventLockActive]
+  );
+
+  // 5. Điều hướng phòng trong nhà / POI
+  const navigateToSubNode = useCallback((subNodeId: string) => {
+    setGameState((prev) => ({
+      ...prev,
+      activeLocation: {
+        ...prev.activeLocation,
+        subNodeId,
+      },
+    }));
+    eventBus.emit('LOCATION_CHANGED', {
+      locationId: stateRef.current.activeLocation.locationId,
+      subNodeId,
+    });
+  }, []);
+
+  // 6. Điều khiển tốc độ
+  const setTimeSpeed = useCallback((speed: 0 | 1 | 2 | 4) => {
+    if (timeEngineRef.current) {
+      timeEngineRef.current.setSpeed(speed);
+    }
+  }, []);
+
+  // 7. Xử lý nhân vật qua đời
+  const handleCharacterDeath = useCallback((causeKey: string) => {
+    if (timeEngineRef.current) timeEngineRef.current.setSpeed(0);
+    // Lưu chương cuối nhật ký
+    setGameState((prev) => {
+      const next = { ...prev };
+      next.journal.entries.push({
+        entryId: `END_${Date.now()}`,
+        year: Math.floor(next.timeEngine.totalGameDays / 365) + 1990,
+        age: Math.floor(next.player.identity.exactAgeYears),
+        category: 'ENDGAME',
+        titleKey: 'log_endgame_death_title',
+        narrativeKey: causeKey,
+      });
+      return { ...next };
+    });
+  }, []);
+
+  // 8. Lưu game chống gian lận
+  const saveCurrentGame = useCallback(() => {
+    return SaveSystem.saveGame(stateRef.current);
+  }, []);
+
+  return {
+    gameState,
+    activeCutscene,
+    activePopupEvent,
+    setTimeSpeed,
+    navigateToSubNode,
+    performHotspotAction,
+    resolveEventOption,
+    saveCurrentGame,
+  };
+};
+</file>
+
+<file path="src/locales/vi-VN.json">
+{
+  "locale": "vi-VN",
+  "translations": {
+    "ui_hud": {
+      "clock_unrevealed": "Trời ngả về chiều, gió lạnh hun hút...",
+      "weather_smog": "Bầu trời mịt mù bụi mịn, hít vào rát cổ họng",
+      "sensory_health_label": "Sức khỏe thể chất",
+      "sensory_happiness_label": "Cảm xúc tâm lý",
+      "btn_city_map": "► Ra Bản Đồ Thành Phố",
+      "btn_view_journal": "Mở Nhật Ký Đời Người"
+    },
+    "mono_body": {
+      "mono_body_fine": "Cơ thể nhẹ nhõm, tinh thần sảng khoái.",
+      "mono_liver_ache_nausea": "Hạ sườn phải đau âm ỉ, miệng đắng ngắt, buồn nôn liên miên...",
+      "mono_heart_palpitation_chest_tight": "Ngực trái nhói buốt từng cơn, tim đập dồn dập bất thường...",
+      "mono_lungs_short_breath_cough": "Lồng ngực nghẹn ứ, ho khan kéo dài rát cả cuống họng...",
+      "mono_stomach_burning_cramps": "Bụng cồn cào đau thắt, dịch chua trào ngược lên cổ...",
+      "mono_brain_dizziness_headache": "Đầu óc choáng váng, hai thái dương giật giật đau nhức...",
+      "mono_spine_joints_stiff": "Lưng mỏi rã rời, các khớp gối kêu lạo xạo khi đứng lên...",
+      "mono_body_fatigue_general": "Người mệt lả như muốn sập nguồn, không nhấc nổi tay chân..."
+    },
+    "evt_brake_failure_title": "NGUY HIỂM: CHIẾC XE TẢI BĂNG CẮT MẶT ĐƯỜNG!",
+    "evt_brake_failure_desc": "Má phanh mòn trơ đáy không thể dừng xe kịp thời! Chiếc xe tải chở đất đang lao thẳng về phía bạn!",
+    "evt_brake_failure_opt_a": "Chủ động quăng xe, lăn mình vào bụi cỏ ven đường",
+    "evt_brake_failure_opt_b": "Hoảng loạn bóp chết tay thắng (Hết giờ / Bị đóng băng PTSD)"
+  }
+}
+</file>
+
+<file path="src/types/bus.ts">
+
+</file>
+
+<file path="src/types/events.ts">
+import type { RootGameState, SensoryColor } from './game';
+
+export type EventSeverity = 'RED_DANGER' | 'BLUE_OPPORTUNITY' | 'GREY_NEUTRAL';
+
+export interface EventOptionOutcome {
+  deltaTimeMinutes: number;
+  deltaCash: number;
+  organDeltas?: Partial<Record<'brain' | 'heart' | 'lungs' | 'liver' | 'digestive' | 'musculoskeletal', number>>;
+  deltaHappinessIndex?: number;
+  deltaTraumaPoints?: number;
+  addItems?: string[];
+  removeInstanceIds?: string[];
+  journalLog?: {
+    category: string;
+    titleKey: string;
+    narrativeKey: string;
+  };
+}
+
+export interface GameEventOption {
+  key: 'A' | 'B' | 'C' | 'D';
+  labelKey: string;
+  isDefaultFailure: boolean;
+  requiredCondition?: (state: RootGameState) => boolean;
+  outcomes: EventOptionOutcome;
+}
+
+export interface SuddenGameEvent {
+  eventId: string;
+  titleKey: string;
+  descriptionKey: string;
+  category: 'ROAD_TRAFFIC' | 'HOME_LIFE' | 'WORKPLACE' | 'SCHOOL_ACADEMIC' | 'MEDICAL_HEALTH';
+  severity: EventSeverity;
+  baseTimerSec: number; // 3 đến 15 giây
+  options: GameEventOption[];
+}
+</file>
+
+<file path="src/types/game.ts">
+/**
+ * HỢP ĐỒNG DỮ LIỆU CỐT LÕI - HỆ THỐNG MÔ PHỎNG DÒNG ĐỜI
+ */
+
+export type SensoryColor = 'BLUE' | 'GREEN' | 'YELLOW' | 'ORANGE' | 'RED';
+export type Gender = 'MALE' | 'FEMALE';
+export type EducationLevel = 'NONE' | 'PRIMARY' | 'SECONDARY' | 'HIGHSCHOOL' | 'VOCATIONAL' | 'BACHELOR' | 'MASTER' | 'DOCTORATE';
+export type LockedPersonality = 'INTROVERT' | 'EXTROVERT' | 'DAREDEVIL' | 'EMPATHETIC' | 'AMBIVERT';
+
+export type OrganType = 'brain' | 'heart' | 'lungs' | 'liver' | 'digestive' | 'musculoskeletal';
+
+export interface OrganBlackBox {
+  brain: number;           // 0 - 100
+  heart: number;           // 0 - 100
+  lungs: number;           // 0 - 100
+  liver: number;           // 0 - 100
+  digestive: number;       // 0 - 100
+  musculoskeletal: number; // 0 - 100
+}
+
+export interface CircadianSleep {
+  hoursAwakeContinuous: number;
+  sleepDebtHours: number;
+  circadianPhaseOffsetHours: number;
+}
+
+export interface MentalTrauma {
+  ptsdTraumaScore: number;     // 0 - 100 (Ψ)
+  consecutiveSadnessDays: number;
+  burnoutIndex: number;         // 0 - 100
+}
+
+export interface VicesAddiction {
+  nicotineAddiction: number;
+  alcoholAddiction: number;
+  gamblingAddiction: number;
+}
+
+export interface PlayerIdentity {
+  fullName: string;
+  gender: Gender;
+  birthTotalGameDays: number;
+  exactAgeYears: number;
+  heightCm: number;
+  weightKg: number;
+  currentBmi: number;
+  educationLevel: EducationLevel;
+  currentSchoolOrDegree?: string;
+  lockedPersonality: LockedPersonality | null;
+  innateTraits: string[];
+}
+
+export interface CapabilityFlags {
+  canActIndependently: boolean;       // Mở khóa khi tròn 6 tuổi
+  isTimeManagementUnlocked: boolean;  // Có kỹ năng quản lý thời gian
+  isClockVisible: boolean;            // Có đồng hồ hoặc điện thoại còn pin
+  isBiometricsDecoded: boolean;       // Đã mua cân/thước hoặc đã khám viện
+  isPersonalityDecoded: boolean;      // Tri kỷ nói cho biết hoặc khám tâm lý
+  hasHospitalMedicalReport: boolean;  // Đang giữ phiếu khám trong túi
+  isAutoPilotActive: boolean;         // Sa sút trí tuệ tuổi già (Brain < 25)
+}
+
+export interface CareerProfile {
+  currentJobId: string | null;
+  employerNameKey: string | null;
+  workplaceTier: 'TIER1_INFORMAL' | 'TIER2_SME' | 'TIER3_MNC' | 'TIER4_STATE' | null;
+  shiftType: 'DAY_SHIFT' | 'EVENING_SHIFT' | 'NIGHT_SHIFT' | 'NONE';
+  monthlyWageGross: number;
+  kpiPerformanceScore: number;
+  hasCrimeRecord: boolean;
+}
+
+export interface SensoryUIProjection {
+  healthColor: SensoryColor;
+  happinessColor: SensoryColor;
+  bodyMonologueKey: string;
+  biometricsDisplayString: string;
+}
+
+export interface ItemInstance {
+  instanceId: string;
+  itemId: string;
+  currentDurability: number;
+  maxDurability: number;
+  acquiredGameDay: number;
+  customData?: Record<string, unknown>; // Lưu phiếu khám bệnh, bằng lái...
+}
+
+export interface TimeState {
+  totalGameDays: number;
+  exactHour: number;
+  exactMinute: number;
+  timeScale: 0 | 1 | 2 | 4; // 0 = Pause, 1 = Normal, 2 = Fast, 4 = Ultra Fast
+}
+
+export interface RootGameState {
+  sessionMeta: {
+    saveSlotId: string;
+    profileId: string;
+    activeLocale: 'vi-VN' | 'en-US';
+    antiScumHash: string;
+    isEventLockActive: boolean; // Chống thoát/lưu khi sự kiện đang đếm ngược
+  };
+  timeEngine: TimeState;
+  environment: {
+    weatherType: 'SUNNY' | 'HEATWAVE' | 'RAIN' | 'STORM' | 'SMOG_PM25';
+    pm25Value: number;
+    isRushHour: boolean;
+  };
+  activeLocation: {
+    locationId: string;
+    subNodeId: string;
+  };
+  player: {
+    identity: PlayerIdentity;
+    blackBox: {
+      organs: OrganBlackBox;
+      circadian: CircadianSleep;
+      mental: MentalTrauma;
+      vices: VicesAddiction;
+    };
+    capabilities: CapabilityFlags;
+    career: CareerProfile;
+    finances: {
+      cashVnd: number;
+      bankSavingsVnd: number;
+      debtsVnd: number;
+      hasHealthInsurance: boolean;
+    };
+    inventory: {
+      maxWeightKg: number;
+      items: ItemInstance[];
+    };
+    sensoryProjection: SensoryUIProjection;
+  };
+  journal: {
+    memoirId: string;
+    entries: Array<{
+      entryId: string;
+      year: number;
+      age: number;
+      category: string;
+      titleKey: string;
+      narrativeKey: string;
+    }>;
+  };
+}
+</file>
+
+<file path="src/types/world.ts">
+
+</file>
+
+<file path="src/App.css">
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+</file>
+
+<file path="src/App.tsx">
+import React, { useState } from 'react';
+import { useLifeSim } from './hooks/useLifeSim';
+import { MainCanvas } from './components/layout/MainCanvas';
+import { SensoryHUD } from './components/hud/SensoryHUD';
+import type { RootGameState } from './types/game';
+
+// Khởi tạo trạng thái ban đầu chuẩn xác theo tài liệu Master
+const INITIAL_STATE: RootGameState = {
+  sessionMeta: {
+    saveSlotId: 'SLOT_01',
+    profileId: 'PROFILE_AN_TRAN',
+    activeLocale: 'vi-VN',
+    antiScumHash: '',
+    isEventLockActive: false,
+  },
+  timeEngine: {
+    totalGameDays: 5110, // 14 tuổi
+    exactHour: 18,
+    exactMinute: 0,
+    timeScale: 1,
+  },
+  environment: {
+    weatherType: 'RAIN',
+    pm25Value: 125,
+    isRushHour: true,
+  },
+  activeLocation: {
+    locationId: 'LOC_HOME',
+    subNodeId: 'HOME_KITCHEN',
+  },
+  player: {
+    identity: {
+      fullName: 'Trần Minh An',
+      gender: 'MALE',
+      birthTotalGameDays: 0,
+      exactAgeYears: 14.0,
+      heightCm: 158,
+      weightKg: 46,
+      currentBmi: 18.4,
+      educationLevel: 'SECONDARY',
+      lockedPersonality: 'INTROVERT',
+      innateTraits: ['FAST_LEARNER'],
+    },
+    blackBox: {
+      organs: {
+        brain: 85,
+        heart: 90,
+        lungs: 78,
+        liver: 45, // Gan bắt đầu yếu
+        digestive: 55,
+        musculoskeletal: 82,
+      },
+      circadian: {
+        hoursAwakeContinuous: 8,
+        sleepDebtHours: 1.5,
+        circadianPhaseOffsetHours: 0,
+      },
+      mental: {
+        ptsdTraumaScore: 25,
+        consecutiveSadnessDays: 0,
+        burnoutIndex: 15,
+      },
+      vices: {
+        nicotineAddiction: 0,
+        alcoholAddiction: 0,
+        gamblingAddiction: 0,
+      },
+    },
+    capabilities: {
+      canActIndependently: true,
+      isTimeManagementUnlocked: false, // Chưa có kỹ năng -> Sẽ bị trôi lố
+      isClockVisible: false,          // Chưa có đồng hồ -> Hiện văn phong cảm quan
+      isBiometricsDecoded: true,
+      isPersonalityDecoded: false,
+      hasHospitalMedicalReport: false,
+      isAutoPilotActive: false,
+    },
+    career: {
+      currentJobId: null,
+      employerNameKey: null,
+      workplaceTier: null,
+      shiftType: 'NONE',
+      monthlyWageGross: 0,
+      kpiPerformanceScore: 0,
+      hasCrimeRecord: false,
+    },
+    finances: {
+      cashVnd: 2450000,
+      bankSavingsVnd: 0,
+      debtsVnd: 0,
+      hasHealthInsurance: true,
+    },
+    inventory: {
+      maxWeightKg: 15.0,
+      items: [],
+    },
+    sensoryProjection: {
+      healthColor: 'YELLOW',
+      happinessColor: 'GREEN',
+      bodyMonologueKey: 'Vùng bụng trên cứ âm ỉ khó chịu, người mệt mỏi chán ăn...',
+      biometricsDisplayString: '1m58 • 46kg (Gầy nhẹ)',
+    },
+  },
+  journal: {
+    memoirId: 'MEMOIR_001',
+    entries: [
+      {
+        entryId: '1',
+        year: 1973,
+        age: 0,
+        category: 'CHILDHOOD',
+        titleKey: 'Chào đời',
+        narrativeKey: 'Sinh ra tại vùng quê Vân Khê nghèo khó, gia cảnh Q2.',
+      },
+    ],
+  },
+};
+
+export const App: React.FC = () => {
+  const {
+    gameState,
+    activeCutscene,
+    activePopupEvent,
+    setTimeSpeed,
+    navigateToSubNode,
+    performHotspotAction,
+    resolveEventOption,
+  } = useLifeSim(INITIAL_STATE);
+
+  const [activeTab, setActiveTab] = useState<'HOME' | 'MAP' | 'JOURNAL'>('HOME');
+
+  return (
+    <div className="min-h-screen bg-[#2B1B17] flex items-center justify-center p-4">
+      <main className="w-full max-w-4xl bg-[#DFD1B3] border-4 border-[#4A3525] p-5 shadow-2xl flex flex-col gap-4">
+        {/* Thanh HUD Cảm Quan Phía Trên */}
+        <SensoryHUD
+          state={gameState}
+          onSetSpeed={setTimeSpeed}
+          onOpenMap={() => setActiveTab('MAP')}
+          onOpenJournal={() => setActiveTab('JOURNAL')}
+        />
+
+        {/* Khung Chuyển Đổi Phòng Nhanh (Room Tabs) */}
+        <nav className="flex gap-2">
+          {['HOME_LIVING_ROOM', 'HOME_KITCHEN', 'HOME_BATHROOM'].map((room) => (
+            <button
+              key={room}
+              onClick={() => navigateToSubNode(room)}
+              className={`px-3 py-1 text-xs rounded border transition font-serif ${
+                gameState.activeLocation.subNodeId === room
+                  ? 'bg-[#5C4033] text-[#FFF] border-[#3E2723]'
+                  : 'bg-[#EAD8B7] text-[#3E2723] border-[#8C6D53] hover:bg-[#D7C4A5]'
+              }`}
+            >
+              {room === 'HOME_LIVING_ROOM' && 'Phòng Khách'}
+              {room === 'HOME_KITCHEN' && 'Nhà Bếp'}
+              {room === 'HOME_BATHROOM' && 'Nhà Tắm'}
+            </button>
+          ))}
+        </nav>
+
+        {/* Khung Sân Khấu Đa Năng Duy Nhất */}
+        <MainCanvas
+          currentSubNodeId={gameState.activeLocation.subNodeId}
+          staticBackgroundAsset="bg_home_kitchen.webp"
+          activeCutscene={activeCutscene}
+          activePopupEvent={activePopupEvent}
+          onHotspotClick={performHotspotAction}
+          onSelectEventOption={resolveEventOption}
+        />
+      </main>
+    </div>
+  );
+};
+
+export default App;
+</file>
+
+<file path="src/index.css">
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+</file>
+
+<file path="src/main.tsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+</file>
+
+<file path="src/types.ts">
+/**
+ * LIFE SIM HEADLESS ENGINE - CORE TYPES & UI STATE CONTRACTS
+ * Thiết kế theo kiến trúc Micro-Data (6 phân hệ) + Cảm hứng từ:
+ * - The Sims 4 (Moodlets/Emotion Buffs, Need Autonomy)
+ * - Project Zomboid (Moodle Thresholds, Body Protection, Encumbrance, Panic/Tunnel Vision)
+ * - RimWorld (Consciousness, Pain, Manipulation, Sight, Moving Capacities -> ảnh hưởng trực tiếp tốc độ hành động)
+ */
+
+export type StatLevel = 'KHONG_TOT' | 'ON' | 'TOT' | 'THOAI_MAI' | 'XUAT_SAC';
+
+export type WeatherType = 'clear' | 'heavy_rain' | 'slippery_mud' | 'scorching_heat' | 'high_humidity';
+export type TimeOfDayType = 'morning' | 'rush_hour_morning' | 'afternoon' | 'rush_hour_evening' | 'evening' | 'midnight';
+export type AreaSafetyTier = 'safe_zone' | 'normal_zone' | 'slum_zone';
+
+// 1. Phân hệ Thể chất & Nội tạng (11 cơ quan chuẩn [0, 100])
+export interface OrganStates {
+  stomach: number;    // Dạ dày & Tiêu hóa
+  intestine: number;  // Ruột & Đại tràng
+  lungs: number;      // Phổi & Hô hấp
+  cardio: number;     // Tim mạch & Huyết áp
+  liver: number;      // Gan & Chuyển hóa
+  kidneys: number;    // Thận & Bài tiết
+  spine: number;      // Cột sống & Đốt sống cổ
+  joints: number;     // Khớp gối & Cổ chân
+  hands: number;      // Cổ tay & Ngón tay
+  skin: number;       // Da & Mô mềm
+  teeth: number;      // Răng & Khoang miệng
+}
+
+// 2. Phân hệ Giác quan & Nhận thức ([0, 100])
+export interface CognitionStates {
+  eyes: number;       // Thị lực & Mắt
+  ears: number;       // Thính lực & Tai
+  balance: number;    // Tiền đình & Thăng bằng
+  focus: number;      // Tập trung & Tỉnh táo
+  reflex: number;     // Nhạy bén & Phản xạ
+}
+
+// 3. Phân hệ Tâm lý & Hạnh phúc ([0, 100])
+export interface MentalStates {
+  financialStress: number; // Áp lực tài chính (càng cao càng xấu)
+  familyStability: number; // An tâm gia đạo (Shield tinh thần)
+  dopamineSpike: number;   // Dopamine sở hữu / trải nghiệm (phân rã theo thời gian)
+  loneliness: number;      // Mức độ cô đơn (càng cao càng xấu)
+  trauma: number;          // Sang chấn biến cố (càng cao càng xấu)
+}
+
+// 4. Phân hệ Kỹ năng & Xạ phản cơ bắp (Số giờ/điểm tích lũy thực tế)
+export interface SkillStates {
+  drivingExp: number;      // Giờ cầm lái an toàn (+Delta t khi xử lý sự cố giao thông)
+  electricalExp: number;   // Giờ thao tác điện & cơ khí
+  firstAid: number;        // Điểm sơ cấp cứu
+  socialTact: number;      // Khéo léo ứng xử xã hội
+}
+
+// 5. Phân hệ Mạng lưới Xã hội (Social Graph & NPC States)
+export interface NpcRelation {
+  npcId: string;
+  name: string;
+  role: 'family' | 'friend' | 'mentor' | 'colleague' | 'landlord';
+  trust: number;           // [0, 100]
+  daysSinceLastContact: number;
+}
+
+// 6. Phân hệ Vật dụng, Phương tiện & Ngoại cảnh
+export interface VehicleState {
+  hasVehicle: boolean;
+  brakeCondition: number;  // [0, 100] <30 mất khả năng dừng gấp đường mưa
+  tireTread: number;       // [0, 100] <25 nguy cơ trượt bánh x4
+  headlight: boolean;      // Hỏng đèn ban đêm -> thị lực chia đôi
+}
+
+export interface InventoryItemInstance {
+  itemId: string;
+  name: string;
+  category: 'food' | 'beverage' | 'medicine' | 'ppe_gear' | 'study_work_gear' | 'vehicle_maintenance';
+  quantity: number;
+  currentDurability: number;
+  maxDurability: number;
+  weightKg: number;
+  equipped: boolean;
+}
+
+// Cơ chế RimWorld Capacities (Năng lực tổng hợp từ nội tạng & giác quan)
+export interface RimWorldCapacities {
+  painPercent: number;          // [0, 100] Tổng hợp từ các cơ quan bị tổn thương
+  consciousnessPercent: number; // [0, 100] Quyết định tốc độ tư duy & khả năng thức tỉnh
+  manipulationPercent: number;  // [0, 100] Phụ thuộc hands, spine, joints -> tốc độ làm việc
+  movingPercent: number;        // [0, 100] Phụ thuộc joints, spine, balance, lungs
+  sightEfficiency: number;      // [0, 100] Phụ thuộc eyes + ánh sáng/đèn xe
+  hearingEfficiency: number;    // [0, 100] Phụ thuộc ears -> ảnh hưởng trực tiếp độ hiểu bài trên lớp!
+}
+
+// Cơ chế Project Zomboid & Sims 4 Moodles (Trạng thái ngắn hạn)
+export interface ActiveMoodle {
+  moodleId: string;
+  title: string;
+  type: 'buff' | 'debuff';
+  severity: 1 | 2 | 3 | 4; // 1: Nhẹ -> 4: Nguy kịch (Zomboid style)
+  iconKey: string;
+  description: string;
+  remainingGameMinutes: number;
+  modifiers: {
+    focusDelta?: number;
+    learningEfficiencyBonus?: number;
+    actionSpeedMultiplier?: number;
+    cardioDecayMultiplier?: number;
+    spineDecayMultiplier?: number;
+    reflexWindowPenaltySeconds?: number;
+    dopamineBonus?: number;
+  };
+}
+
+// Hệ thống Kinh tế & Tài chính cá nhân
+export interface EconomyState {
+  cashOnHand: number;           // Tiền mặt trong ví
+  bankBalance: number;          // Tiền trong tài khoản
+  bankLoanDebt: number;         // Nợ ngân hàng / tín dụng
+  informalDebt: number;         // Nợ nóng (gây Financial Stress cực mạnh)
+  inflationMultiplier: number;  // Hệ số trượt giá thị trường
+  pendingBills: Array<{
+    billId: string;
+    title: string;
+    amount: number;
+    dueInDays: number;
+  }>;
+  recentTransactions: Array<{
+    timestampGameMinute: number;
+    title: string;
+    amount: number;
+    balanceAfter: number;
+  }>;
+}
+
+// Hệ thống Thời gian: 24 phút đời thực = 24 giờ trong game (1 giây thực = 1 phút game)
+export interface GameClockState {
+  day: number;
+  hour: number;                 // 0 - 23
+  minute: number;               // 0 - 59
+  totalElapsedGameMinutes: number;
+  totalElapsedRealSeconds: number;
+  timeScaleRatio: string;       // "24 phút thực = 24 giờ game (1s thực = 1m game)"
+}
+
+// Tiến trình Hành động có Rút ngắn / Kéo dài Thời gian Động (Dynamic Action Compression)
+export interface ActiveActionProgress {
+  actionId: string;
+  title: string;
+  category: 'study' | 'work' | 'commute' | 'rest';
+  baseDurationGameMinutes: number;
+  effectiveDurationGameMinutes: number; // Thời gian thực tế sau khi tính độ hiểu bài / tập trung
+  elapsedGameMinutes: number;
+  remainingGameMinutes: number;
+  remainingRealSeconds: number;         // Số giây đời thực còn lại (vì 1s thực = 1m game)
+  comprehensionMultiplier: number;      // > 1.0 là hiểu bài nhanh (rút ngắn thời gian), < 1.0 là trì trệ
+  compressionReasonText: string;        // Giải thích định tính hiển thị lên UI
+}
+
+// Trạng thái toàn cục của Người chơi & Thế giới trong Backend
+export interface GameState {
+  age: number;
+  fatigue: number;              // [0, 100] Độ mệt mỏi sinh học
+  calories: number;             // [0, 3000] Dinh dưỡng (Project Zomboid style)
+  hydration: number;            // [0, 100] Độ đủ nước
+  bodyTempCelsius: number;      // Nhiệt độ cơ thể (37.0 chuẩn)
+  organs: OrganStates;
+  cognition: CognitionStates;
+  mental: MentalStates;
+  skills: SkillStates;
+  npcs: NpcRelation[];
+  assets: {
+    vehicle: VehicleState;
+    inventory: InventoryItemInstance[];
+    maxCarryWeightKg: number;
+  };
+  world: {
+    weather: WeatherType;
+    timeOfDay: TimeOfDayType;
+    areaSafetyTier: AreaSafetyTier;
+  };
+  clock: GameClockState;
+  economy: EconomyState;
+  activeMoodles: ActiveMoodle[];
+  currentAction: ActiveActionProgress | null;
+  activeEmergencyEvent: ActiveEventModalPayload | null;
+  eventCooldowns: Record<string, number>; // eventId -> ngày mở khóa
+}
+
+// Cấu trúc Sự kiện JSON (Universal Event Schema)
+export interface EventRiskFactor {
+  target: string;
+  operator: '<' | '<=' | '>' | '>=' | '==' | '!=' | 'in';
+  threshold?: number | string[] | string | boolean | StatLevel;
+  is?: string | boolean | number;
+  danger: number;
+}
+
+export interface EventChoiceDefinition {
+  choiceId: string;
+  text: string;
+  isPanicChoice: boolean;
+  checkCriteria?: {
+    target: string;
+    operator?: '<' | '<=' | '>' | '>=' | '==' | '!=' | 'in';
+    threshold?: number | string[];
+    requiredTier?: StatLevel;
+    passEventId: string;
+    failEventId: string;
+  };
+  effects?: {
+    healthDelta?: number;
+    healthTierCap?: StatLevel;
+    organDamage?: Partial<OrganStates>;
+    cognitionDelta?: Partial<CognitionStates>;
+    mentalDelta?: Partial<MentalStates>;
+    vehicleDamage?: number;
+    moneyDelta?: number;
+    addMoodleId?: string;
+    compressCurrentActionMinutes?: number;
+    sensoryLogText: string;
+  };
+}
+
+export interface GameEventDefinition {
+  eventId: string;
+  category: string;
+  title: string;
+  description: string;
+  imageAssetKey?: string;
+  cooldownMonths: number;
+  isEmergency?: boolean;
+  timeLimitSeconds: number | null;
+  defaultChoiceId?: string;
+  requirements: {
+    minAge?: number;
+    maxAge?: number;
+    hasVehicle?: boolean;
+    currentAction?: string;
+    requiredDegrees?: string[];
+  };
+  riskFactors?: EventRiskFactor[];
+  triggerThreshold?: number;
+  choices: EventChoiceDefinition[];
+}
+
+export interface ActiveEventModalPayload {
+  eventId: string;
+  title: string;
+  description: string;
+  imageAssetKey?: string;
+  isEmergency: boolean;
+  baseTimeLimitSeconds: number | null;
+  effectiveTimeLimitSeconds: number | null; // Đã cộng/trừ phản xạ, kỹ năng lái xe, thị lực!
+  reflexBonusBreakdown: string;
+  defaultChoiceId?: string;
+  choices: Array<{
+    choiceId: string;
+    text: string;
+    isPanicChoice: boolean;
+  }>;
+}
+
+/**
+ * ============================================================================
+ * GÓI DỮ LIỆU ĐẦU RA CHO UI (FRONTEND VIEW-MODEL PAYLOAD)
+ * Frontend chỉ cần đọc các biến trong object này để render màn hình,
+ * hoàn toàn không cần biết công thức vi dữ liệu ngầm bên dưới.
+ * ============================================================================
+ */
+export interface UIHudViewModel {
+  // 1. Đồng hồ & Thời gian thực (24 phút = 24 giờ)
+  clockUI: {
+    formattedTime: string;        // VD: "Ngày 1 - 08:35"
+    timeOfDayLabel: string;       // VD: "Giờ cao điểm sáng"
+    weatherLabel: string;         // VD: "Mưa lớn đường trơn"
+    realTimeConversionNote: string; // "1 giây thực = 1 phút game (24 phút = 1 ngày)"
+  };
+
+  // 2. Bậc định tính tổng hợp (Không lộ con số thô)
+  qualitativeStatsUI: {
+    healthTier: StatLevel;        // KHONG_TOT | ON | TOT | THOAI_MAI | XUAT_SAC
+    cognitionTier: StatLevel;     // Độ minh mẫn / Quan sát
+    happinessTier: StatLevel;     // Hạnh phúc tổng hợp từ 5 trụ cột
+    energyQualitativeLabel: string; // VD: "Tràn đầy sinh lực" / "Rã rời buồn ngủ"
+  };
+
+  // 3. Chỉ số Năng lực RimWorld-style (Hiển thị thanh trạng thái định tính)
+  capacitiesUI: {
+    consciousnessLabel: string;   // Tỉnh táo
+    manipulationLabel: string;    // Thao tác tay
+    movingLabel: string;          // Vận động
+    learningAbsorptionLabel: string; // Khả năng tiếp thu bài giảng hiện tại
+    painLevelLabel: string;       // Mức độ đau đớn cơ thể
+  };
+
+  // 4. Moodles (Sims 4 + Project Zomboid Buff/Debuff Badges)
+  moodlesUI: Array<{
+    moodleId: string;
+    title: string;
+    type: 'buff' | 'debuff';
+    severity: 1 | 2 | 3 | 4;
+    iconKey: string;
+    tooltip: string;
+    remainingTimeText: string;
+  }>;
+
+  // 5. Thanh tiến trình Hành động & Rút ngắn thời gian học/làm
+  activeActionUI: {
+    isBusy: boolean;
+    title: string;
+    progressPercent: number;
+    remainingGameTimeText: string; // VD: "Còn 42 phút trong game"
+    remainingRealTimeText: string; // VD: "Còn 42 giây ngoài đời thực"
+    timeSavedMinutes: number;      // Số phút được rút ngắn nhờ hiểu bài / tập trung
+    comprehensionStatusBanner: string; // VD: "Đang hiểu bài sâu: Rút ngắn 42 phút!"
+  } | null;
+
+  // 6. Ví tiền, Ngân hàng, Hóa đơn & Cửa hàng (Economy UI Variables)
+  economyUI: {
+    formattedCash: string;
+    formattedBank: string;
+    formattedTotalDebt: string;
+    financialMoodBanner: string;
+    carryWeightText: string;       // VD: "1.2 / 12.0 kg (Nhẹ nhàng)"
+    upcomingBills: Array<{
+      title: string;
+      formattedAmount: string;
+      dueText: string;
+    }>;
+    inventoryList: Array<{
+      itemId: string;
+      name: string;
+      category: string;
+      quantity: number;
+      durabilityPercent: number;
+      equipped: boolean;
+    }>;
+  };
+
+  // 7. Dòng cảm giác ưu tiên (Sensory Log)
+  sensoryLogsUI: string[];
+
+  // 8. Popup Sự kiện Khẩn cấp & Cửa sổ Phản xạ (T + Delta t)
+  emergencyModalUI: ActiveEventModalPayload | null;
+}
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+])
+</file>
+
+<file path="fetch-data.ts">
+/**
+ * fetch-data.ts
+ * 
+ * Kịch bản tải toàn bộ chỉ số quốc tế một lần duy nhất và xuất ra file `world-data.json`.
+ * Hỗ trợ chạy bằng:
+ *   - Bun:     bun fetch-data.ts
+ *   - Node.js: npx tsx fetch-data.ts  (hoặc npx ts-node fetch-data.ts)
+ */
+
+import * as fs from 'fs';
+import * as path from 'path';
+
+// ==========================================
+// 1. DANH MỤC INDICATOR CỦA WORLD BANK
+// ==========================================
+const WB_INDICATORS = {
+  population: 'SP.POP.TOTL',          // Tổng dân số
+  birthRate: 'SP.DYN.CBRT.IN',        // Tỉ lệ sinh thô (trên 1.000 dân)
+  lifeExpectancy: 'SP.DYN.LE00.IN',   // Tuổi thọ trung bình khi sinh
+  infantMortality: 'SP.DYN.IMRT.IN',  // Tỉ lệ tử vong trẻ sơ sinh (trên 1.000 ca sinh)
+  gdpPerCapitaPPP: 'NY.GDP.PCAP.PP.CD', // Thu nhập bình quân theo sức mua tương đương (USD)
+  unemployment: 'SL.UEM.TOTL.ZS',     // Tỉ lệ thất nghiệp (% lực lượng lao động)
+  expectedSchool: 'SE.SCH.LIFE',      // Độ tuổi/số năm học kỳ vọng
+  primaryEnroll: 'SE.PRM.ENRR',       // Tỉ lệ nhập học tiểu học (% gộp)
+  secondaryEnroll: 'SE.SEC.ENRR',     // Tỉ lệ nhập học trung học/phổ thông (% gộp)
+  tertiaryEnroll: 'SE.TER.ENRR',      // Tỉ lệ nhập học đại học/cao đẳng (% gộp)
+  pm25Pollution: 'EN.ATM.PM25.MC.M3', // Nồng độ bụi mịn PM2.5 trung bình (µg/m³)
+  giniIndex: 'SI.POV.GINI',           // Hệ số bất bình đẳng phân hóa giàu nghèo
+};
+
+// Danh sách tọa độ thủ đô một số quốc gia đại diện để lấy khí hậu từ Open-Meteo
+const COUNTRY_COORDINATES: Record<string, { lat: number; lon: number; name: string; region: string }> = {
+  VNM: { lat: 21.0285, lon: 105.8542, name: 'Việt Nam', region: 'Châu Á' },
+  USA: { lat: 38.8951, lon: -77.0364, name: 'Hoa Kỳ', region: 'Châu Mỹ' },
+  IND: { lat: 28.6139, lon: 77.2090, name: 'Ấn Độ', region: 'Châu Á' },
+  CHN: { lat: 39.9042, lon: 116.4074, name: 'Trung Quốc', region: 'Châu Á' },
+  JPN: { lat: 35.6762, lon: 139.6503, name: 'Nhật Bản', region: 'Châu Á' },
+  DEU: { lat: 52.5200, lon: 13.4050, name: 'Đức', region: 'Châu Âu' },
+  GBR: { lat: 51.5074, lon: -0.1278, name: 'Anh Quốc', region: 'Châu Âu' },
+  NGA: { lat: 9.0765, lon: 7.3986, name: 'Nigeria', region: 'Châu Phi' },
+  BRA: { lat: -15.7975, lon: -47.8919, name: 'Brazil', region: 'Châu Mỹ' },
+  ZAF: { lat: -25.7461, lon: 28.1881, name: 'Nam Phi', region: 'Châu Phi' },
+  NOR: { lat: 59.9139, lon: 10.7522, name: 'Na Uy', region: 'Châu Âu' },
+  IDN: { lat: -6.2088, lon: 106.8456, name: 'Indonesia', region: 'Châu Á' },
+  EGY: { lat: 30.0444, lon: 31.2357, name: 'Ai Cập', region: 'Châu Phi' },
+  AUS: { lat: -35.2809, lon: 149.1300, name: 'Úc', region: 'Châu Đại Dương' },
+  TCD: { lat: 12.1348, lon: 15.0557, name: 'Chad', region: 'Châu Phi' }
+};
+
+export interface CountryExportData {
+  isoCode: string;
+  name: string;
+  region: string;
+  population: number;
+  birthRate: number;
+  lifeExpectancy: number;
+  infantMortality: number;
+  gdpPPP: number;
+  unemploymentRate: number;
+  giniIndex: number;
+  expectedSchoolYears: number;
+  primaryRate: number;
+  secondaryRate: number;
+  tertiaryRate: number;
+  masterRate: number;
+  phdRate: number;
+  avgTempC: number;
+  annualRainMm: number;
+  pm25Pollution: number;
+  happinessScore: number;
+}
+
+/**
+ * Hàm lấy giá trị mới nhất của một chỉ số từ World Bank API
+ */
+async function fetchWorldBankIndicator(indicatorCode: string): Promise<Map<string, number>> {
+  const map = new Map<string, number>();
+  try {
+    // Lấy bản ghi trong 5 năm gần nhất (2019-2024), per_page 500 để bao quát toàn cầu
+    const url = `https://api.worldbank.org/v2/country/all/indicator/${indicatorCode}?format=json&date=2019:2024&per_page=500`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json: any = await res.json();
+    const records = json[1] || [];
+
+    for (const item of records) {
+      const code = item.countryiso3code;
+      if (code && item.value !== null && !map.has(code)) {
+        map.set(code, Number(item.value));
+      }
+    }
+  } catch (err: any) {
+    console.warn(`Lỗi khi lấy indicator ${indicatorCode}:`, err.message);
+  }
+  return map;
+}
+
+/**
+ * Hàm lấy nhiệt độ trung bình & lượng mưa từ Open-Meteo Archive API
+ */
+async function fetchClimateFromOpenMeteo(lat: number, lon: number) {
+  try {
+    const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=2023-01-01&end_date=2023-12-31&daily=temperature_2m_mean,precipitation_sum&timezone=auto`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json: any = await res.json();
+
+    const temps: number[] = json.daily?.temperature_2m_mean || [];
+    const precips: number[] = json.daily?.precipitation_sum || [];
+
+    const avgTemp = temps.length > 0 ? temps.reduce((a, b) => a + b, 0) / temps.length : 20;
+    const totalRain = precips.length > 0 ? precips.reduce((a, b) => a + b, 0) : 1000;
+
+    return {
+      avgTempC: Math.round(avgTemp * 10) / 10,
+      annualRainMm: Math.round(totalRain)
+    };
+  } catch {
+    return { avgTempC: 22.0, annualRainMm: 1100 };
+  }
+}
+
+/**
+ * Hàm chạy Pipeline chính
+ */
+async function main() {
+  console.log('--- BẮT ĐẦU TẢI DỮ LIỆU TỪ CÁC API QUỐC TẾ ---');
+
+  console.log('1. Đang tải các chỉ số kinh tế, giáo dục và dân số từ World Bank...');
+  const [
+    popMap,
+    birthMap,
+    lifeMap,
+    infantMap,
+    gdpMap,
+    unempMap,
+    schoolMap,
+    primMap,
+    secMap,
+    terMap,
+    pm25Map,
+    giniMap
+  ] = await Promise.all([
+    fetchWorldBankIndicator(WB_INDICATORS.population),
+    fetchWorldBankIndicator(WB_INDICATORS.birthRate),
+    fetchWorldBankIndicator(WB_INDICATORS.lifeExpectancy),
+    fetchWorldBankIndicator(WB_INDICATORS.infantMortality),
+    fetchWorldBankIndicator(WB_INDICATORS.gdpPerCapitaPPP),
+    fetchWorldBankIndicator(WB_INDICATORS.unemployment),
+    fetchWorldBankIndicator(WB_INDICATORS.expectedSchool),
+    fetchWorldBankIndicator(WB_INDICATORS.primaryEnroll),
+    fetchWorldBankIndicator(WB_INDICATORS.secondaryEnroll),
+    fetchWorldBankIndicator(WB_INDICATORS.tertiaryEnroll),
+    fetchWorldBankIndicator(WB_INDICATORS.pm25Pollution),
+    fetchWorldBankIndicator(WB_INDICATORS.giniIndex),
+  ]);
+
+  console.log('2. Đang đồng bộ khí hậu từ Open-Meteo và tính toán tỷ lệ giáo dục sau đại học...');
+  const results: CountryExportData[] = [];
+
+  for (const [isoCode, meta] of Object.entries(COUNTRY_COORDINATES)) {
+    const climate = await fetchClimateFromOpenMeteo(meta.lat, meta.lon);
+
+    const tertiaryRate = Math.min(100, Math.round(terMap.get(isoCode) ?? 35));
+    // Ước tính học Thạc sĩ và Tiến sĩ dựa trên quy mô học Đại học và GDP
+    const masterRate = Math.round((tertiaryRate * 0.18) * 10) / 10;
+    const phdRate = Math.round((masterRate * 0.12) * 100) / 100;
+
+    // Ước lượng mức độ hài lòng (0 - 10) dựa trên GDP, tuổi thọ và việc làm
+    const gdp = gdpMap.get(isoCode) ?? 12000;
+    const life = lifeMap.get(isoCode) ?? 72;
+    const happiness = Math.min(9.5, Math.max(3.0, (Math.log10(gdp) * 1.5) + (life * 0.03) - 1.5));
+
+    results.push({
+      isoCode,
+      name: meta.name,
+      region: meta.region,
+      population: Math.round(popMap.get(isoCode) ?? 50_000_000),
+      birthRate: Math.round((birthMap.get(isoCode) ?? 15.0) * 10) / 10,
+      lifeExpectancy: Math.round((lifeMap.get(isoCode) ?? 73.0) * 10) / 10,
+      infantMortality: Math.round((infantMap.get(isoCode) ?? 12.0) * 10) / 10,
+      gdpPPP: Math.round(gdp),
+      unemploymentRate: Math.round((unempMap.get(isoCode) ?? 5.0) * 10) / 10,
+      giniIndex: Math.round((giniMap.get(isoCode) ?? 36.0) * 10) / 10,
+      expectedSchoolYears: Math.round((schoolMap.get(isoCode) ?? 13.0) * 10) / 10,
+      primaryRate: Math.min(100, Math.round(primMap.get(isoCode) ?? 98)),
+      secondaryRate: Math.min(100, Math.round(secMap.get(isoCode) ?? 85)),
+      tertiaryRate,
+      masterRate,
+      phdRate,
+      avgTempC: climate.avgTempC,
+      annualRainMm: climate.annualRainMm,
+      pm25Pollution: Math.round((pm25Map.get(isoCode) ?? 25.0) * 10) / 10,
+      happinessScore: Math.round(happiness * 10) / 10,
+    });
+  }
+
+  // 3. Ghi ra tệp JSON
+  const outputPath = path.resolve(process.cwd(), 'world-data.json');
+  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf-8');
+
+  console.log(`\nTHÀNH CÔNG! Đã xuất dữ liệu của ${results.length} quốc gia ra tệp:`);
+  console.log(`📁 ${outputPath}`);
+}
+
+main().catch(console.error);
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eco-sims</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "eco-sims",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^1.70.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zustand": "^5.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.14.0",
+    "vite": "^8.3.4"
+  }
+}
+</file>
+
+<file path="README.md">
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+
+You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "module": "nodenext",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="vite.config.ts">
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
+</file>
+
+<file path="world-data.json">
+[
+  {
+    "isoCode": "VNM",
+    "name": "Việt Nam",
+    "region": "Châu Á",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "USA",
+    "name": "Hoa Kỳ",
+    "region": "Châu Mỹ",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "IND",
+    "name": "Ấn Độ",
+    "region": "Châu Á",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "CHN",
+    "name": "Trung Quốc",
+    "region": "Châu Á",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "JPN",
+    "name": "Nhật Bản",
+    "region": "Châu Á",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "DEU",
+    "name": "Đức",
+    "region": "Châu Âu",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "GBR",
+    "name": "Anh Quốc",
+    "region": "Châu Âu",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "NGA",
+    "name": "Nigeria",
+    "region": "Châu Phi",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "BRA",
+    "name": "Brazil",
+    "region": "Châu Mỹ",
+    "population": 211998573,
+    "birthRate": 12.1,
+    "lifeExpectancy": 76,
+    "infantMortality": 12.3,
+    "gdpPPP": 22371,
+    "unemploymentRate": 6.8,
+    "giniIndex": 50.3,
+    "expectedSchoolYears": 13,
+    "primaryRate": 100,
+    "secondaryRate": 100,
+    "tertiaryRate": 70,
+    "masterRate": 12.6,
+    "phdRate": 1.51,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 13.4,
+    "happinessScore": 7.3
+  },
+  {
+    "isoCode": "ZAF",
+    "name": "Nam Phi",
+    "region": "Châu Phi",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "NOR",
+    "name": "Na Uy",
+    "region": "Châu Âu",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "IDN",
+    "name": "Indonesia",
+    "region": "Châu Á",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "EGY",
+    "name": "Ai Cập",
+    "region": "Châu Phi",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  },
+  {
+    "isoCode": "AUS",
+    "name": "Úc",
+    "region": "Châu Đại Dương",
+    "population": 27194286,
+    "birthRate": 10.7,
+    "lifeExpectancy": 83.1,
+    "infantMortality": 3.1,
+    "gdpPPP": 72118,
+    "unemploymentRate": 3.9,
+    "giniIndex": 33.8,
+    "expectedSchoolYears": 13,
+    "primaryRate": 100,
+    "secondaryRate": 100,
+    "tertiaryRate": 100,
+    "masterRate": 18,
+    "phdRate": 2.16,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 6.4,
+    "happinessScore": 8.3
+  },
+  {
+    "isoCode": "TCD",
+    "name": "Chad",
+    "region": "Châu Phi",
+    "population": 50000000,
+    "birthRate": 15,
+    "lifeExpectancy": 73,
+    "infantMortality": 12,
+    "gdpPPP": 12000,
+    "unemploymentRate": 5,
+    "giniIndex": 36,
+    "expectedSchoolYears": 13,
+    "primaryRate": 98,
+    "secondaryRate": 85,
+    "tertiaryRate": 35,
+    "masterRate": 6.3,
+    "phdRate": 0.76,
+    "avgTempC": 22,
+    "annualRainMm": 1100,
+    "pm25Pollution": 25,
+    "happinessScore": 6.8
+  }
+]
+</file>
+
+</files>

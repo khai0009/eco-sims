@@ -1,0 +1,64 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeSmartphoneAndMultimedia",
+"description": "Định nghĩa điện thoại thông minh (DURABLE_REUSABLE có chỉ số độ bền + pin), sạc pin tại các ổ cắm địa điểm và hệ thống ứng dụng đa phương tiện.",
+"version": "1.0.0",
+"devices": [
+{
+"item_def_id": "ITEM_SMARTPHONE_BUDGET",
+"name_key": "Điện thoại phổ thông cũ",
+"usage_type": "DURABLE_REUSABLE",
+"weight_kg": 0.19,
+"base_price_vnd": 2200000,
+"durability_rules": {
+"max_durability_pct": 100,
+"battery_drain_multiplier": 1.35,
+"crash_freeze_chance_when_worn_pct": 15.0
+},
+"charging_locations": [
+{ "location_id": "LOC_HOME", "sub_node_id": "HOME_BEDROOM", "charge_pct_per_hour": 45 },
+{ "location_id": "LOC_HOME", "sub_node_id": "HOME_LIVING_ROOM", "charge_pct_per_hour": 45 },
+{ "location_id": "LOC_WORK_OFFICE_MNC", "sub_node_id": "OFFICE_DESK_AREA", "charge_pct_per_hour": 40 }
+],
+"interactable_actions": [
+{
+"action_id": "ACT_PHONE_CHARGE",
+"label_key": "Cắm sạc pin điện thoại (+60 phút)",
+"duration_minutes": 60,
+"requires_power_outlet_at_location": true
+},
+{
+"action_id": "ACT_APP_BANKING_QR",
+"label_key": "Mở App Ngân hàng chuyển khoản QR (+2 phút)",
+"duration_minutes": 2,
+"requires_battery_min": 1,
+"requires_mobile_data_or_wifi": true
+},
+{
+"action_id": "ACT_APP_SOCIAL_CHAT",
+"label_key": "Nhắn tin & gọi video cho bạn bè/người thân (+15 phút)",
+"duration_minutes": 15,
+"requires_battery_min": 5,
+"battery_cost_pct": -4.0,
+"happiness_delta": 4.0
+},
+{
+"action_id": "ACT_APP_SHORT_VIDEO_SCROLL",
+"label_key": "Lướt video giải trí ngắn (+30 phút)",
+"duration_minutes": 30,
+"requires_battery_min": 5,
+"battery_cost_pct": -8.0,
+"happiness_delta": 5.0,
+"late_night_sleep_debt_risk": "Nếu dùng sau 23:00 -> cộng thêm +0.5h nợ ngủ & giảm 1.0 điểm mắt."
+},
+{
+"action_id": "ACT_APP_CALL_HOME_TECHNICIAN",
+"label_key": "Gọi thợ kỹ thuật tới nhà sửa đồ hỏng (+5 phút)",
+"duration_minutes": 5,
+"requires_battery_min": 2,
+"triggers_service_id": "SERVICE_CALL_HOME_TECHNICIAN"
+}
+]
+}
+]
+}

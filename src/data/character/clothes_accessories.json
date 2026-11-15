@@ -1,0 +1,74 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeClothesAndAccessoriesCatalog",
+"description": "Quy định sức chứa vật lý (kg & số ô nhét đồ) dựa trên trang phục, túi xách và cách cầm nắm thực tế trên người nhân vật.",
+"version": "1.0.0",
+"base_body_carry_rules": {
+"bare_hands_max_kg": 1.5,
+"bare_hands_penalty": "Nếu cầm đồ bằng tay không (> 0.5kg) khi chạy xe máy hoặc đi mưa sẽ tăng nguy cơ làm rơi vỡ hoặc giảm tốc độ phản xạ.",
+"default_no_bag_total_max_kg": 2.1
+},
+"equip_slots": ["TOP_WEAR", "BOTTOM_WEAR", "CARRY_BAG", "WRIST_ACCESSORY", "EYEWEAR"],
+"items": [
+{
+"equip_id": "EQ_TOP_TSHIRT_NO_POCKET",
+"slot": "TOP_WEAR",
+"name_key": "Áo thun trơn (Không túi)",
+"added_capacity_kg": 0.0,
+"pocket_slots": 0,
+"warmth_rating": 1,
+"price_vnd": 150000
+},
+{
+"equip_id": "EQ_TOP_JACKET_WITH_POCKETS",
+"slot": "TOP_WEAR",
+"name_key": "Áo khoác gió có túi khóa kéo",
+"added_capacity_kg": 0.8,
+"pocket_slots": 2,
+"warmth_rating": 3,
+"price_vnd": 450000
+},
+{
+"equip_id": "EQ_BOT_JEANS_POCKETS",
+"slot": "BOTTOM_WEAR",
+"name_key": "Quần Jean / Quần Tây (2 túi hông)",
+"added_capacity_kg": 0.6,
+"pocket_slots": 2,
+"fits_small_items_only": true,
+"price_vnd": 350000
+},
+{
+"equip_id": "EQ_BOT_WOMENS_DRESS_NO_POCKET",
+"slot": "BOTTOM_WEAR",
+"name_key": "Váy / Đầm liền (Không túi)",
+"added_capacity_kg": 0.0,
+"pocket_slots": 0,
+"notes": "Nếu mặc váy không túi và không đeo túi xách -> chỉ cầm tối đa 1.5kg trên tay, rất dễ quên điện thoại/son/băng vệ sinh.",
+"price_vnd": 420000
+},
+{
+"equip_id": "EQ_BAG_NONE",
+"slot": "CARRY_BAG",
+"name_key": "Không mang túi (Chỉ túi quần/áo & cầm tay)",
+"added_capacity_kg": 0.0,
+"bag_slots": 0,
+"price_vnd": 0
+},
+{
+"equip_id": "EQ_BAG_CROSSBODY_MINI",
+"slot": "CARRY_BAG",
+"name_key": "Túi đeo chéo nhỏ",
+"added_capacity_kg": 2.5,
+"bag_slots": 4,
+"price_vnd": 320000
+},
+{
+"equip_id": "EQ_BAG_BACKPACK_STANDARD",
+"slot": "CARRY_BAG",
+"name_key": "Balo vải đi học / đi làm",
+"added_capacity_kg": 13.5,
+"bag_slots": 12,
+"price_vnd": 550000
+}
+]
+}

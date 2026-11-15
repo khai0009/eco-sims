@@ -1,0 +1,112 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "1.1.0",
+"description": "Dữ liệu giường ngủ, nệm, các mức ngủ dài qua đêm và cho phép người chơi tự do chợp mắt / nghỉ ngơi ngắn trên giường hoặc sofa bất cứ lúc nào"
+},
+"sleep_surface_types": [
+{
+"surface_id": "SLEEP_FLOOR_MAT",
+"name_key": "Chiếu cói trải sàn",
+"usage_type": "DURABLE_REUSABLE",
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_ids": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"sleep_debt_recovery_per_hour": 1.6,
+"musculoskeletal_delta_per_hour": -0.35,
+"wear_per_use_pct": 0.3
+},
+{
+"surface_id": "SLEEP_LIVING_SOFA",
+"name_key": "Ghế Sofa phòng khách",
+"usage_type": "DURABLE_REUSABLE",
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_ids": ["HOME_LIVING_ROOM"],
+"requires_furniture_id": "FURN_SMART_TV_SOFA_SET",
+"sleep_debt_recovery_per_hour": 1.85,
+"musculoskeletal_delta_per_hour": -0.15,
+"wear_per_use_pct": 0.2
+},
+{
+"surface_id": "SLEEP_WOODEN_BED_BASIC",
+"name_key": "Giường gỗ nệm mỏng",
+"usage_type": "DURABLE_REUSABLE",
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_ids": ["HOME_BEDROOM", "HOME_LIVING_ROOM"],
+"sleep_debt_recovery_per_hour": 2.1,
+"musculoskeletal_delta_per_hour": 0.15,
+"wear_per_use_pct": 0.15
+},
+{
+"surface_id": "SLEEP_ORTHOPEDIC_MATTRESS",
+"name_key": "Giường lớn nệm cao su nâng đỡ cột sống",
+"usage_type": "DURABLE_REUSABLE",
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_ids": ["HOME_BEDROOM"],
+"sleep_debt_recovery_per_hour": 2.5,
+"musculoskeletal_delta_per_hour": 0.45,
+"wear_per_use_pct": 0.1
+}
+],
+"sleep_and_nap_actions": [
+{
+"action_id": "ACT_NAP_SHORT_20M",
+"label_key": "Chợp mắt thư giãn ngắn (+20 phút)",
+"category": "POWER_NAP",
+"duration_minutes": 20,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true,
+"sleep_debt_reduction_hours": 1.5,
+"brain_recovery_bonus": 1.2,
+"happiness_delta": 1.5,
+"clears_drowsy_debuff": true
+},
+{
+"action_id": "ACT_NAP_NOON_45M",
+"label_key": "Ngủ trưa / Nghỉ ngơi ngắn (+45 phút)",
+"category": "SHORT_REST",
+"duration_minutes": 45,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true,
+"sleep_debt_reduction_hours": 3.0,
+"brain_recovery_bonus": 2.5,
+"happiness_delta": 2.5,
+"clears_drowsy_debuff": true
+},
+{
+"action_id": "ACT_NAP_DEEP_90M",
+"label_key": "Ngủ bù một chu kỳ sâu (+90 phút)",
+"category": "SHORT_REST",
+"duration_minutes": 90,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true,
+"sleep_debt_reduction_hours": 5.5,
+"brain_recovery_bonus": 4.5,
+"happiness_delta": 4.0,
+"clears_drowsy_debuff": true
+},
+{
+"action_id": "ACT_SLEEP_HALF_NIGHT_4H",
+"label_key": "Ngủ tạm 4 tiếng",
+"category": "FULL_SLEEP",
+"duration_minutes": 240,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true
+},
+{
+"action_id": "ACT_SLEEP_STANDARD_7H",
+"label_key": "Ngủ một giấc trọn vẹn 7 tiếng",
+"category": "FULL_SLEEP",
+"duration_minutes": 420,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true
+},
+{
+"action_id": "ACT_SLEEP_RECOVERY_9H",
+"label_key": "Ngủ nướng hồi sức 9 tiếng",
+"category": "FULL_SLEEP",
+"duration_minutes": 540,
+"allowed_sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM"],
+"allow_any_time_of_day": true
+}
+]
+}

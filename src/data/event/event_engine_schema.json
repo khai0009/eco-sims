@@ -1,0 +1,242 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeEventModuleSchema",
+"description": "Schema chuẩn cho từng file module sự kiện phân mảnh (events_childhood_0_5.json, events_daily_and_home.json, events_outdoor_and_traffic.json, events_health_and_workplace.json, events_school_and_study.json).",
+"version": "2.2.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"module_id": {
+"type": "string",
+"description": "Mã định danh duy nhất của module bối cảnh sự kiện (VD: EVT_MOD_SCHOOL_AND_STUDY)."
+},
+"description": {
+"type": "string",
+"description": "Mô tả phạm vi bối cảnh mà file module này phụ trách."
+},
+"events": {
+"type": "array",
+"minItems": 1,
+"items": {
+"type": "object",
+"properties": {
+"event_id": { "type": "string" },
+"category": {
+"type": "string",
+"enum": ["CHILDHOOD_MILESTONE", "DAILY_GRAY", "OPPORTUNITY_GREEN", "DANGER_RED"],
+"description": "CHILDHOOD_MILESTONE: 0-5 tuổi không chạy đồng hồ. 3 loại còn lại bật Popup đếm ngược."
+},
+"environment_filter": {
+"type": "string",
+"enum": ["INDOOR", "OUTDOOR", "BOTH"],
+"description": "Lọc theo environment_exposure của Sub-node hiện tại (VD: Tai nạn giao thông chỉ xảy ra ở OUTDOOR)."
+},
+"region_filter": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["RURAL", "URBAN"]
+},
+"description": "Lọc vùng miền Nông thôn / Thành thị. Rỗng nghĩa là xảy ra ở cả 2 vùng."
+},
+"is_repeatable": { "type": "boolean", "default": true },
+"base_weight": {
+"type": "number",
+"minimum": 0.0,
+"description": "Trọng số xuất hiện ngẫu nhiên khi thỏa mãn trigger_conditions."
+},
+"trigger_conditions": {
+"type": "object",
+"description": "Điều kiện ngữ cảnh bắt buộc để sự kiện này được phép kích hoạt",
+"properties": {
+"exact_milestone_age": {
+"type": ["integer", "null"],
+"minimum": 1,
+"maximum": 5,
+"description": "Chỉ dùng cho CHILDHOOD_MILESTONE (1, 2, 3, 4, 5 tuổi)."
+},
+"age_range": {
+"type": "array",
+"items": { "type": "number" },
+"minItems": 2,
+"maxItems": 2,
+"default": [6.0, 120.0]
+},
+"required_biological_sex": {
+"type": ["string", "null"],
+"enum": ["MALE", "FEMALE", null]
+},
+"allowed_location_ids": {
+"type": "array",
+"items": { "type": "string" },
+"description": "Danh sách location_id được phép bật sự kiện (bao gồm LOC_HOME, LOC_GAS_STATION, LOC_SCHOOL_, LOC_WORK_...). Rỗng nghĩa là xảy ra ở bất kỳ đâu thỏa mãn environment_filter."
+},
+"required_weather": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["CLEAR", "RAIN", "STORM", "STORM_FLOOD", "HEAVY_SMOG", "PM25_HIGH", "HEATWAVE"]
+}
+},
+"biological_and_item_triggers": {
+"type": "object",
+"properties": {
+"min_sleep_debt_hours": { "type": ["number", "null"] },
+"max_organ_thresholds": {
+"type": "object",
+"additionalProperties": { "type": "number" },
+"description": "VD: { 'liver': 25.0 } -> Kích hoạt khi Gan suy kiệt."
+},
+"required_active_condition": {
+"type": ["string", "null"],
+"enum": [
+"IN_PUBERTY",
+"MENSTRUATING_NO_PAD",
+"PREGNANT",
+"DRUNK",
+"VEHICLE_BRAKE_DECAYED",
+"FUEL_EMPTY_STRANDED",
+"OPENED_BAG_WITHOUT_SMARTPHONE",
+"RENT_OVERDUE_WARNING",
+null
+]
+}
+}
+}
+}
+},
+"presentation": {
+"type": "object",
+"properties": {
+"title_key": { "type": "string" },
+"narrative_body_key": { "type": "string" },
+"cutscene_clip_asset": { "type": ["string", "null"] },
+"cutscene_caption_key": { "type": ["string", "null"] },
+"base_countdown_seconds": {
+"type": ["number", "null"],
+"description": "Null nếu là CHILDHOOD_MILESTONE. Nếu thoát game lúc đang hiện popup, lần mở lại sẽ giữ nguyên sự kiện và đặt lại đếm ngược về đúng giá trị gốc."
+}
+},
+"required": ["title_key", "narrative_body_key"]
+},
+"choices": {
+"type": "array",
+"minItems": 1,
+"maxItems": 4,
+"items": {
+"type": "object",
+"properties": {
+"choice_id": { "type": "string" },
+"label_key": { "type": "string" },
+"is_default_timeout_penalty": {
+"type": "boolean",
+"default": false,
+"description": "Tự động chọn phương án này khi thanh đếm ngược chạy về 0s."
+},
+"is_dementia_habit_choice": {
+"type": "boolean",
+"default": false,
+"description": "Phương án hành xử theo thói quen vô thức khi nhân vật về già bị lú lẫn (brain < 25%)."
+},
+"unlock_requirements": {
+"type": ["object", "null"],
+"description": "Dùng cho Phương án Chuyên gia (Expert Choice). Null nếu ai cũng chọn được.",
+"properties": {
+"min_years_experience": { "type": "number", "default": 0 },
+"required_innate_traits": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": [
+"TRAIT_ADHD",
+"TRAIT_DYSLEXIA",
+"TRAIT_ASD",
+"TRAIT_FAST_LEARNER",
+"CAREFUL_CHECKLIST",
+"QUICK_REFLEXES"
+]
+}
+},
+"required_lifestyle_habits": { "type": "array", "items": { "type": "string" } },
+"required_personality": {
+"type": ["string", "null"],
+"enum": [
+"PERS_INTROVERT",
+"PERS_EXTROVERT",
+"PERS_DAREDEVIL",
+"PERS_EMPATHETIC",
+"PERS_AMBIVERT",
+null
+]
+},
+"min_sensory_acuity": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+}
+}
+},
+"outcomes": {
+"type": "object",
+"properties": {
+"personality_vote_group": {
+"type": ["string", "null"],
+"enum": [
+"PERS_INTROVERT",
+"PERS_EXTROVERT",
+"PERS_DAREDEVIL",
+"PERS_EMPATHETIC",
+"INTROVERT",
+"EXTROVERT",
+"DAREDEVIL",
+"EMPATHETIC",
+null
+],
+"description": "Dùng cho 5 cột mốc 0-5 tuổi (>= 3 phiếu sẽ khóa cứng tính cách suốt đời)."
+},
+"time_elapsed_minutes": { "type": "integer", "default": 0 },
+"money_delta_vnd": { "type": "integer", "default": 0 },
+"happiness_delta": { "type": "number", "default": 0.0 },
+"organ_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+},
+"ptsd_trauma_severity": {
+"type": "number",
+"default": 0.0,
+"description": "Đưa vào công thức tính điểm sang chấn PTSD."
+},
+"item_durability_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+},
+"unlocks_biometrics_flag": {
+"type": "boolean",
+"default": false,
+"description": "Bật true nếu sự kiện giúp giải mã chiều cao/cân nặng/thị lực (như khám sức khỏe định kỳ tại trường)."
+},
+"journal_log_entry_key": {
+"type": ["string", "null"],
+"description": "Nếu khác null, tự động ghi một dòng vào Cuốn Nhật Ký Đời Người (Giấy Dó)."
+},
+"triggers_hospitalization": { "type": "boolean", "default": false },
+"triggers_instant_death_cause_key": { "type": ["string", "null"] }
+}
+}
+},
+"required": ["choice_id", "label_key", "outcomes"]
+}
+}
+},
+"required": [
+"event_id",
+"category",
+"environment_filter",
+"trigger_conditions",
+"presentation",
+"choices"
+]
+}
+}
+},
+"required": ["module_id", "description", "events"]
+}

@@ -1,0 +1,143 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeSecondhandAndRepairServices",
+"description": "Định nghĩa 2 địa điểm thương mại mới (Cửa hàng đồ cũ điện tử & Tiệm sửa đồ), dịch vụ gọi thợ kỹ thuật tới sửa tại nhà, và bảng liên kết toàn bộ 6 module sinh hoạt/nội thất với Location.",
+"version": "1.0.0",
+"new_locations": [
+{
+"location_id": "LOC_SECONDHAND_ELECTRONICS",
+"cluster_group": "COMMERCIAL",
+"location_name_key": "Chợ Đồ Cũ Điện Tử & Gia Dụng Thanh Lý",
+"base_travel_minutes": 25,
+"base_transit_cost_vnd": 15000,
+"sub_nodes": [
+{
+"sub_node_id": "SECONDHAND_SHOWROOM",
+"label_key": "Khu trưng bày máy cũ & nội thất thanh lý",
+"environment_exposure": "INDOOR",
+"vendor_catalog": {
+"vendor_id": "VENDOR_SECONDHAND_TECH",
+"vendor_name_key": "Tiệm Đồ Cũ Anh Ba",
+"is_open_24h": false,
+"opening_time": "08:00",
+"closing_time": "20:00",
+"accepted_payments": ["CASH", "BANK_CARD"],
+"price_discount_ratio": 0.45,
+"initial_durability_range_pct": [38.0, 72.0],
+"hidden_defect_chance_pct": 25.0,
+"sold_item_ids": [
+"ITEM_SMARTPHONE_BUDGET",
+"FURN_FRIDGE_STANDARD",
+"FURN_WASHING_MACHINE",
+"FURN_GAS_INDUCTION_STOVE",
+"FURN_SMART_TV_SOFA_SET",
+"FURN_STUDY_WORK_DESK_PC"
+]
+}
+}
+]
+},
+{
+"location_id": "LOC_APPLIANCE_REPAIR_SHOP",
+"cluster_group": "COMMERCIAL",
+"location_name_key": "Tiệm Sửa Chữa Điện Tử & Đồ Gia Dụng",
+"base_travel_minutes": 20,
+"base_transit_cost_vnd": 12000,
+"sub_nodes": [
+{
+"sub_node_id": "REPAIR_WORKBENCH",
+"label_key": "Quầy nhận & kiểm tra linh kiện",
+"environment_exposure": "INDOOR",
+"available_service_actions": [
+{
+"service_id": "SERVICE_SHOP_REPAIR_PORTABLE",
+"label_key": "Sửa thiết bị mang theo người (Điện thoại, Bếp nhỏ, Nồi cơm)",
+"base_duration_minutes": 60,
+"base_fee_vnd": 250000,
+"restores_durability_to_max_cap": true,
+"permanent_max_cap_loss_pct": 5.0,
+"rejects_bulky_appliances": true,
+"rejection_reason": "Đồ cồng kềnh như Tủ lạnh, Máy giặt, Tivi lớn không thể tự chở xe máy tới tiệm — vui lòng gọi kỹ thuật tới sửa tại nhà!"
+}
+]
+}
+]
+}
+],
+"home_callout_services": [
+{
+"service_id": "SERVICE_CALL_HOME_TECHNICIAN",
+"label_key": "Gọi thợ kỹ thuật tới nhà kiểm tra & sửa chữa",
+"requires_player_at_location_id": "LOC_HOME",
+"requires_communication_channel": "SMARTPHONE_OR_HOME_PC",
+"technician_arrival_wait_minutes": 45,
+"repair_work_duration_minutes": 50,
+"callout_travel_fee_vnd": 150000,
+"base_repair_fee_vnd": 400000,
+"supported_furniture_ids": [
+"FURN_FRIDGE_STANDARD",
+"FURN_WASHING_MACHINE",
+"FURN_GAS_INDUCTION_STOVE",
+"FURN_SMART_TV_SOFA_SET",
+"FURN_STUDY_WORK_DESK_PC",
+"BED_WOODEN_LATEX_MATTRESS"
+],
+"restores_durability_to_max_cap": true,
+"permanent_max_cap_loss_pct": 6.0
+}
+],
+"six_module_location_bindings": [
+{
+"module_id": "1_FOOD_AND_DRINK",
+"source_json": "src/data/daily_living/food_and_drink.json",
+"bound_locations": [
+{ "location_id": "LOC_HOME", "sub_nodes": ["HOME_KITCHEN_DINING", "HOME_LIVING_ROOM"] },
+{ "location_id": "LOC_SUPERMARKET_MARKET", "sub_nodes": ["MARKET_FOOD_STALL"] },
+{ "location_id": "LOC_EATERY_RESTAURANT", "sub_nodes": ["EATERY_DINING_HALL"] },
+{ "location_id": "LOC_BAR_PUB", "sub_nodes": ["BAR_COUNTER"] }
+]
+},
+{
+"module_id": "2_SLEEP_AND_BEDS",
+"source_json": "src/data/daily_living/sleep_and_beds.json",
+"bound_locations": [
+{ "location_id": "LOC_HOME", "sub_nodes": ["HOME_BEDROOM", "HOME_LIVING_ROOM"] },
+{ "location_id": "LOC_WORK_OFFICE_MNC", "sub_nodes": ["OFFICE_DESK_AREA"] },
+{ "location_id": "LOC_WORK_SME_FACTORY", "sub_nodes": ["FACTORY_BREAK_AREA"] }
+]
+},
+{
+"module_id": "3_HYGIENE_AND_BATHROOM",
+"source_json": "src/data/daily_living/hygiene_and_bathroom.json",
+"bound_locations": [
+{ "location_id": "LOC_HOME", "sub_nodes": ["HOME_BATHROOM"], "allows": ["SHOWER", "TOILET"] },
+{ "location_id": "PUBLIC_AND_WORK_RESTROOMS", "sub_nodes": ["*_RESTROOM"], "allows": ["TOILET_ONLY"] }
+]
+},
+{
+"module_id": "4_HOUSEKEEPING_AND_LAUNDRY",
+"source_json": "src/data/daily_living/housekeeping_and_laundry.json",
+"bound_locations": [
+{ "location_id": "LOC_HOME", "sub_nodes": ["HOME_LIVING_ROOM", "HOME_BEDROOM", "HOME_KITCHEN_DINING", "HOME_BATHROOM"] }
+]
+},
+{
+"module_id": "5_SMARTPHONE_AND_MULTIMEDIA",
+"source_json": "src/data/devices/smartphone_apps_and_battery.json",
+"bound_locations": [
+{ "location_id": "LOC_TECH_STORE", "sub_nodes": ["TECH_SHOWROOM"], "role": "BUY_NEW" },
+{ "location_id": "LOC_SECONDHAND_ELECTRONICS", "sub_nodes": ["SECONDHAND_SHOWROOM"], "role": "BUY_USED" },
+{ "location_id": "LOC_APPLIANCE_REPAIR_SHOP", "sub_nodes": ["REPAIR_WORKBENCH"], "role": "REPAIR_DEVICE" }
+]
+},
+{
+"module_id": "6_FURNITURE_AND_APPLIANCES",
+"source_json": "src/data/furniture/furniture_and_appliances.json",
+"bound_locations": [
+{ "location_id": "LOC_HOME", "sub_nodes": ["HOME_LIVING_ROOM", "HOME_KITCHEN_DINING", "HOME_BEDROOM", "HOME_BATHROOM"], "role": "PLACE_AND_INTERACT" },
+{ "location_id": "LOC_TECH_STORE", "sub_nodes": ["TECH_SHOWROOM"], "role": "BUY_NEW_DELIVERED_HOME" },
+{ "location_id": "LOC_SECONDHAND_ELECTRONICS", "sub_nodes": ["SECONDHAND_SHOWROOM"], "role": "BUY_USED_DELIVERED_HOME" }
+]
+}
+]
+}

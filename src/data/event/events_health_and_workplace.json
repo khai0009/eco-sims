@@ -1,0 +1,104 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_HEALTH_AND_WORKPLACE",
+"description": "Sự kiện biến cố sinh học (dậy thì, chu kỳ kinh nguyệt, suy tạng) và áp lực lao động/đột quỵ Karoshi tại trường học hoặc công sở.",
+"events": [
+{
+"event_id": "EVT_PUBERTY_FEMALE_MENSTRUAL_ACCIDENT",
+"category": "DANGER_RED",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"base_weight": 85.0,
+"trigger_conditions": {
+"age_range": [11.0, 50.0],
+"required_biological_sex": "FEMALE",
+"allowed_location_ids": [
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_WORK_OFFICE_MNC",
+"LOC_WORK_SME_FACTORY"
+],
+"biological_and_item_triggers": {
+"required_active_condition": "MENSTRUATING_NO_PAD"
+}
+},
+"presentation": {
+"title_key": "evt_menstrual_wardrobe_title",
+"narrative_body_key": "evt_menstrual_wardrobe_body",
+"base_countdown_seconds": 6.0
+},
+"choices": [
+{
+"choice_id": "LEAVE_EARLY_EMBARRASSED",
+"label_key": "evt_menstrual_choice_leave",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 60,
+"happiness_delta": -25.0,
+"journal_log_entry_key": "log_menstrual_incident"
+}
+},
+{
+"choice_id": "ASK_FEMALE_COLLEAGUE",
+"label_key": "evt_menstrual_choice_ask_help",
+"outcomes": {
+"time_elapsed_minutes": 15,
+"happiness_delta": -8.0
+}
+}
+]
+},
+{
+"event_id": "EVT_KAROSHI_ACUTE_STROKE",
+"category": "DANGER_RED",
+"environment_filter": "BOTH",
+"is_repeatable": false,
+"base_weight": 100.0,
+"trigger_conditions": {
+"age_range": [20.0, 75.0],
+"biological_and_item_triggers": {
+"min_sleep_debt_hours": 28.0,
+"max_organ_thresholds": {
+"heart": 30.0
+}
+}
+},
+"presentation": {
+"title_key": "evt_karoshi_title",
+"narrative_body_key": "evt_karoshi_body",
+"base_countdown_seconds": 3.0
+},
+"choices": [
+{
+"choice_id": "COLLAPSE_FATAL",
+"label_key": "evt_karoshi_choice_collapse",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"triggers_instant_death_cause_key": "cause_death_karoshi_stroke",
+"journal_log_entry_key": "log_death_by_overwork"
+}
+},
+{
+"choice_id": "CALL_EMERGENCY_IMMEDIATELY",
+"label_key": "evt_karoshi_choice_call_115",
+"unlock_requirements": {
+"min_sensory_acuity": {
+"tactile_nociception": 50.0
+}
+},
+"outcomes": {
+"time_elapsed_minutes": 360,
+"money_delta_vnd": -15000000,
+"organ_deltas": {
+"heart": -15.0,
+"brain": -10.0
+},
+"ptsd_trauma_severity": 60.0,
+"triggers_hospitalization": true,
+"journal_log_entry_key": "log_survived_karoshi_icu"
+}
+}
+]
+}
+]
+}

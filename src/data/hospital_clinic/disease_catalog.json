@@ -1,0 +1,118 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeDiseaseCatalog",
+"description": "Bảng danh mục bệnh lý thực thể & tâm thần. Liên kết cơ quan tổn thương với nhóm triệu chứng mô tả mơ hồ dùng để bốc thuốc tại Hiệu thuốc tây hoặc xét nghiệm tại Bệnh viện.",
+"version": "1.0.0",
+"symptom_clusters": {
+"SYM_UPPER_ABDOMINAL_ACHE": {
+"monologue_key": "sym_upper_abdomen_dull_pain",
+"patient_verbal_description": "Đau âm ỉ vùng bụng trên, ăn uống khó tiêu, người mệt mỏi.",
+"overlapping_disease_ids": ["DIS_GASTRITIS_MILD", "DIS_FATTY_LIVER_HEPATITIS", "DIS_GALLSTONES"]
+},
+"SYM_CHEST_TIGHTNESS_BURNING": {
+"monologue_key": "sym_chest_tight_heartburn",
+"patient_verbal_description": "Ngực tức nghẹn, nóng rát vùng chấn thủy, thỉnh thoảng hụt hơi.",
+"overlapping_disease_ids": ["DIS_GERD_REFLUX", "DIS_CORONARY_ISCHEMIA", "DIS_ASTHMA_BRONCHITIS"]
+},
+"SYM_DIZZINESS_HEADACHE_FATIGUE": {
+"monologue_key": "sym_headache_vertigo_fatigue",
+"patient_verbal_description": "Đau đầu, hoa mắt chóng mặt, mất ngủ kéo dài và hay quên.",
+"overlapping_disease_ids": ["DIS_CEREBRAL_ANEMIA_STRESS", "DIS_HYPERTENSION", "DIS_EARLY_DEMENTIA"]
+},
+"SYM_LOWER_BACK_AND_FATIGUE": {
+"monologue_key": "sym_lower_back_soreness",
+"patient_verbal_description": "Đau mỏi thắt lưng, tiểu đêm nhiều lần, cơ thể uể oải.",
+"overlapping_disease_ids": ["DIS_LUMBAR_DEGENERATION", "DIS_KIDNEY_DYSFUNCTION"]
+}
+},
+"diseases": [
+{
+"disease_id": "DIS_GASTRITIS_MILD",
+"name_key": "dis_gastritis_name",
+"affected_organ": "digestive",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_UPPER_ABDOMINAL_ACHE",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Nội soi dạ dày & Test HP",
+"hospital_recommended_medicine_ids": ["MED_ANTACID_STOMACH", "MED_GASTRIC_MUCOSA_RX"]
+},
+{
+"disease_id": "DIS_FATTY_LIVER_HEPATITIS",
+"name_key": "dis_hepatitis_name",
+"affected_organ": "liver",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_UPPER_ABDOMINAL_ACHE",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Xét nghiệm sinh hóa máu (Men gan AST/ALT) & Siêu âm gan",
+"hospital_recommended_medicine_ids": ["MED_LIVER_DETOX_OTC", "MED_HEPATITIS_SPECIAL_RX"]
+},
+{
+"disease_id": "DIS_GERD_REFLUX",
+"name_key": "dis_gerd_name",
+"affected_organ": "digestive",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_CHEST_TIGHTNESS_BURNING",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Nội soi thực quản - dạ dày",
+"hospital_recommended_medicine_ids": ["MED_ANTACID_STOMACH"]
+},
+{
+"disease_id": "DIS_CORONARY_ISCHEMIA",
+"name_key": "dis_coronary_ischemia_name",
+"affected_organ": "heart",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_CHEST_TIGHTNESS_BURNING",
+"is_curable_by_otc_if_mild": false,
+"hospital_diagnostic_method": "Đo Điện tâm đồ (ECG) & Siêu âm tim",
+"hospital_recommended_medicine_ids": ["MED_CARDIO_VASODILATOR_RX"]
+},
+{
+"disease_id": "DIS_ASTHMA_BRONCHITIS",
+"name_key": "dis_asthma_bronchitis_name",
+"affected_organ": "lungs",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_CHEST_TIGHTNESS_BURNING",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Chụp X-Quang phổi & Đo chức năng hô hấp",
+"hospital_recommended_medicine_ids": ["MED_COUGH_BRONCHIAL_OTC", "MED_INHALER_ASTHMA_RX"]
+},
+{
+"disease_id": "DIS_CEREBRAL_ANEMIA_STRESS",
+"name_key": "dis_cerebral_anemia_name",
+"affected_organ": "brain",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_DIZZINESS_HEADACHE_FATIGUE",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Đo lưu huyết não & Khám thần kinh",
+"hospital_recommended_medicine_ids": ["MED_BRAIN_TONIC_OTC", "MED_NEURO_RECOVERY_RX"]
+},
+{
+"disease_id": "DIS_LUMBAR_DEGENERATION",
+"name_key": "dis_lumbar_name",
+"affected_organ": "musculoskeletal",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_LOWER_BACK_AND_FATIGUE",
+"is_curable_by_otc_if_mild": true,
+"hospital_diagnostic_method": "Chụp X-Quang cột sống thắt lưng",
+"hospital_recommended_medicine_ids": ["MED_JOINT_SUPPORT_OTC", "MED_ORTHOPEDIC_RX"]
+},
+{
+"disease_id": "DIS_KIDNEY_DYSFUNCTION",
+"name_key": "dis_kidney_name",
+"affected_organ": "kidneys",
+"trigger_organ_threshold_max": 44.99,
+"critical_red_threshold": 24.99,
+"symptom_cluster_id": "SYM_LOWER_BACK_AND_FATIGUE",
+"is_curable_by_otc_if_mild": false,
+"hospital_diagnostic_method": "Xét nghiệm Creatinine máu & Tổng phân tích nước tiểu",
+"hospital_recommended_medicine_ids": ["MED_RENAL_THERAPY_RX"]
+}
+]
+}

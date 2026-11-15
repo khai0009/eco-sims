@@ -1,0 +1,192 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeFurnitureAndAppliancesCatalog",
+"description": "Danh mục nội thất và thiết bị gia dụng trong nhà (toàn bộ thuộc nhóm DURABLE_REUSABLE có chỉ số độ bền 0-100%, suy giảm khi sử dụng, có danh sách hành động tương tác riêng và tọa độ neo visual_slot để vẽ lớp lên cảnh phòng).",
+"version": "1.1.0",
+"furniture_items": [
+{
+"furniture_id": "FURN_FRIDGE_STANDARD",
+"name_key": "Tủ lạnh 2 cánh gia đình",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "BULKY_HOME_APPLIANCE",
+"base_price_vnd": 6500000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_id": "HOME_KITCHEN_DINING",
+"visual_slot": {
+"asset_id": "sketch_fridge_standard",
+"anchor_x_pct": 14,
+"anchor_y_pct": 36,
+"width_pct": 20,
+"z_index": 2
+},
+"durability_rules": {
+"max_durability_pct": 100,
+"daily_wear_pct": 0.15,
+"malfunction_threshold_pct": 25.0,
+"broken_threshold_pct": 5.0,
+"repair_method": "HOME_TECHNICIAN_ONLY"
+},
+"interactable_actions": [
+{
+"action_id": "ACT_FRIDGE_STORE_FOOD",
+"label_key": "Cất thực phẩm tươi vào ngăn mát (+2 phút)",
+"duration_minutes": 2,
+"effect": "Giảm tốc độ ôi thiu thực phẩm từ -4%/h xuống -0.4%/h (chỉ hoạt động khi độ bền > 5%)."
+},
+{
+"action_id": "ACT_FRIDGE_CLEAN_DEFROST",
+"label_key": "Vệ sinh & xả tuyết tủ lạnh (+25 phút)",
+"duration_minutes": 25,
+"restores_durability_pct": 4.0
+}
+]
+},
+{
+"furniture_id": "FURN_WASHING_MACHINE",
+"name_key": "Máy giặt cửa trên",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "BULKY_HOME_APPLIANCE",
+"base_price_vnd": 5200000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_id": "HOME_BATHROOM",
+"visual_slot": {
+"asset_id": "sketch_washing_machine",
+"anchor_x_pct": 68,
+"anchor_y_pct": 50,
+"width_pct": 18,
+"z_index": 2
+},
+"durability_rules": {
+"max_durability_pct": 100,
+"wear_per_use_pct": 0.6,
+"malfunction_threshold_pct": 25.0,
+"broken_threshold_pct": 5.0,
+"repair_method": "HOME_TECHNICIAN_ONLY"
+},
+"interactable_actions": [
+{
+"action_id": "ACT_WASH_CLOTHES_AUTO",
+"label_key": "Bấm chế độ giặt quần áo tự động (+10 phút)",
+"duration_minutes": 10,
+"requires_durability_min": 6.0,
+"consumes_item_id": "ITEM_LAUNDRY_DETERGENT"
+}
+]
+},
+{
+"furniture_id": "FURN_GAS_INDUCTION_STOVE",
+"name_key": "Bếp nấu ăn gia đình",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "MEDIUM_APPLIANCE",
+"base_price_vnd": 1800000,
+"sold_at_location_ids": ["LOC_SUPERMARKET_MARKET", "LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_id": "HOME_KITCHEN_DINING",
+"visual_slot": {
+"asset_id": "sketch_kitchen_stove",
+"anchor_x_pct": 46,
+"anchor_y_pct": 48,
+"width_pct": 24,
+"z_index": 2
+},
+"durability_rules": {
+"max_durability_pct": 100,
+"wear_per_use_pct": 0.4,
+"malfunction_threshold_pct": 20.0,
+"broken_threshold_pct": 5.0,
+"repair_method": "SHOP_OR_HOME_TECHNICIAN"
+},
+"interactable_actions": [
+{
+"action_id": "ACT_COOK_FRESH_MEAL",
+"label_key": "Nấu bữa cơm nóng từ nguyên liệu tươi (+35 phút)",
+"duration_minutes": 35,
+"requires_durability_min": 6.0,
+"produces_item_id": "ITEM_FOOD_HOME_COOKED_MEAL"
+}
+]
+},
+{
+"furniture_id": "FURN_SMART_TV_SOFA_SET",
+"name_key": "Bộ Sofa & Tivi phòng khách",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "BULKY_HOME_APPLIANCE",
+"base_price_vnd": 8500000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_id": "HOME_LIVING_ROOM",
+"visual_slot": {
+"asset_id": "sketch_sofa_tv_set",
+"anchor_x_pct": 25,
+"anchor_y_pct": 45,
+"width_pct": 50,
+"z_index": 2
+},
+"durability_rules": {
+"max_durability_pct": 100,
+"wear_per_use_pct": 0.25,
+"malfunction_threshold_pct": 20.0,
+"broken_threshold_pct": 5.0,
+"repair_method": "HOME_TECHNICIAN_ONLY"
+},
+"interactable_actions": [
+{
+"action_id": "ACT_WATCH_NEWS_WEATHER",
+"label_key": "Xem thời sự & dự báo thời tiết (+20 phút)",
+"duration_minutes": 20,
+"requires_durability_min": 6.0,
+"effect": "Cập nhật dự báo thời tiết/bụi mịn PM2.5 ngày mai ngay cả khi không có Smartphone."
+},
+{
+"action_id": "ACT_WATCH_MOVIE_RELAX",
+"label_key": "Nằm sofa xem phim giải trí (+60 phút)",
+"duration_minutes": 60,
+"requires_durability_min": 6.0,
+"happiness_delta": 8.0,
+"burnout_delta": -6.0
+}
+]
+},
+{
+"furniture_id": "FURN_STUDY_WORK_DESK_PC",
+"name_key": "Bàn làm việc & Máy tính để bàn",
+"usage_type": "DURABLE_REUSABLE",
+"size_class": "MEDIUM_APPLIANCE",
+"base_price_vnd": 11000000,
+"sold_at_location_ids": ["LOC_TECH_STORE", "LOC_SECONDHAND_ELECTRONICS"],
+"placed_in_location_id": "LOC_HOME",
+"placed_in_sub_node_id": "HOME_BEDROOM",
+"visual_slot": {
+"asset_id": "sketch_desk_pc",
+"anchor_x_pct": 62,
+"anchor_y_pct": 44,
+"width_pct": 26,
+"z_index": 2
+},
+"durability_rules": {
+"max_durability_pct": 100,
+"wear_per_use_pct": 0.35,
+"malfunction_threshold_pct": 20.0,
+"broken_threshold_pct": 5.0,
+"repair_method": "SHOP_OR_HOME_TECHNICIAN"
+},
+"interactable_actions": [
+{
+"action_id": "ACT_PC_CHECK_TIME_AND_CHAT",
+"label_key": "Mở máy tính xem giờ & nhắn Zalo Web (+10 phút)",
+"duration_minutes": 10,
+"requires_durability_min": 6.0,
+"effect": "Giải pháp thay thế tạm thời khi lỡ để quên hoặc hỏng điện thoại."
+},
+{
+"action_id": "ACT_PC_WORK_FROM_HOME",
+"label_key": "Làm việc tự do / Tăng ca tại nhà (+120 phút)",
+"duration_minutes": 120,
+"requires_durability_min": 6.0
+}
+]
+}
+]
+}
