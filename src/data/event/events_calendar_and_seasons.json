@@ -1,0 +1,425 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_CALENDAR_AND_SEASONS",
+"description": "Bộ sự kiện vận hành theo lịch tháng/ngày cố định trong năm: Tết Nguyên Đán (T1-T2), Quyết toán Thuế (T3), Bế giảng (T5), Thi Đại học & Nghỉ hè (T6-T7), Tựu trường & Khai giảng (T8-T9), Mùa mưa bão ngập lụt (T9-T10), Khám Nghĩa vụ Quân sự (T11), Tổng kết KPI & Lương tháng 13 (T12), và Hạn đóng tiền trọ ngày 05 hàng tháng.",
+"events": [
+{
+"event_id": "EVT_CAL_LUNAR_NEW_YEAR_KIDS",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 120.0,
+"trigger_conditions": {
+"age_range": [6.0, 17.99],
+"allowed_location_ids": ["LOC_HOME"],
+"schedule_trigger": {
+"allowed_months": [1, 2]
+}
+},
+"presentation": {
+"title_key": "evt_cal_tet_kids_title",
+"narrative_body_key": "evt_cal_tet_kids_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "KEEP_LUCKY_MONEY_SELF",
+"label_key": "evt_cal_tet_kids_keep",
+"outcomes": {
+"time_elapsed_minutes": 60,
+"money_delta_vnd": 500000,
+"happiness_delta": 14.0,
+"journal_log_entry_key": "log_cal_tet_received_lixi"
+}
+},
+{
+"choice_id": "GIVE_MOM_HOLD_LUCKY_MONEY",
+"label_key": "evt_cal_tet_kids_give_parents",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 60,
+"money_delta_vnd": 100000,
+"happiness_delta": 6.0
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_LUNAR_NEW_YEAR_ADULT",
+"category": "DAILY_GRAY",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 120.0,
+"trigger_conditions": {
+"age_range": [18.0, 95.0],
+"allowed_location_ids": ["LOC_HOME"],
+"schedule_trigger": {
+"allowed_months": [1, 2]
+}
+},
+"presentation": {
+"title_key": "evt_cal_tet_adult_title",
+"narrative_body_key": "evt_cal_tet_adult_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "PREPARE_FULL_TET_REUNION",
+"label_key": "evt_cal_tet_adult_generous",
+"unlock_requirements": {
+"min_cash_vnd": 3000000
+},
+"outcomes": {
+"time_elapsed_minutes": 180,
+"money_delta_vnd": -3000000,
+"happiness_delta": 15.0,
+"journal_log_entry_key": "log_cal_tet_family_reunion"
+}
+},
+{
+"choice_id": "SIMPLE_FRUGAL_TET",
+"label_key": "evt_cal_tet_adult_frugal",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 90,
+"money_delta_vnd": -500000,
+"happiness_delta": 4.0
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_MARCH_TAX_SETTLEMENT",
+"category": "DAILY_GRAY",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 110.0,
+"trigger_conditions": {
+"age_range": [22.0, 60.0],
+"schedule_trigger": {
+"allowed_months": [3]
+}
+},
+"presentation": {
+"title_key": "evt_cal_tax_march_title",
+"narrative_body_key": "evt_cal_tax_march_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "DECLARE_AND_PAY_TAX_HONESTLY",
+"label_key": "evt_cal_tax_choice_pay",
+"unlock_requirements": {
+"min_cash_vnd": 800000
+},
+"outcomes": {
+"time_elapsed_minutes": 60,
+"money_delta_vnd": -800000,
+"happiness_delta": 1.0
+}
+},
+{
+"choice_id": "IGNORE_TAX_DEADLINE",
+"label_key": "evt_cal_tax_choice_skip",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 15,
+"money_delta_vnd": -1500000,
+"happiness_delta": -10.0,
+"journal_log_entry_key": "log_cal_tax_fined"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_MAY_END_OF_SCHOOL_YEAR",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 120.0,
+"trigger_conditions": {
+"age_range": [6.0, 17.99],
+"allowed_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL"
+],
+"schedule_trigger": {
+"allowed_months": [5]
+}
+},
+"presentation": {
+"title_key": "evt_cal_may_closing_title",
+"narrative_body_key": "evt_cal_may_closing_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "CELEBRATE_SUMMER_BREAK",
+"label_key": "evt_cal_may_choice_summer",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 120,
+"happiness_delta": 12.0,
+"journal_log_entry_key": "log_cal_finished_school_year"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_JUNE_UNIVERSITY_ENTRANCE_EXAM",
+"category": "DANGER_RED",
+"environment_filter": "INDOOR",
+"is_repeatable": false,
+"is_once_per_year_age": true,
+"base_weight": 150.0,
+"trigger_conditions": {
+"age_range": [17.0, 18.99],
+"schedule_trigger": {
+"allowed_months": [6, 7]
+}
+},
+"presentation": {
+"title_key": "evt_cal_uni_exam_title",
+"narrative_body_key": "evt_cal_uni_exam_body",
+"cutscene_clip_asset": "clip_study_flipping_book",
+"cutscene_caption_key": "ACT_STUDY_BOOK",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "SIT_NATIONAL_UNI_EXAM",
+"label_key": "evt_cal_uni_choice_exam",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 240,
+"happiness_delta": 8.0,
+"organ_deltas": { "brain": -2.0 },
+"journal_log_entry_key": "log_cal_took_university_exam"
+}
+},
+{
+"choice_id": "CHOOSE_VOCATIONAL_PATH_EARLY",
+"label_key": "evt_cal_uni_choice_work",
+"outcomes": {
+"time_elapsed_minutes": 60,
+"happiness_delta": 3.0,
+"journal_log_entry_key": "log_cal_chose_early_career"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_AUGUST_BACK_TO_SCHOOL",
+"category": "DAILY_GRAY",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 140.0,
+"trigger_conditions": {
+"age_range": [6.0, 22.0],
+"schedule_trigger": {
+"allowed_months": [8, 9]
+}
+},
+"presentation": {
+"title_key": "evt_cal_back_to_school_title",
+"narrative_body_key": "evt_cal_back_to_school_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "BUY_NEW_BOOKS_AND_UNIFORM",
+"label_key": "evt_cal_school_choice_new_gear",
+"unlock_requirements": {
+"min_cash_vnd": 350000
+},
+"outcomes": {
+"time_elapsed_minutes": 90,
+"money_delta_vnd": -350000,
+"happiness_delta": 9.0,
+"journal_log_entry_key": "log_cal_started_new_school_year"
+}
+},
+{
+"choice_id": "REUSE_OLD_TEXTBOOKS",
+"label_key": "evt_cal_school_choice_reuse",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 30,
+"happiness_delta": 2.0,
+"journal_log_entry_key": "log_cal_started_new_school_year"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_AUTUMN_STORM_FLOOD_SEASON",
+"category": "DANGER_RED",
+"environment_filter": "OUTDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 95.0,
+"trigger_conditions": {
+"age_range": [12.0, 85.0],
+"allowed_location_ids": ["LOC_TRANSIT_ROAD"],
+"schedule_trigger": {
+"allowed_months": [9, 10]
+}
+},
+"presentation": {
+"title_key": "evt_cal_storm_flood_title",
+"narrative_body_key": "evt_cal_storm_flood_body",
+"base_countdown_seconds": 8.0
+},
+"choices": [
+{
+"choice_id": "SHELTER_WAIT_FLOOD_RECEDE",
+"label_key": "evt_cal_storm_choice_shelter",
+"outcomes": {
+"time_elapsed_minutes": 90,
+"happiness_delta": -3.0
+}
+},
+{
+"choice_id": "WADE_THROUGH_DEEP_WATER",
+"label_key": "evt_cal_storm_choice_wade",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 45,
+"money_delta_vnd": -450000,
+"happiness_delta": -10.0,
+"organ_deltas": { "integumentary_skin": -4.0, "lungs": -3.0 },
+"journal_log_entry_key": "log_cal_vehicle_stalled_in_flood"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_NOVEMBER_MILITARY_CALLUP",
+"category": "DANGER_RED",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 130.0,
+"trigger_conditions": {
+"age_range": [18.0, 27.0],
+"required_biological_sex": "MALE",
+"schedule_trigger": {
+"allowed_months": [11]
+}
+},
+"presentation": {
+"title_key": "evt_cal_military_nov_title",
+"narrative_body_key": "evt_cal_military_nov_body",
+"cutscene_clip_asset": "clip_military_boots_march",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "ATTEND_MILITARY_HEALTH_CHECK",
+"label_key": "evt_cal_military_choice_attend",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 180,
+"happiness_delta": 2.0,
+"journal_log_entry_key": "log_cal_attended_military_exam"
+}
+},
+{
+"choice_id": "SUBMIT_UNIVERSITY_DEFERMENT",
+"label_key": "evt_cal_military_choice_defer",
+"outcomes": {
+"time_elapsed_minutes": 60,
+"happiness_delta": 4.0
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_DECEMBER_YEAR_END_KPI_BONUS",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 130.0,
+"trigger_conditions": {
+"age_range": [18.0, 60.0],
+"allowed_location_ids": [
+"LOC_WORK_SME",
+"LOC_WORK_OFFICE_MNC",
+"LOC_WORK_SME_FACTORY"
+],
+"schedule_trigger": {
+"allowed_months": [12]
+}
+},
+"presentation": {
+"title_key": "evt_cal_dec_kpi_title",
+"narrative_body_key": "evt_cal_dec_kpi_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "RECEIVE_13TH_MONTH_BONUS",
+"label_key": "evt_cal_dec_choice_bonus",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 60,
+"money_delta_vnd": 4500000,
+"happiness_delta": 14.0,
+"journal_log_entry_key": "log_cal_received_year_end_bonus"
+}
+}
+]
+},
+{
+"event_id": "EVT_CAL_MONTHLY_RENT_DUE_DAY_5",
+"category": "DAILY_GRAY",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_calendar_month": true,
+"base_weight": 125.0,
+"trigger_conditions": {
+"age_range": [18.0, 90.0],
+"allowed_location_ids": ["LOC_HOME"],
+"schedule_trigger": {
+"exact_day_of_month": 5
+}
+},
+"presentation": {
+"title_key": "evt_cal_rent_day5_title",
+"narrative_body_key": "evt_cal_rent_day5_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "PAY_MONTHLY_RENT_AND_UTILITIES",
+"label_key": "evt_cal_rent_choice_pay",
+"unlock_requirements": {
+"min_cash_vnd": 1800000
+},
+"outcomes": {
+"time_elapsed_minutes": 10,
+"money_delta_vnd": -1800000,
+"happiness_delta": 0.0
+}
+},
+{
+"choice_id": "ASK_LANDLORD_GRACE_PERIOD",
+"label_key": "evt_cal_rent_choice_delay",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 20,
+"happiness_delta": -12.0,
+"journal_log_entry_key": "log_cal_overdue_rent_warning"
+}
+}
+]
+}
+]
+}

@@ -1,0 +1,143 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeNpcAutonomousBrainSchema",
+"description": "Bộ não điều khiển tự hành cho mọi thực thể HumanEntity có controller_mode = 'AI_AUTONOMOUS' (bao gồm cả NPC trong xã hội lẫn Người chơi khi về già bị lú lẫn brain < 25%). Sử dụng chung 100% hàm hành động của người chơi.",
+"version": "2.2.0",
+"unified_entity_controller_rules": {
+"shared_entity_schema": "src/data/character/character_biology_schema.json",
+"ai_tick_interval_minutes": 60,
+"active_simulation_scope": {
+"nearby_or_family_npcs": "FULL_ACTION_EXECUTION",
+"distant_background_npcs": "DAILY_SUMMARY_METABOLISM_AND_WAGE"
+},
+"player_dementia_takeover_trigger": {
+"min_age": 65,
+"max_brain_pct": 25.0,
+"new_controller_mode": "AI_AUTONOMOUS",
+"ui_lock_note": "Khóa toàn bộ nút bấm chủ động trên UI, nhân vật tự sinh hoạt bằng đúng bộ quy tắc ưu tiên bên dưới."
+}
+},
+"autonomous_priority_decision_tree": {
+"description": "Chuỗi kiểm tra ưu tiên từ trên xuống dưới (if / else tuần tự) mỗi chu kỳ ai_tick để NPC gọi đúng hàm hành động dùng chung.",
+"priority_steps": [
+{
+"priority_rank": 1,
+"goal_id": "GOAL_SURVIVE_CRITICAL_ORGAN",
+"condition_rule": "ANY_ORGAN_PCT < 25.0 AND cash_vnd >= 500000",
+"target_location_id": "LOC_HOSPITAL",
+"shared_action_id": "ACT_HOSPITAL_DIAGNOSTIC_EXAM",
+"fallback_if_poor_action_id": "ACT_SLEEP_STANDARD_7H"
+},
+{
+"priority_rank": 2,
+"goal_id": "GOAL_RELIEVE_BLADDER_OR_HYGIENE",
+"condition_rule": "bladder_urgency_pct >= 80.0 OR body_hygiene_pct <= 30.0",
+"target_location_id": "LOC_HOME",
+"shared_action_id": "ACT_USE_RESTROOM_AND_SHOWER"
+},
+{
+"priority_rank": 3,
+"goal_id": "GOAL_PAY_SLEEP_DEBT",
+"condition_rule": "hours_awake_continuous >= 17.0 OR sleep_debt_hours >= 14.0",
+"target_location_id": "LOC_HOME",
+"shared_action_id": "ACT_SLEEP_STANDARD_7H"
+},
+{
+"priority_rank": 4,
+"goal_id": "GOAL_EAT_WHEN_HUNGRY",
+"condition_rule": "hours_since_last_meal >= 6.0",
+"target_location_id": "LOC_HOME",
+"shared_action_id": "ACT_EAT_AVAILABLE_MEAL",
+"fallback_buy_location_id": "LOC_SUPERMARKET_MARKET"
+},
+{
+"priority_rank": 5,
+"goal_id": "GOAL_ATTEND_SCHEDULED_WORK_OR_SCHOOL",
+"condition_rule": "IS_WITHIN_SHIFT_OR_SCHOOL_HOURS == true",
+"target_location_id": "ASSIGNED_WORK_OR_SCHOOL_LOCATION",
+"shared_action_id": "ACT_WORK_OR_STUDY_SHIFT"
+},
+{
+"priority_rank": 6,
+"goal_id": "GOAL_PERSONALITY_LEISURE_AND_HABIT",
+"condition_rule": "FREE_TIME_DEFAULT",
+"personality_action_routing": {
+"PERS_INTROVERT": {
+"preferred_location_id": "LOC_HOME",
+"shared_action_id": "ACT_READ_BOOK_OR_REST"
+},
+"PERS_EXTROVERT": {
+"preferred_location_id": "LOC_SUPERMARKET_MARKET",
+"shared_action_id": "ACT_SOCIALIZE_AND_CHAT"
+},
+"PERS_DAREDEVIL": {
+"preferred_location_id": "LOC_TRANSIT_ROAD",
+"shared_action_id": "ACT_OUTDOOR_STROLL_OR_OVERTIME"
+},
+"PERS_EMPATHETIC": {
+"preferred_location_id": "LOC_HOME",
+"shared_action_id": "ACT_CLEAN_HOUSE_AND_CARE_FAMILY"
+},
+"PERS_AMBIVERT": {
+"preferred_location_id": "LOC_HOME",
+"shared_action_id": "ACT_WATCH_NEWS_WEATHER"
+}
+}
+}
+]
+},
+"autonomous_event_choice_weights": {
+"description": "Cách bộ não NPC tự chọn đáp án (A/B/C/D) khi gặp sự kiện bất ngờ mà không hiện Popup lên màn hình người chơi.",
+"if_dementia_or_brain_below_25": "SELECT_IS_DEMENTIA_HABIT_CHOICE_OR_DEFAULT_PENALTY",
+"by_personality_preference": {
+"PERS_INTROVERT": "PREFER_LOW_SOCIAL_RISK_AND_SAFE_TIME",
+"PERS_EXTROVERT": "PREFER_SOCIAL_BONDING_AND_HAPPINESS",
+"PERS_DAREDEVIL": "PREFER_HIGH_MONEY_OR_EXPERT_CHOICE",
+"PERS_EMPATHETIC": "PREFER_HELPING_OTHERS_AND_HEALTH",
+"PERS_AMBIVERT": "PREFER_BALANCED_POSITIVE_OUTCOME"
+}
+},
+"social_interaction_and_lending_rules": {
+"description": "Quy tắc phản hồi khi Người chơi chủ động tương tác với NPC (như sang nhà bạn hỏi mượn sách qua mẹ NPC).",
+"presence_check_required": true,
+"borrow_item_through_relative_rules": {
+"direct_owner_present": {
+"min_bonding_score": 30.0,
+"duration_minutes": 10,
+"success": true
+},
+"relative_present_owner_absent": {
+"branch_a_relative_knows_location": {
+"min_bonding_score_with_owner": 50.0,
+"duration_minutes": 15,
+"success": true
+},
+"branch_b_relative_calls_owner": {
+"duration_minutes": 10,
+"chance_item_is_at_home": 0.65
+},
+"branch_c_wait_for_owner_return": {
+"wait_duration_minutes": 45,
+"abort_if_conflicts_with_player_work_or_school": true
+}
+}
+}
+},
+"marriage_and_f1_genetics_rules": {
+"marriage_min_age": 18,
+"marriage_min_bonding_score": 85.0,
+"shared_household_finances": true,
+"offspring_inheritance_weights": {
+"parent_a_weight": 0.45,
+"parent_b_weight": 0.45,
+"random_mutation_weight": 0.10
+},
+"inheritable_organ_weakness_threshold": 55.0,
+"inheritable_neuro_traits": [
+"TRAIT_ADHD",
+"TRAIT_DYSLEXIA",
+"TRAIT_ASD",
+"TRAIT_FAST_LEARNER"
+]
+}
+}

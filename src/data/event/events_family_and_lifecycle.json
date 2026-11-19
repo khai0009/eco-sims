@@ -1,0 +1,286 @@
+{
+"$schema": "./event_engine_schema.json",
+"module_id": "EVT_MOD_FAMILY_AND_LIFECYCLE",
+"description": "Sự kiện vòng đời gia đình: Sinh nhật đúng ngày tháng sinh (1 lần/năm), Kết hôn, Ly hôn, Sinh con kèm lựa chọn người trông trẻ, Nhận con nuôi và Chăm sóc con nhỏ ốm.",
+"events": [
+{
+"event_id": "EVT_LIFECYCLE_ANNUAL_BIRTHDAY",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"is_once_per_year_age": true,
+"base_weight": 150.0,
+"trigger_conditions": {
+"age_range": [6.0, 115.0],
+"allowed_location_ids": ["LOC_HOME"],
+"schedule_trigger": {
+"match_character_birthday": true
+}
+},
+"presentation": {
+"title_key": "evt_birthday_title",
+"narrative_body_key": "evt_birthday_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "CELEBRATE_WITH_FAMILY",
+"label_key": "evt_birthday_choice_family",
+"unlock_requirements": {
+"min_cash_vnd": 250000
+},
+"outcomes": {
+"time_elapsed_minutes": 90,
+"money_delta_vnd": -250000,
+"happiness_delta": 12.0,
+"journal_log_entry_key": "log_celebrated_birthday"
+}
+},
+{
+"choice_id": "QUIET_REFLECTION_ALONE",
+"label_key": "evt_birthday_choice_quiet",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 15,
+"happiness_delta": 3.0
+}
+}
+]
+},
+{
+"event_id": "EVT_FAMILY_PROPOSAL_AND_MARRIAGE",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "BOTH",
+"is_repeatable": true,
+"base_weight": 45.0,
+"trigger_conditions": {
+"age_range": [18.0, 75.0],
+"allowed_location_ids": ["LOC_HOME", "LOC_BANK_FINANCE"]
+},
+"presentation": {
+"title_key": "evt_marriage_title",
+"narrative_body_key": "evt_marriage_body",
+"base_countdown_seconds": 14.0
+},
+"choices": [
+{
+"choice_id": "HOLD_COZY_WEDDING_CEREMONY",
+"label_key": "evt_marriage_choice_cozy",
+"unlock_requirements": {
+"min_cash_vnd": 15000000
+},
+"outcomes": {
+"time_elapsed_minutes": 240,
+"money_delta_vnd": -15000000,
+"happiness_delta": 25.0,
+"journal_log_entry_key": "log_got_married_cozy"
+}
+},
+{
+"choice_id": "SIMPLE_LEGAL_REGISTRATION",
+"label_key": "evt_marriage_choice_register_only",
+"is_default_timeout_penalty": true,
+"unlock_requirements": {
+"min_cash_vnd": 500000
+},
+"outcomes": {
+"time_elapsed_minutes": 60,
+"money_delta_vnd": -500000,
+"happiness_delta": 14.0,
+"journal_log_entry_key": "log_got_married_simple"
+}
+}
+]
+},
+{
+"event_id": "EVT_FAMILY_DIVORCE_COURT",
+"category": "DANGER_RED",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 20.0,
+"trigger_conditions": {
+"age_range": [20.0, 80.0],
+"allowed_location_ids": ["LOC_BANK_FINANCE", "LOC_HOME"]
+},
+"presentation": {
+"title_key": "evt_divorce_title",
+"narrative_body_key": "evt_divorce_body",
+"base_countdown_seconds": 12.0
+},
+"choices": [
+{
+"choice_id": "MUTUAL_DIVORCE_SETTLEMENT",
+"label_key": "evt_divorce_choice_agree",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 180,
+"money_delta_vnd": -2000000,
+"happiness_delta": -25.0,
+"journal_log_entry_key": "log_divorced_settled"
+}
+},
+{
+"choice_id": "ATTEMPT_MARRIAGE_COUNSELING",
+"label_key": "evt_divorce_choice_reconcile",
+"unlock_requirements": {
+"min_cash_vnd": 1000000,
+"required_personality": "PERS_EMPATHETIC"
+},
+"outcomes": {
+"time_elapsed_minutes": 120,
+"money_delta_vnd": -1000000,
+"happiness_delta": -5.0,
+"journal_log_entry_key": "log_tried_save_marriage"
+}
+}
+]
+},
+{
+"event_id": "EVT_FAMILY_CHILDBIRTH_AND_CHILDCARE",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 35.0,
+"trigger_conditions": {
+"age_range": [20.0, 48.0],
+"allowed_location_ids": ["LOC_HOSPITAL", "LOC_HOME"]
+},
+"presentation": {
+"title_key": "evt_childbirth_title",
+"narrative_body_key": "evt_childbirth_childcare_body",
+"cutscene_clip_asset": "clip_hand_soothing_baby_crib",
+"base_countdown_seconds": 15.0
+},
+"choices": [
+{
+"choice_id": "CHILDCARE_OPT1_PARENT_STAY_HOME",
+"label_key": "evt_childcare_opt1_stay_home",
+"outcomes": {
+"time_elapsed_minutes": 180,
+"happiness_delta": 18.0,
+"journal_log_entry_key": "log_childborn_stay_home_care"
+}
+},
+{
+"choice_id": "CHILDCARE_OPT2_GRANDPARENTS_HELP",
+"label_key": "evt_childcare_opt2_grandparents",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 120,
+"money_delta_vnd": -1500000,
+"happiness_delta": 12.0,
+"journal_log_entry_key": "log_childborn_grandparents_care"
+}
+},
+{
+"choice_id": "CHILDCARE_OPT3_SEND_DAYCARE",
+"label_key": "evt_childcare_opt3_daycare",
+"unlock_requirements": {
+"min_cash_vnd": 3500000
+},
+"outcomes": {
+"time_elapsed_minutes": 120,
+"money_delta_vnd": -3500000,
+"happiness_delta": 10.0,
+"journal_log_entry_key": "log_childborn_daycare"
+}
+},
+{
+"choice_id": "CHILDCARE_OPT4_HIRE_NANNY",
+"label_key": "evt_childcare_opt4_nanny",
+"unlock_requirements": {
+"min_cash_vnd": 8000000
+},
+"outcomes": {
+"time_elapsed_minutes": 120,
+"money_delta_vnd": -8000000,
+"happiness_delta": 14.0,
+"journal_log_entry_key": "log_childborn_nanny"
+}
+}
+]
+},
+{
+"event_id": "EVT_FAMILY_ADOPTION_CENTER",
+"category": "OPPORTUNITY_GREEN",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 20.0,
+"trigger_conditions": {
+"age_range": [25.0, 60.0],
+"allowed_location_ids": ["LOC_BANK_FINANCE"]
+},
+"presentation": {
+"title_key": "evt_adoption_title",
+"narrative_body_key": "evt_adoption_body",
+"base_countdown_seconds": 14.0
+},
+"choices": [
+{
+"choice_id": "COMPLETE_ADOPTION_PAPERS",
+"label_key": "evt_adoption_choice_confirm",
+"unlock_requirements": {
+"min_cash_vnd": 5000000
+},
+"outcomes": {
+"time_elapsed_minutes": 240,
+"money_delta_vnd": -5000000,
+"happiness_delta": 20.0,
+"journal_log_entry_key": "log_adopted_child"
+}
+},
+{
+"choice_id": "POSTPONE_ADOPTION",
+"label_key": "evt_adoption_choice_later",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 30,
+"happiness_delta": -2.0
+}
+}
+]
+},
+{
+"event_id": "EVT_FAMILY_SICK_BABY_CARE",
+"category": "DANGER_RED",
+"environment_filter": "INDOOR",
+"is_repeatable": true,
+"base_weight": 35.0,
+"trigger_conditions": {
+"age_range": [21.0, 52.0],
+"allowed_location_ids": ["LOC_HOME"]
+},
+"presentation": {
+"title_key": "evt_care_child_title",
+"narrative_body_key": "evt_care_child_body",
+"cutscene_clip_asset": "clip_hand_soothing_baby_crib",
+"base_countdown_seconds": 10.0
+},
+"choices": [
+{
+"choice_id": "STAY_UP_COMFORT_CHILD",
+"label_key": "evt_care_child_choice_stay_up",
+"is_default_timeout_penalty": true,
+"outcomes": {
+"time_elapsed_minutes": 180,
+"happiness_delta": -6.0,
+"organ_deltas": { "brain": -1.5 }
+}
+},
+{
+"choice_id": "RUSH_CHILD_TO_PEDIATRIC_CLINIC",
+"label_key": "evt_care_child_choice_hospital",
+"unlock_requirements": {
+"min_cash_vnd": 450000
+},
+"outcomes": {
+"time_elapsed_minutes": 240,
+"money_delta_vnd": -450000,
+"happiness_delta": 4.0,
+"journal_log_entry_key": "log_took_sick_child_to_doctor"
+}
+}
+]
+}
+]
+}

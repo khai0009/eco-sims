@@ -1,0 +1,134 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "2.5.0",
+"description": "Dữ liệu tĩnh Data-Driven cho toàn bộ các Debuff do lạm dụng (thuốc giảm đau, chất kích thích, tệ nạn, tăng ca Burnout, sốc đảo ca, ngán ăn phân tầng tâm lý và ngủ vặt). Toàn bộ công thức quy về phép cộng/trừ/nhân/chia phẳng."
+},
+"overuse_debuffs": {
+"DEBUFF_PAINKILLER_OVERUSE": {
+"debuff_id": "DEBUFF_PAINKILLER_OVERUSE",
+"category": "MEDICAL_ABUSE",
+"trigger_doses_in_24h": 2,
+"normal_mask_hours": 6.0,
+"overused_mask_hours": 3.0,
+"normal_liver_delta": -4.0,
+"overused_liver_delta": -7.5,
+"overused_digestive_delta": -4.0,
+"happiness_delta": -5.0,
+"time_cost_multiplier": 1.15,
+"sensory_monologue_key": "debuff_painkiller_overuse_mono"
+},
+"DEBUFF_NICOTINE_WITHDRAWAL": {
+"debuff_id": "DEBUFF_NICOTINE_WITHDRAWAL",
+"category": "VICE_ADDICTION",
+"forbidden_location_ids": [
+"LOC_HOSPITAL",
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+],
+"tolerance_gain_per_use": 10.0,
+"tolerance_decay_per_day_clean": 6.0,
+"addiction_threshold_tolerance": 40.0,
+"withdrawal_trigger_hours_without_use": 12.0,
+"base_happiness_relief": 6.0,
+"tolerant_happiness_relief": 2.5,
+"lungs_delta_per_use": -2.5,
+"heart_delta_per_use": -1.5,
+"indoor_passive_smoke_family_lungs_delta": -1.0,
+"withdrawal_happiness_per_hour": -2.0,
+"withdrawal_brain_per_hour": -0.5,
+"withdrawal_time_cost_multiplier": 1.25,
+"sensory_monologue_key": "debuff_nicotine_withdrawal_mono"
+},
+"DEBUFF_ALCOHOL_OVERUSE_AND_WITHDRAWAL": {
+"debuff_id": "DEBUFF_ALCOHOL_OVERUSE_AND_WITHDRAWAL",
+"category": "VICE_ADDICTION",
+"forbidden_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_HOSPITAL"
+],
+"min_age_legal": 18,
+"tolerance_gain_per_use": 12.0,
+"tolerance_decay_per_day_clean": 5.0,
+"addiction_threshold_tolerance": 45.0,
+"withdrawal_trigger_hours_without_use": 24.0,
+"intoxication_duration_hours": 5.0,
+"overuse_sessions_in_24h": 2,
+"normal_liver_delta": -4.5,
+"overused_liver_delta": -8.0,
+"overused_brain_delta": -2.5,
+"intoxicated_accident_hazard_bonus": 40.0,
+"intoxicated_time_cost_multiplier": 1.4,
+"withdrawal_happiness_per_hour": -2.5,
+"withdrawal_brain_per_hour": -0.8,
+"withdrawal_time_cost_multiplier": 1.35,
+"overuse_monologue_key": "debuff_alcohol_overuse_mono",
+"withdrawal_monologue_key": "debuff_alcohol_withdrawal_mono"
+},
+"DEBUFF_STIMULANT_HEART_OVERLOAD": {
+"debuff_id": "DEBUFF_STIMULANT_HEART_OVERLOAD",
+"category": "STIMULANT_ABUSE",
+"overuse_doses_in_24h": 2,
+"temporary_awake_relief_hours": 2.0,
+"normal_heart_delta": -1.0,
+"overused_heart_delta": -4.5,
+"overused_digestive_delta": -3.0,
+"overused_happiness_delta": -4.0,
+"time_cost_multiplier": 1.1,
+"sensory_monologue_key": "debuff_stimulant_overload_mono"
+},
+"DEBUFF_CLINICAL_BURNOUT": {
+"debuff_id": "DEBUFF_CLINICAL_BURNOUT",
+"category": "WORK_OVERUSE",
+"trigger_weekly_work_hours": 65.0,
+"recovery_weekly_work_hours_below": 44.0,
+"time_cost_multiplier": 2.0,
+"brain_delta_per_work_hour": -0.8,
+"happiness_delta_per_shift": -4.0,
+"sensory_monologue_key": "debuff_clinical_burnout_mono"
+},
+"DEBUFF_CIRCADIAN_SHOCK": {
+"debuff_id": "DEBUFF_CIRCADIAN_SHOCK",
+"category": "SLEEP_AND_SHIFT_ABUSE",
+"min_consecutive_night_shifts": 3,
+"required_rest_days_before_day_shift": 2,
+"shock_duration_hours": 48.0,
+"time_cost_multiplier": 1.4,
+"heart_delta_per_hour": -0.6,
+"brain_delta_per_hour": -0.6,
+"happiness_delta_on_trigger": -10.0,
+"sensory_monologue_key": "debuff_circadian_shock_mono"
+},
+"DEBUFF_STRATIFIED_FOOD_FATIGUE": {
+"debuff_id": "DEBUFF_STRATIFIED_FOOD_FATIGUE",
+"category": "DIET_REPETITION",
+"min_happiness_score_to_trigger": 65.0,
+"consecutive_same_meal_threshold": 4,
+"happiness_penalty_per_repeated_meal": -4.0,
+"sensory_monologue_key": "debuff_food_fatigue_mono"
+},
+"DEBUFF_FRAGMENTED_NAP_FATIGUE": {
+"debuff_id": "DEBUFF_FRAGMENTED_NAP_FATIGUE",
+"category": "SLEEP_AND_SHIFT_ABUSE",
+"trigger_naps_without_full_sleep": 2,
+"brain_delta_per_extra_nap": -1.5,
+"digestive_delta_per_extra_nap": -1.0,
+"happiness_delta_per_extra_nap": -3.0,
+"time_cost_multiplier": 1.15,
+"sensory_monologue_key": "debuff_fragmented_nap_mono"
+}
+},
+"rehab_treatment_rules": {
+"location_id": "LOC_HOSPITAL",
+"action_id": "ACT_HOSPITAL_ADDICTION_REHAB",
+"cost_vnd": 2500000,
+"duration_minutes": 360,
+"tolerance_reduction_flat": 50.0,
+"clears_withdrawal_debuffs": true,
+"journal_log_entry_key": "log_completed_rehab_session"
+}
+}

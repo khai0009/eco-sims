@@ -1,0 +1,247 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeLocationAndVendorSchema",
+"description": "Cấu trúc chuẩn chung cho các file trong thư mục src/data/location/ (location.json, item.json, item_location.json, repair_and_secondhand_services.json), đảm bảo mọi thao tác mua bán, y tế, vệ sinh và sự kiện đều kiểm tra khớp location_id, sub_node_id và môi trường INDOOR/OUTDOOR.",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"locations": {
+"type": "array",
+"minItems": 1,
+"description": "Danh sách các địa điểm chức năng (POI) trên bản đồ khu vực",
+"items": {
+"$ref": "#/definitions/locationEntry"
+}
+},
+"item_location_bindings": {
+"type": "array",
+"description": "Ma trận ràng buộc vật phẩm/nội thất chỉ được mua, sửa chữa hoặc sử dụng tại đúng địa điểm quy định",
+"items": {
+"$ref": "#/definitions/itemLocationBinding"
+}
+}
+},
+"definitions": {
+"locationIdEnum": {
+"type": "string",
+"enum": [
+"LOC_HOME",
+"LOC_HOME_FRIEND",
+"LOC_TRANSIT_ROAD",
+"LOC_GAS_STATION",
+"LOC_HOSPITAL",
+"LOC_PHARMACY",
+"LOC_POLICE_STATION",
+"LOC_SUPERMARKET_MARKET",
+"LOC_TECH_STORE",
+"LOC_VEHICLE_REPAIR",
+"LOC_APPLIANCE_REPAIR_SHOP",
+"LOC_SECONDHAND_ELECTRONICS",
+"LOC_BANK_FINANCE",
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL",
+"LOC_WORK_SME",
+"LOC_WORK_OFFICE_MNC",
+"LOC_WORK_SME_FACTORY"
+]
+},
+"vendorConfig": {
+"type": ["object", "null"],
+"description": "Cấu hình quầy thương mại hoặc dịch vụ chỉ kích hoạt khi nhân vật đứng tại đúng Sub-Node này",
+"properties": {
+"vendor_name_key": { "type": "string" },
+"is_open_24h": { "type": "boolean", "default": false },
+"opening_time": {
+"type": "string",
+"pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+"default": "07:00"
+},
+"closing_time": {
+"type": "string",
+"pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+"default": "21:00"
+},
+"price_multiplier": {
+"type": "number",
+"minimum": 0.1,
+"default": 1.0,
+"description": "Hệ số giá bán (VD: Chợ đồ cũ điện tử là 0.45 so với giá gốc)"
+},
+"is_secondhand_market": {
+"type": "boolean",
+"default": false,
+"description": "Nếu true: Đồ mua có độ bền khởi điểm 38-72% và 25% xác suất mang lỗi ẩn"
+},
+"requires_medical_report_for_rx": {
+"type": "boolean",
+"default": false,
+"description": "Bắt buộc kiểm tra vật phẩm ITEM_MEDICAL_REPORT trong túi đồ trước khi xuất thuốc kê đơn Rx"
+},
+"accepted_payment_methods": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["CASH", "BANK_TRANSFER", "SOCIAL_INSURANCE"]
+}
+},
+"available_item_ids": {
+"type": "array",
+"description": "Danh sách mã vật phẩm, thuốc hoặc nội thất được phép giao dịch tại quầy này",
+"items": { "type": "string" }
+},
+"available_service_ids": {
+"type": "array",
+"description": "Danh sách dịch vụ (sửa xe, thay má phanh, đổ xăng, khám xét nghiệm, công chứng di chúc)",
+"items": { "type": "string" }
+}
+},
+"required": ["vendor_name_key", "accepted_payment_methods", "available_item_ids"]
+},
+"subNodeEntry": {
+"type": "object",
+"description": "Phòng chức năng hoặc phân khu cụ thể bên trong một địa điểm (Sub-Node)",
+"properties": {
+"sub_node_id": { "type": "string" },
+"label_key": { "type": "string" },
+"environment_exposure": {
+"type": "string",
+"enum": ["INDOOR", "OUTDOOR"],
+"description": "Bắt buộc gắn nhãn INDOOR hoặc OUTDOOR để Engine lọc chính xác sự kiện thời tiết, bụi mịn PM2.5 và tai nạn giao thông"
+},
+"is_accessible": { "type": "boolean", "default": true },
+"required_min_house_tier": {
+"type": "integer",
+"minimum": 1,
+"maximum": 4,
+"default": 1,
+"description": "Chỉ áp dụng cho các phòng trong LOC_HOME (VD: Hồ bơi yêu cầu nhà cấp 4)"
+},
+"static_background_asset": { "type": "string" },
+"ambient_sfx_key": { "type": "string" },
+"available_action_ids": {
+"type": "array",
+"description": "Các thao tác chủ động lên vật thể/tiện ích tại phòng này",
+"items": { "type": "string" }
+},
+"social_action_ids": {
+"type": "array",
+"description": "Các thao tác tương tác với NPC đang hiện diện tại phòng này",
+"items": { "type": "string" }
+},
+"vendor_config": {
+"$ref": "#/definitions/vendorConfig"
+}
+},
+"required": [
+"sub_node_id",
+"label_key",
+"environment_exposure",
+"is_accessible",
+"static_background_asset"
+]
+},
+"locationEntry": {
+"type": "object",
+"properties": {
+"location_id": {
+"$ref": "#/definitions/locationIdEnum"
+},
+"location_name_key": { "type": "string" },
+"category": {
+"type": "string",
+"enum": [
+"RESIDENTIAL",
+"TRANSIT",
+"ACADEMIC",
+"CORPORATE",
+"CIVIC",
+"COMMERCIAL",
+"HEALTHCARE",
+"SERVICE_REPAIR"
+]
+},
+"available_in_regions": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["RURAL", "URBAN"]
+},
+"default": ["RURAL", "URBAN"]
+},
+"sub_nodes": {
+"type": "array",
+"minItems": 1,
+"items": {
+"$ref": "#/definitions/subNodeEntry"
+}
+}
+},
+"required": ["location_id", "location_name_key", "category", "sub_nodes"]
+},
+"itemLocationBinding": {
+"type": "object",
+"properties": {
+"item_def_id": { "type": "string" },
+"usage_type": {
+"type": "string",
+"enum": ["CONSUMABLE", "DURABLE_REUSABLE"]
+},
+"size_class": {
+"type": "string",
+"enum": [
+"PORTABLE_CARRY",
+"MEDIUM_APPLIANCE",
+"BULKY_HOME_APPLIANCE",
+"VEHICLE_PARKING_GARAGE"
+]
+},
+"sold_at_location_ids": {
+"type": "array",
+"items": { "$ref": "#/definitions/locationIdEnum" }
+},
+"usable_at_location_ids": {
+"type": "array",
+"items": { "$ref": "#/definitions/locationIdEnum" }
+},
+"usable_at_sub_node_ids": {
+"type": "array",
+"items": { "type": "string" }
+},
+"repair_location_ids": {
+"type": "array",
+"description": "Đồ cồng kềnh (BULKY_HOME_APPLIANCE) bắt buộc đặt ['LOC_HOME'] để gọi thợ tới nhà",
+"items": { "$ref": "#/definitions/locationIdEnum" }
+},
+"repair_method": {
+"type": "string",
+"enum": [
+"NONE_CONSUMABLE",
+"SHOP_DROP_OFF",
+"HOME_TECHNICIAN_ONLY",
+"SHOP_OR_HOME_TECHNICIAN",
+"VEHICLE_GARAGE_REPAIR"
+]
+}
+},
+"required": [
+"item_def_id",
+"usage_type",
+"size_class",
+"sold_at_location_ids",
+"usable_at_location_ids"
+]
+}
+},
+"required": ["metadata"]
+}

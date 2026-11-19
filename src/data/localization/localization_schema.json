@@ -1,0 +1,76 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeLocalizationDictionarySchema",
+"description": "Cấu trúc chuẩn chung cho các gói ngôn ngữ trong thư mục src/data/localization/ (vi_VN.json, en_US.json...), đảm bảo không rò rỉ số % nội tạng và giữ đủ các nhóm từ điển UI, vùng miền, sự kiện, địa điểm và phụ đề Cutscene.",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"locale": {
+"type": "string",
+"pattern": "^[a-z]{2}-[A-Z]{2}$"
+},
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"ui_system": { "type": "object", "additionalProperties": { "type": "string" } },
+"regions": { "type": "object", "additionalProperties": { "type": "string" } },
+"blind_profile_labels": { "type": "object", "additionalProperties": { "type": "string" } },
+"personality_types": { "type": "object", "additionalProperties": { "type": "string" } },
+"sensory_colors": {
+"type": "object",
+"properties": {
+"health": {
+"type": "object",
+"properties": {
+"BLUE": { "type": "string" },
+"GREEN": { "type": "string" },
+"YELLOW": { "type": "string" },
+"ORANGE": { "type": "string" },
+"RED": { "type": "string" }
+},
+"required": ["BLUE", "GREEN", "YELLOW", "ORANGE", "RED"]
+},
+"happiness": {
+"type": "object",
+"properties": {
+"BLUE": { "type": "string" },
+"GREEN": { "type": "string" },
+"YELLOW": { "type": "string" },
+"ORANGE": { "type": "string" },
+"RED": { "type": "string" }
+},
+"required": ["BLUE", "GREEN", "YELLOW", "ORANGE", "RED"]
+}
+},
+"required": ["health", "happiness"]
+},
+"blind_time_and_weather": { "type": "object", "additionalProperties": { "type": "string" } },
+"hidden_symptom_monologues": { "type": "object", "additionalProperties": { "type": "string" } },
+"item_durability_monologues": { "type": "object" },
+"school_events": { "type": "object", "additionalProperties": { "type": "string" } },
+"family_and_lifecycle_events": { "type": "object", "additionalProperties": { "type": "string" } },
+"calendar_events": { "type": "object", "additionalProperties": { "type": "string" } },
+"locations": { "type": "object", "additionalProperties": { "type": "string" } },
+"sub_nodes": { "type": "object", "additionalProperties": { "type": "string" } },
+"cutscene_captions": { "type": "object", "additionalProperties": { "type": "string" } }
+},
+"required": [
+"locale",
+"metadata",
+"ui_system",
+"blind_profile_labels",
+"personality_types",
+"sensory_colors",
+"blind_time_and_weather",
+"hidden_symptom_monologues",
+"locations",
+"sub_nodes",
+"cutscene_captions"
+]
+}

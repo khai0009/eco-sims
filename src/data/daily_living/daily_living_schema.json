@@ -1,0 +1,62 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeDailyLivingModuleSchema",
+"description": "Cấu trúc chuẩn chung cho các file trong thư mục src/data/daily_living/ (food_and_drink.json, sleep_and_beds.json, hygiene_and_bathroom.json, housekeeping_and_laundry.json).",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"daily_living_actions": {
+"type": "array",
+"description": "Danh sách các thao tác sinh hoạt chủ động trong nhà hoặc nơi công cộng",
+"items": {
+"type": "object",
+"properties": {
+"action_id": { "type": "string" },
+"label_key": { "type": "string" },
+"category": {
+"type": "string",
+"enum": ["EAT_DRINK", "POWER_NAP", "SHORT_REST", "FULL_SLEEP", "TOILET_BLADDER", "SHOWER_HYGIENE", "HOUSEKEEPING", "LAUNDRY"]
+},
+"duration_minutes": { "type": "integer", "minimum": 1 },
+"allowed_location_ids": {
+"type": "array",
+"items": { "type": "string" }
+},
+"allowed_sub_nodes": {
+"type": "array",
+"items": { "type": "string" }
+},
+"allow_any_time_of_day": { "type": "boolean", "default": true },
+"consumes_item_id": { "type": ["string", "null"] },
+"requires_furniture_id": { "type": ["string", "null"] },
+"need_deltas": {
+"type": "object",
+"properties": {
+"hours_since_last_meal_reset": { "type": "boolean" },
+"sleep_debt_reduction_hours": { "type": "number" },
+"bladder_urgency_delta": { "type": "number" },
+"body_hygiene_delta": { "type": "number" },
+"house_cleanliness_delta": { "type": "number" },
+"happiness_delta": { "type": "number" }
+}
+},
+"organ_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+}
+},
+"required": ["action_id", "label_key", "category", "duration_minutes"]
+}
+}
+},
+"required": ["metadata"]
+}

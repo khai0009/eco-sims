@@ -1,0 +1,71 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeHospitalAndMedicineSchema",
+"description": "Cấu trúc chuẩn chung cho thư mục src/data/hospital_clinic/ (disease_catalog.json, medicine_and_treatment_catalog.json), phân tách rõ thuốc OTC hiệu thuốc và thuốc kê đơn Rx bệnh viện kèm ITEM_MEDICAL_REPORT.",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"disease_definition": {
+"type": "object",
+"properties": {
+"disease_id": { "type": "string" },
+"clinical_name_key": { "type": "string" },
+"affected_organ": {
+"type": "string",
+"enum": ["brain", "heart", "lungs", "liver", "digestive", "musculoskeletal", "kidneys", "integumentary_skin"]
+},
+"trigger_organ_threshold_max": { "type": "number", "minimum": 0, "maximum": 100 },
+"critical_red_threshold": { "type": "number", "default": 24.99 },
+"symptom_cluster_id": { "type": "string" },
+"is_curable_by_otc_if_mild": { "type": "boolean" },
+"hospital_recommended_medicine_ids": {
+"type": "array",
+"items": { "type": "string" }
+}
+},
+"required": ["disease_id", "affected_organ", "trigger_organ_threshold_max", "symptom_cluster_id"]
+},
+"medicine_definition": {
+"type": "object",
+"properties": {
+"medicine_id": { "type": "string" },
+"name_key": { "type": "string" },
+"usage_type": {
+"type": "string",
+"enum": ["CONSUMABLE"]
+},
+"dispense_channel": {
+"type": "string",
+"enum": ["OTC_PHARMACY", "RX_HOSPITAL_PRESCRIPTION"]
+},
+"sold_at_location_ids": {
+"type": "array",
+"items": { "type": "string" }
+},
+"requires_medical_report_item": { "type": "boolean", "default": false },
+"base_price_vnd": { "type": "integer", "minimum": 0 },
+"max_servings": { "type": "integer", "minimum": 1 },
+"target_organ_heal_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+},
+"side_effect_organ_deltas": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+},
+"symptom_mask_duration_hours": { "type": "number", "default": 0 }
+},
+"required": ["medicine_id", "name_key", "usage_type", "dispense_channel", "sold_at_location_ids", "base_price_vnd"]
+}
+},
+"required": ["metadata"]
+}

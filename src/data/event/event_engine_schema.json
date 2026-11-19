@@ -1,14 +1,14 @@
 {
 "$schema": "http://json-schema.org/draft-07/schema#",
 "title": "EcoLifeEventModuleSchema",
-"description": "Schema chuẩn cho từng file module sự kiện phân mảnh (events_childhood_0_5.json, events_daily_and_home.json, events_outdoor_and_traffic.json, events_health_and_workplace.json, events_school_and_study.json).",
-"version": "2.2.0",
+"description": "Schema chuẩn cho từng file module sự kiện phân mảnh (events_childhood_0_5.json, events_daily_and_home.json, events_outdoor_and_traffic.json, events_health_and_workplace.json, events_school_and_study.json, events_family_and_lifecycle.json, events_calendar_and_seasons.json).",
+"version": "2.3.0",
 "type": "object",
 "properties": {
 "$schema": { "type": "string" },
 "module_id": {
 "type": "string",
-"description": "Mã định danh duy nhất của module bối cảnh sự kiện (VD: EVT_MOD_SCHOOL_AND_STUDY)."
+"description": "Mã định danh duy nhất của module bối cảnh sự kiện (VD: EVT_MOD_CALENDAR_AND_SEASONS)."
 },
 "description": {
 "type": "string",
@@ -29,7 +29,7 @@
 "environment_filter": {
 "type": "string",
 "enum": ["INDOOR", "OUTDOOR", "BOTH"],
-"description": "Lọc theo environment_exposure của Sub-node hiện tại (VD: Tai nạn giao thông chỉ xảy ra ở OUTDOOR)."
+"description": "Lọc theo environment_exposure của Sub-node hiện tại."
 },
 "region_filter": {
 "type": "array",
@@ -40,6 +40,8 @@
 "description": "Lọc vùng miền Nông thôn / Thành thị. Rỗng nghĩa là xảy ra ở cả 2 vùng."
 },
 "is_repeatable": { "type": "boolean", "default": true },
+"is_once_per_year_age": { "type": "boolean", "default": false },
+"is_once_per_calendar_month": { "type": "boolean", "default": false },
 "base_weight": {
 "type": "number",
 "minimum": 0.0,
@@ -69,7 +71,26 @@
 "allowed_location_ids": {
 "type": "array",
 "items": { "type": "string" },
-"description": "Danh sách location_id được phép bật sự kiện (bao gồm LOC_HOME, LOC_GAS_STATION, LOC_SCHOOL_, LOC_WORK_...). Rỗng nghĩa là xảy ra ở bất kỳ đâu thỏa mãn environment_filter."
+"description": "Danh sách location_id được phép bật sự kiện. Rỗng nghĩa là xảy ra ở bất kỳ đâu thỏa mãn environment_filter."
+},
+"schedule_trigger": {
+"type": "object",
+"description": "Ràng buộc thời gian lịch cố định theo tháng/ngày trong năm (VD: Tựu trường tháng 8-9, NVQS tháng 11, Tiền trọ ngày 5).",
+"properties": {
+"allowed_months": {
+"type": "array",
+"items": { "type": "integer", "minimum": 1, "maximum": 12 }
+},
+"exact_day_of_month": {
+"type": ["integer", "null"],
+"minimum": 1,
+"maximum": 31
+},
+"match_character_birthday": {
+"type": "boolean",
+"default": false
+}
+}
 },
 "required_weather": {
 "type": "array",
@@ -84,8 +105,7 @@
 "min_sleep_debt_hours": { "type": ["number", "null"] },
 "max_organ_thresholds": {
 "type": "object",
-"additionalProperties": { "type": "number" },
-"description": "VD: { 'liver': 25.0 } -> Kích hoạt khi Gan suy kiệt."
+"additionalProperties": { "type": "number" }
 },
 "required_active_condition": {
 "type": ["string", "null"],
@@ -113,8 +133,7 @@ null
 "cutscene_clip_asset": { "type": ["string", "null"] },
 "cutscene_caption_key": { "type": ["string", "null"] },
 "base_countdown_seconds": {
-"type": ["number", "null"],
-"description": "Null nếu là CHILDHOOD_MILESTONE. Nếu thoát game lúc đang hiện popup, lần mở lại sẽ giữ nguyên sự kiện và đặt lại đếm ngược về đúng giá trị gốc."
+"type": ["number", "null"]
 }
 },
 "required": ["title_key", "narrative_body_key"]
@@ -130,18 +149,16 @@ null
 "label_key": { "type": "string" },
 "is_default_timeout_penalty": {
 "type": "boolean",
-"default": false,
-"description": "Tự động chọn phương án này khi thanh đếm ngược chạy về 0s."
+"default": false
 },
 "is_dementia_habit_choice": {
 "type": "boolean",
-"default": false,
-"description": "Phương án hành xử theo thói quen vô thức khi nhân vật về già bị lú lẫn (brain < 25%)."
+"default": false
 },
 "unlock_requirements": {
 "type": ["object", "null"],
-"description": "Dùng cho Phương án Chuyên gia (Expert Choice). Null nếu ai cũng chọn được.",
 "properties": {
+"min_cash_vnd": { "type": "integer", "default": 0 },
 "min_years_experience": { "type": "number", "default": 0 },
 "required_innate_traits": {
 "type": "array",
@@ -190,8 +207,7 @@ null
 "DAREDEVIL",
 "EMPATHETIC",
 null
-],
-"description": "Dùng cho 5 cột mốc 0-5 tuổi (>= 3 phiếu sẽ khóa cứng tính cách suốt đời)."
+]
 },
 "time_elapsed_minutes": { "type": "integer", "default": 0 },
 "money_delta_vnd": { "type": "integer", "default": 0 },
@@ -200,24 +216,13 @@ null
 "type": "object",
 "additionalProperties": { "type": "number" }
 },
-"ptsd_trauma_severity": {
-"type": "number",
-"default": 0.0,
-"description": "Đưa vào công thức tính điểm sang chấn PTSD."
-},
+"ptsd_trauma_severity": { "type": "number", "default": 0.0 },
 "item_durability_deltas": {
 "type": "object",
 "additionalProperties": { "type": "number" }
 },
-"unlocks_biometrics_flag": {
-"type": "boolean",
-"default": false,
-"description": "Bật true nếu sự kiện giúp giải mã chiều cao/cân nặng/thị lực (như khám sức khỏe định kỳ tại trường)."
-},
-"journal_log_entry_key": {
-"type": ["string", "null"],
-"description": "Nếu khác null, tự động ghi một dòng vào Cuốn Nhật Ký Đời Người (Giấy Dó)."
-},
+"unlocks_biometrics_flag": { "type": "boolean", "default": false },
+"journal_log_entry_key": { "type": ["string", "null"] },
 "triggers_hospitalization": { "type": "boolean", "default": false },
 "triggers_instant_death_cause_key": { "type": ["string", "null"] }
 }

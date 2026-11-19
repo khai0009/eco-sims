@@ -1,0 +1,74 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeCareerAndFinanceSchema",
+"description": "Cấu trúc chuẩn chung cho thư mục src/data/career_finance/ (education_and_skills.json, jobs_and_workplaces.json, banking_tax_and_housing.json).",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"education_or_cert_definition": {
+"type": "object",
+"properties": {
+"id": { "type": "string" },
+"name_key": { "type": "string" },
+"location_id": { "type": "string" },
+"min_age": { "type": "integer", "minimum": 0 },
+"tuition_vnd": { "type": "integer", "minimum": 0 },
+"required_prev_degree_id": { "type": ["string", "null"] }
+},
+"required": ["id", "name_key", "location_id", "min_age"]
+},
+"job_definition": {
+"type": "object",
+"properties": {
+"job_id": { "type": "string" },
+"title_key": { "type": "string" },
+"employer_tier": {
+"type": "string",
+"enum": ["TIER_1_INFORMAL", "TIER_2_SME", "TIER_3_MNC", "TIER_4_GOVERNMENT"]
+},
+"location_id": { "type": "string" },
+"required_degree_id": { "type": ["string", "null"] },
+"required_cert_id": { "type": ["string", "null"] },
+"allows_criminal_record": { "type": "boolean" },
+"base_monthly_salary_vnd": { "type": "integer", "minimum": 0 },
+"available_shifts": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["SHIFT_DAY", "SHIFT_EVENING", "SHIFT_NIGHT"]
+}
+},
+"organ_wear_per_shift": {
+"type": "object",
+"additionalProperties": { "type": "number" }
+}
+},
+"required": ["job_id", "title_key", "employer_tier", "location_id", "base_monthly_salary_vnd", "available_shifts"]
+},
+"housing_tier_definition": {
+"type": "object",
+"properties": {
+"house_tier": { "type": "integer", "minimum": 1, "maximum": 4 },
+"name_key": { "type": "string" },
+"monthly_rent_vnd": { "type": "integer", "minimum": 0 },
+"purchase_price_vnd": { "type": "integer", "minimum": 0 },
+"rent_due_day_of_month": { "type": "integer", "default": 5 },
+"unlocked_sub_nodes": {
+"type": "array",
+"items": { "type": "string" }
+}
+},
+"required": ["house_tier", "name_key", "monthly_rent_vnd", "purchase_price_vnd", "unlocked_sub_nodes"]
+}
+},
+"required": ["metadata"]
+}

@@ -1,0 +1,71 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeDevicesAndVehiclesSchema",
+"description": "Cấu trúc chuẩn chung cho thư mục src/data/devices/ (smartphone_apps_and_battery.json, vehicles_and_transit.json).",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"metadata": {
+"type": "object",
+"properties": {
+"version": { "type": "string" },
+"description": { "type": "string" }
+},
+"required": ["version", "description"]
+},
+"device_or_vehicle_entry": {
+"type": "object",
+"description": "Khuôn mẫu chuẩn cho một thiết bị điện tử hoặc phương tiện cá nhân",
+"properties": {
+"def_id": { "type": "string" },
+"name_key": { "type": "string" },
+"category": {
+"type": "string",
+"enum": ["SMARTPHONE", "WRISTWATCH", "FOOT_TRANSIT", "PUBLIC_TRANSIT", "PERSONAL_VEHICLE"]
+},
+"usage_type": {
+"type": "string",
+"enum": ["DURABLE_REUSABLE", "TICKET_SERVICE", "NON_ITEM_DEFAULT"]
+},
+"base_price_vnd": { "type": "integer", "minimum": 0 },
+"sold_at_location_ids": {
+"type": "array",
+"items": { "type": "string" }
+},
+"repair_at_location_ids": {
+"type": "array",
+"items": { "type": "string" }
+},
+"uses_fuel": { "type": "boolean", "default": false },
+"fuel_tank_capacity_liters": { "type": "number", "default": 0 },
+"fuel_consumption_liters_per_km": { "type": "number", "default": 0 },
+"trunk_capacity_kg": { "type": "number", "default": 0 },
+"requires_license_id": { "type": ["string", "null"] },
+"sub_components": {
+"type": "object",
+"description": "3 cụm linh kiện độc lập (brakes, tires, engine) với 3 hạng chất lượng (STANDARD_NORMAL, MEDIUM_OEM, PREMIUM_GENUINE)",
+"additionalProperties": {
+"type": "object",
+"properties": {
+"component_id": { "type": "string" },
+"name_key": { "type": "string" },
+"quality_tier": {
+"type": "string",
+"enum": ["STANDARD_NORMAL", "MEDIUM_OEM", "PREMIUM_GENUINE"]
+},
+"max_durability_pct": { "type": "number", "default": 100.0 },
+"wear_per_km_pct": { "type": "number" },
+"warning_threshold_pct": { "type": "number", "default": 30.0 },
+"broken_threshold_pct": { "type": "number", "default": 5.0 },
+"base_replace_cost_vnd": { "type": "integer" }
+},
+"required": ["component_id", "name_key", "max_durability_pct", "broken_threshold_pct", "base_replace_cost_vnd"]
+}
+}
+},
+"required": ["def_id", "name_key", "category", "usage_type"]
+}
+},
+"required": ["metadata"]
+}

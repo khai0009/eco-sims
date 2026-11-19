@@ -1,0 +1,47 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"title": "EcoLifeSensorySystemSchema",
+"description": "Cấu trúc chuẩn chung cho thư mục src/data/sensory/ (sensory.json, sensory_monologues.json), quy định bảng ánh xạ 5 mức đèn màu không số và 5 bậc độ bền sang monologue_key theo 5 tính cách PERS_*.",
+"version": "2.4.0",
+"type": "object",
+"properties": {
+"$schema": { "type": "string" },
+"title": { "type": "string" },
+"description": { "type": "string" },
+"version": { "type": "string" },
+"organ_threshold_mapping": {
+"type": "object",
+"properties": {
+"BLUE": { "$ref": "#/definitions/colorBand" },
+"GREEN": { "$ref": "#/definitions/colorBand" },
+"YELLOW": { "$ref": "#/definitions/colorBand" },
+"ORANGE": { "$ref": "#/definitions/colorBand" },
+"RED": { "$ref": "#/definitions/colorBand" }
+},
+"required": ["BLUE", "GREEN", "YELLOW", "ORANGE", "RED"]
+},
+"personality_monologue_bundle": {
+"type": "object",
+"properties": {
+"PERS_INTROVERT": { "type": "string" },
+"PERS_EXTROVERT": { "type": "string" },
+"PERS_DAREDEVIL": { "type": "string" },
+"PERS_EMPATHETIC": { "type": "string" },
+"PERS_AMBIVERT": { "type": "string" },
+"default": { "type": "string" }
+}
+}
+},
+"definitions": {
+"colorBand": {
+"type": "object",
+"properties": {
+"level": { "type": "integer", "minimum": 1, "maximum": 5 },
+"min_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+"max_pct": { "type": "number", "minimum": 0, "maximum": 100 }
+},
+"required": ["level", "min_pct", "max_pct"]
+}
+},
+"required": ["version"]
+}
