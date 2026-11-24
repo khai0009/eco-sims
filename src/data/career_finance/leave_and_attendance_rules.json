@@ -1,0 +1,106 @@
+{
+"$schema": "./career_and_finance_schema.json",
+"metadata": {
+"version": "3.7.0",
+"description": "Quy tắc xin nghỉ phép cho Trường học (6-17t & Đại học) và Công ty gắn với 4 phân khúc doanh nghiệp (Tier 1 -> Tier 4), kiểm tra thiết bị liên lạc còn pin và Phiếu Khám Bệnh ITEM_MEDICAL_REPORT."
+},
+"communication_channel_rules": {
+"remote_leave_duration_minutes": 10,
+"in_person_leave_duration_minutes": 25,
+"remote_requires_smartphone_item_id": "ITEM_SMARTPHONE",
+"min_smartphone_durability_pct": 5.0,
+"min_smartphone_battery_pct": 1.0,
+"allow_parents_report_for_minor_at_home": true
+},
+"school_leave_rules": {
+"school_location_ids": [
+"LOC_SCHOOL_PRIMARY",
+"LOC_SCHOOL_SECONDARY",
+"LOC_SCHOOL_HIGHSCHOOL",
+"LOC_UNIVERSITY_VOCATIONAL"
+],
+"LEAVE_SCHOOL_SICK": {
+"leave_type": "LEAVE_SCHOOL_SICK",
+"label_key": "leave_school_sick_label",
+"requires_medical_report_item": true,
+"counts_toward_excused_quota": false,
+"kpi_attendance_delta": 0.0,
+"happiness_delta": 2.0,
+"journal_log_entry_key": "log_leave_school_sick"
+},
+"LEAVE_SCHOOL_EXCUSED": {
+"leave_type": "LEAVE_SCHOOL_EXCUSED",
+"label_key": "leave_school_excused_label",
+"requires_medical_report_item": false,
+"counts_toward_excused_quota": true,
+"max_excused_days_per_year": 5,
+"kpi_attendance_delta_within_quota": -1.0,
+"kpi_attendance_delta_over_quota": -8.0,
+"happiness_delta": 1.0,
+"journal_log_entry_key": "log_leave_school_excused"
+}
+},
+"work_leave_rules": {
+"workplace_location_ids": [
+"LOC_WORK_SME",
+"LOC_WORK_OFFICE_MNC",
+"LOC_WORK_SME_FACTORY",
+"LOC_VEHICLE_REPAIR",
+"LOC_BANK_FINANCE"
+],
+"default_daily_base_wage_vnd": 320000,
+"mnc_daily_base_wage_vnd": 650000,
+"tier_policies": {
+"TIER_1_INFORMAL": {
+"annual_paid_leave_days_per_year": 0,
+"supports_bhxh_sick_pay": false,
+"bhxh_sick_pay_ratio": 0.0,
+"max_unpaid_days_before_firing_warning": 3
+},
+"TIER_2_SME": {
+"annual_paid_leave_days_per_year": 12,
+"supports_bhxh_sick_pay": true,
+"bhxh_sick_pay_ratio": 0.75,
+"max_unpaid_days_before_firing_warning": 5
+},
+"TIER_3_MNC": {
+"annual_paid_leave_days_per_year": 12,
+"supports_bhxh_sick_pay": true,
+"bhxh_sick_pay_ratio": 0.75,
+"max_unpaid_days_before_firing_warning": 5
+},
+"TIER_4_GOVERNMENT": {
+"annual_paid_leave_days_per_year": 12,
+"supports_bhxh_sick_pay": true,
+"bhxh_sick_pay_ratio": 0.75,
+"max_unpaid_days_before_firing_warning": 7
+}
+},
+"LEAVE_WORK_ANNUAL": {
+"leave_type": "LEAVE_WORK_ANNUAL",
+"label_key": "leave_work_annual_label",
+"requires_medical_report_item": false,
+"paid_ratio": 1.0,
+"kpi_attendance_delta": 0.0,
+"happiness_delta": 4.0,
+"journal_log_entry_key": "log_leave_work_annual"
+},
+"LEAVE_WORK_SICK_BHXH": {
+"leave_type": "LEAVE_WORK_SICK_BHXH",
+"label_key": "leave_work_sick_bhxh_label",
+"requires_medical_report_item": true,
+"kpi_attendance_delta": 0.0,
+"happiness_delta": 2.0,
+"journal_log_entry_key": "log_leave_work_sick_bhxh"
+},
+"LEAVE_WORK_UNPAID": {
+"leave_type": "LEAVE_WORK_UNPAID",
+"label_key": "leave_work_unpaid_label",
+"requires_medical_report_item": false,
+"paid_ratio": 0.0,
+"kpi_attendance_delta": -5.0,
+"happiness_delta": -1.5,
+"journal_log_entry_key": "log_leave_work_unpaid"
+}
+}
+}

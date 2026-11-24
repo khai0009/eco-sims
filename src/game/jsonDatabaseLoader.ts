@@ -1,9 +1,10 @@
 // Tầng nạp và tra cứu dữ liệu tĩnh JSON cho dự án Dòng Đời (Eco-Life)
-// Phong cách: Phẳng, đơn giản, dễ thêm bớt file trong tương lai, không dùng Class/Singleton phức tạp.
+// Phong cách: Phẳng, đơn giản, không dùng Class/Singleton phức tạp.
 
 import viVnDict from '../data/localization/vi_VN.json';
 import sensoryCatalog from '../data/sensory/sensory.json';
 import sensoryMonologues from '../data/sensory/sensory_monologues.json';
+import actionIndicatorIcons from '../data/sensory/action_indicator_icons.json';
 import furnitureCatalog from '../data/furniture/furniture_and_appliances.json';
 import vehiclesCatalog from '../data/devices/vehicles_and_transit.json';
 import sleepCatalog from '../data/daily_living/sleep_and_beds.json';
@@ -20,10 +21,6 @@ import npcBrainCatalog from '../data/npc_autonomous_engine_schema.json';
 import eventsSchool from '../data/event/events_school_and_study.json';
 import eventsFamily from '../data/event/events_family_and_lifecycle.json';
 import eventsCalendar from '../data/event/events_calendar_and_seasons.json';
-
-// ============================================================================
-// 1. INTERFACE ĐẦU VÀO & ĐẦU RA CỐT LÕI (KHỚP 100% KHÓA SNAKE_CASE TRONG JSON)
-// ============================================================================
 
 export type ColorCode = 'BLUE' | 'GREEN' | 'YELLOW' | 'ORANGE' | 'RED';
 export type DurabilityGrade = 'PRISTINE' | 'GOOD' | 'WORN' | 'DECAYED' | 'BROKEN';
@@ -73,14 +70,11 @@ export interface FurnitureDefinition {
   }>;
 }
 
-// ============================================================================
-// 2. KHO DỮ LIỆU TĨNH ĐÃ NẠP SẴN (DỄ DÀNG IMPORT Ở BẤT KỲ ĐÂU)
-// ============================================================================
-
 export const EcoLifeJsonDb = {
   viVn: viVnDict,
   sensory: sensoryCatalog,
   sensoryMonologues: sensoryMonologues,
+  actionIndicators: actionIndicatorIcons,
   furniture: furnitureCatalog.furniture_items as FurnitureDefinition[],
   vehicles: vehiclesCatalog,
   sleep: sleepCatalog,
@@ -92,13 +86,8 @@ export const EcoLifeJsonDb = {
   regions: regionUrbanRuralCatalog,
   mapCoords: mapCoordinatesCatalog,
   npcBrain: npcBrainCatalog,
-  // Gộp chung mảng sự kiện từ các file sự kiện phân mảnh
   allEvents: [...eventsSchool.events, ...eventsFamily.events, ...eventsCalendar.events]
 };
-
-// ============================================================================
-// 3. CÁC HÀM TRA CỨU ĐƠN GIẢN (PHẲNG, KHÔNG ĐỆ QUY RỐI RẮM)
-// ============================================================================
 
 export function translateVi(
   key: string | null | undefined,

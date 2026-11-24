@@ -1,92 +1,90 @@
-import { useState, useEffect, useRef } from 'react';
+// [TẦNG GIAO DIỆN ĐIỀU PHỐI CHÍNH — ECO-LIFE V3.1 (HƯỚNG B)]
+// Kiến trúc: Nối trực tiếp 100% vào Engine Trung Tâm (ecoLifeCentralEngine.ts).
+// Tuân thủ trọn vẹn 6 chốt chặn:
+// 1. Sân khấu đồng nhất (Cảnh phòng vẽ lớp visual_slot / Mini Cutscene 3s / Popup sự kiện 3 màu).
+// 2. Giao diện cảm quan không số (5 đèn màu, độc thoại theo tính cách, Icon mũi tên tăng/giảm).
+// 3. Clean Menu & Modal 70% phủ xám màn hình (khóa 3 khối HUD đáy khi mở Modal).
+// 4. Ràng buộc địa điểm (Location-Bound), không mua đồ từ xa, thuốc Rx bắt buộc Bệnh án.
+// 5. Lưu trữ chống gian lận 3 thời điểm (ACTION_COMPLETED / EVENT_TRIGGERED / APP_EXIT_SUSPEND).
+// 6. Tự động ẩn và cắt bỏ hoàn toàn công cụ Admin JSON & QA Tester khi build Desktop Tauri.
+
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Backpack,
+  BookOpen,
+  Compass,
+  FileText,
+  FlaskConical,
+  Hand,
+  Home,
+  MapPin,
+  Pause,
+  Play,
+  Plus,
+  ShoppingBag,
+  Sparkles,
+  Trash2,
+  User,
+  Wrench,
+  X
+} from 'lucide-react';
+import {
+  EcoLifeJsonDb,
+  calculateDistanceKmBetweenLocations,
+  translateVi,
+  type ColorCode
+} from './game/jsonDatabaseLoader';
+import type {
+  ActiveEventPopupDto,
+  EcoLifeSavedSessionState,
+  FrontendDeathAndMemoirDto,
+  FrontendHudProjection,
+  OwnedInventoryItemInstance
+} from './game/engineTypes';
+import {
+  type CentralEngineCommand,
+  createNewCentralSession,
+  deleteSavedProfile,
+  dispatchCentralEngineCommand,
+  formatSessionDateVi,
+  getAvailableActionsForCurrentSpot,
+  listAllSavedProfiles,
+  restoreCentralSession,
+  stepCentralRealTimeTick
+} from './game/ecoLifeCentralEngine';
+import {
+  type StoreCatalogItemInput,
+  calculateDynamicCarryCapacity
+} from './game/modules/shoppingAndInventoryModule';
+import type { SavedProfileSummary } from './game/modules/saveAndAntiScumModule';
+import { ActionStatIndicators } from './components/ActionStatIndicators';
 import DevOnlyAdminGate from './admin/DevOnlyAdminGate';
 
+// Chỉ nạp lười (lazy-load) trình Kiểm chứng Quần thể NPC khi đang ở chế độ Dev
+const LazyNpcAutonomousObserver = lazy(() => import('./test/NpcAutonomousObserver'));
+
 // ============================================================================
-// 1. ĐỊNH NGHĨA KIỂU DỮ LIỆU THỰC THỂ THỐNG NHẤT (UNIFIED HUMAN ENTITY)
+// 1. ĐỊNH NGHĨA KIỂU DỮ LIỆU CỤC BỘ CHO LUỒNG MÀN HÌNH & MODAL 70%
 // ============================================================================
 
-type ColorCode = 'BLUE' | 'GREEN' | 'YELLOW' | 'ORANGE' | 'RED';
-type PersonalityCode =
-  | 'PERS_INTROVERT'
-  | 'PERS_EXTROVERT'
-  | 'PERS_DAREDEVIL'
-  | 'PERS_EMPATHETIC'
-  | 'PERS_AMBIVERT';
-type FamilyTierCode = 'Q1' | 'Q2' | 'Q3' | 'Q4' | 'Q5';
+type AppScreenState = 'TITLE' | 'LIVES_LIST' | 'BIRTH_SETUP' | 'CHILDHOOD_0_5' | 'PLAYING' | 'MEMOIR_ENDGAME';
+type ActiveModalKind = 'NONE' | 'INTERACT' | 'MOVE' | 'BAG' | 'PROFILE' | 'JOURNAL' | 'MEDICAL_REPORT';
+type SpeedSetting = 0 | 1 | 2 | 4;
 
-interface OrganStateMap {
-  brain: number;
-  heart: number;
-  lungs: number;
-  liver: number;
-  digestive: number;
-  musculoskeletal: number;
-  kidneys: number;
-  integumentary_skin: number;
+interface ActiveCutsceneState {
+  caption_vi: string;
+  progress_pct: number;
 }
 
-interface HumanEntityState {
-  entity_id: string;
-  controller_mode: 'PLAYER_CONTROLLED' | 'AI_AUTONOMOUS';
-  current_region: 'RURAL' | 'URBAN';
-  current_location_id: string;
-  current_sub_node_id: string;
-  cash_vnd: number;
-  happiness_score: number;
-  identity_biometrics: {
-    full_name: string;
-    gender: 'MALE' | 'FEMALE';
-    birth_day: number;
-    birth_month: number;
-    birth_year: number;
-    family_tier: FamilyTierCode;
-    exact_age_years: number;
-    height_cm: number;
-    weight_kg: number;
-    education_level_vi: string;
-    hobby_vi: string | null;
-    locked_personality: PersonalityCode;
-    innate_traits: string[];
-  };
-  hidden_black_box: {
-    organs: OrganStateMap;
-    sleep_debt_hours: number;
-    hours_awake_continuous: number;
-    hours_since_last_meal: number;
-    bladder_urgency_pct: number;
-    body_hygiene_pct: number;
-    naps_taken_since_full_sleep: number;
-    ptsd_trauma_score: number;
-  };
-  capability_flags: {
-    is_clock_visible: boolean;
-    is_time_management_unlocked: boolean;
-    is_biometrics_decoded: boolean;
-    is_personality_decoded: boolean;
-    is_dementia_autopilot: boolean;
-  };
-  yearly_event_tracker: Record<string, number>;
-  monthly_event_tracker: Record<string, string>;
-}
-
-interface JournalEntry {
-  age_years: number;
-  text_vi: string;
-}
-
-interface NpcLifeEventLog {
-  id: string;
-  age_years: number;
-  time_str: string;
-  location_name: string;
-  action_summary: string;
-  health_color: ColorCode;
-  happiness_color: ColorCode;
-  monologue: string;
+interface ChildhoodMilestoneCard {
+  age: number;
+  title_vi: string;
+  body_vi: string;
+  options: Array<{ vote: 'A' | 'B' | 'C' | 'D'; label_vi: string }>;
 }
 
 // ============================================================================
-// 2. BẢNG TRA CỨU CẢM QUAN KHÔNG SỐ & TỪ ĐIỂN TIẾNG VIỆT GIẤY DÓ
+// 2. DỮ LIỆU HIỂN THỊ GIẤY DÓ & 5 CỘT MỐC TUỔI THƠ 0-5 TUỔI (UC-02)
 // ============================================================================
 
 const COLOR_HEX_MAP: Record<ColorCode, string> = {
@@ -97,1023 +95,1899 @@ const COLOR_HEX_MAP: Record<ColorCode, string> = {
   RED: '#B8382A'
 };
 
-const HEALTH_LABEL_MAP: Record<ColorCode, string> = {
-  BLUE: 'Xuất Sắc',
-  GREEN: 'Tốt',
-  YELLOW: 'Tạm Được',
-  ORANGE: 'Không Ổn',
-  RED: 'Nguy Kịch'
-};
-
-const HAPPINESS_LABEL_MAP: Record<ColorCode, string> = {
-  BLUE: 'Viên Mãn',
-  GREEN: 'Vui Vẻ',
-  YELLOW: 'Bình Lặng',
-  ORANGE: 'Uất Ức',
-  RED: 'Tuyệt Vọng'
-};
-
-const PERSONALITY_LABEL_MAP: Record<PersonalityCode, string> = {
-  PERS_INTROVERT: 'Hướng Nội Trầm Lặng',
-  PERS_EXTROVERT: 'Hướng Ngoại Xã Giao',
-  PERS_DAREDEVIL: 'Táo Bạo Phiêu Lưu',
-  PERS_EMPATHETIC: 'Cẩn Trọng Thấu Cảm',
-  PERS_AMBIVERT: 'Linh Hoạt Trung Hòa'
-};
-
-const LOCATION_LABEL_MAP: Record<string, string> = {
-  LOC_HOME: 'Nhà Riêng',
-  LOC_SCHOOL_PRIMARY: 'Trường Tiểu Học',
-  LOC_SCHOOL_SECONDARY: 'Trường THCS',
-  LOC_SCHOOL_HIGHSCHOOL: 'Trường THPT',
-  LOC_UNIVERSITY_VOCATIONAL: 'Đại Học & Dạy Nghề',
-  LOC_WORK_SME: 'Nơi Làm Việc',
-  LOC_HOSPITAL: 'Bệnh Viện Đa Khoa',
-  LOC_SUPERMARKET_MARKET: 'Chợ & Siêu Thị',
-  LOC_TRANSIT_ROAD: 'Đường Phố'
-};
-
-const MEMOIR_CHAPTERS = [
-  { index: 1, roman: 'I', title: 'Chương I: Thuở Ấu Thơ & Nếp Nhà', minAge: 0, maxAge: 11 },
-  { index: 2, roman: 'II', title: 'Chương II: Tuổi Trẻ & Ngưỡng Cửa Vào Đời', minAge: 12, maxAge: 24 },
-  { index: 3, roman: 'III', title: 'Chương III: Bươn Chải & Lập Nghiệp', minAge: 25, maxAge: 44 },
-  { index: 4, roman: 'IV', title: 'Chương IV: Chín Chắn & Gia Đình', minAge: 45, maxAge: 59 },
-  { index: 5, roman: 'V', title: 'Chương V: Xế Chiều & Dấu Lặng Cuối Đời', minAge: 60, maxAge: 120 }
+const CHILDHOOD_MILESTONES: ChildhoodMilestoneCard[] = [
+  {
+    age: 1,
+    title_vi: 'Cột mốc 1 tuổi — Bữa tiệc Thôi nôi',
+    body_vi: 'Trước mặt đặt đủ món đồ chơi trên chiếc chiếu cói. Đôi tay nhỏ xíu của bé hướng về đâu?',
+    options: [
+      { vote: 'A', label_vi: 'A. Lặng lẽ cầm cuốn sách bìa cứng lật đi lật lại' },
+      { vote: 'B', label_vi: 'B. Vỗ tay cười khanh khách đòi mọi người bế xoay vòng' },
+      { vote: 'C', label_vi: 'C. Chồm người trèo khỏi chiếu để với lấy chiếc xe đồ chơi ngoài xa' },
+      { vote: 'D', label_vi: 'D. Ôm chặt con gấu bông mềm và áp má vào tay mẹ' }
+    ]
+  },
+  {
+    age: 2,
+    title_vi: 'Cột mốc 2 tuổi — Ngày đầu ra công viên',
+    body_vi: 'Ngoài sân có rất nhiều bạn nhỏ đang chạy nhảy và một chú chó con đi ngang qua.',
+    options: [
+      { vote: 'A', label_vi: 'A. Ngồi yên dưới gốc cây xếp mấy viên sỏi thành hàng' },
+      { vote: 'B', label_vi: 'B. Chạy ùa ngay vào đám đông rủ các bạn cùng chơi đuổi bắt' },
+      { vote: 'C', label_vi: 'C. Leo thẳng lên cầu trượt cao nhất mà không cần người lớn đỡ' },
+      { vote: 'D', label_vi: 'D. Đưa mẩu bánh nhỏ đang cầm trên tay chia cho chú chó con' }
+    ]
+  },
+  {
+    age: 3,
+    title_vi: 'Cột mốc 3 tuổi — Món đồ chơi bị vỡ',
+    body_vi: 'Chiếc ô tô nhựa yêu thích vô tình rơi xuống nền gạch nứt làm đôi.',
+    options: [
+      { vote: 'A', label_vi: 'A. Tự ngồi một góc loay hoay lắp ghép lại từng mảnh' },
+      { vote: 'B', label_vi: 'B. Chạy đi khoe với cả nhà rồi bày ra trò chơi khác ồn ào hơn' },
+      { vote: 'C', label_vi: 'C. Tháo tung luôn bánh xe còn lại để xem bên trong có gì' },
+      { vote: 'D', label_vi: 'D. Rơm rớm nước mắt xót xa vì làm hỏng món quà ba tặng' }
+    ]
+  },
+  {
+    age: 4,
+    title_vi: 'Cột mốc 4 tuổi — Buổi chiều ở lớp Mẫu giáo',
+    body_vi: 'Cô giáo tổ chức góc kể chuyện và góc vận động ngoài sân.',
+    options: [
+      { vote: 'A', label_vi: 'A. Xin cô ngồi góc cửa sổ lặng lẽ tô màu bức tranh của mình' },
+      { vote: 'B', label_vi: 'B. Xung phong đứng trước lớp hát thật to cho các bạn vỗ tay' },
+      { vote: 'C', label_vi: 'C. Thi chạy đua thật nhanh quanh sân bất chấp ngã trầy đầu gối' },
+      { vote: 'D', label_vi: 'D. Nhường hộp bút màu đẹp cho bạn bên cạnh đang ngồi khóc' }
+    ]
+  },
+  {
+    age: 5,
+    title_vi: 'Cột mốc 5 tuổi — Trước ngưỡng cửa lớp Một',
+    body_vi: 'Gia đình chuẩn bị cặp sách để năm sau bé chính thức bước vào Trường Tiểu Học.',
+    options: [
+      { vote: 'A', label_vi: 'A. Cẩn thận tự xếp từng cuốn vở ngay ngắn vào góc bàn riêng' },
+      { vote: 'B', label_vi: 'B. Háo hức hỏi mẹ xem lớp mới có đông bạn mới không' },
+      { vote: 'C', label_vi: 'C. Hỏi ba bao giờ được tự đạp xe đi học một mình không cần đưa đón' },
+      { vote: 'D', label_vi: 'D. Dặn mẹ nhớ đón đúng giờ vì sợ ba má ở nhà một mình buồn' }
+    ]
+  }
 ];
 
-const LAST_NAMES = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Huỳnh', 'Phan', 'Vũ', 'Đặng', 'Bùi'];
-const MALE_NAMES = ['Minh An', 'Văn Bình', 'Hoàng Long', 'Đức Huy', 'Quốc Bảo', 'Gia Huy', 'Tuấn Kiệt'];
-const FEMALE_NAMES = ['Thị Mai', 'Ngọc Lan', 'Thanh Thảo', 'Minh Thư', 'Phương Anh', 'Khánh Linh', 'Thu Hà'];
+// Danh mục hàng hóa cầm tay tại các quầy bán hàng chuẩn (khớp location_id & phân loại CONSUMABLE / DURABLE_REUSABLE)
+const STORE_PORTABLE_ITEMS: StoreCatalogItemInput[] = [
+  {
+    item_def_id: 'ITEM_BREAD_LOAF',
+    display_name_key: 'Ổ bánh mì thịt nóng',
+    category: 'FOOD',
+    usage_type: 'CONSUMABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 25000,
+    weight_kg: 0.3,
+    max_servings: 1,
+    sold_at_location_ids: ['LOC_SUPERMARKET_MARKET']
+  },
+  {
+    item_def_id: 'ITEM_FRESH_GROCERY_PACK',
+    display_name_key: 'Túi thực phẩm tươi sống (3 bữa)',
+    category: 'FOOD',
+    usage_type: 'CONSUMABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 95000,
+    weight_kg: 1.8,
+    max_servings: 3,
+    sold_at_location_ids: ['LOC_SUPERMARKET_MARKET']
+  },
+  {
+    item_def_id: 'ITEM_LAUNDRY_DETERGENT',
+    display_name_key: 'Túi bột giặt gia đình (20 lần)',
+    category: 'OTHER',
+    usage_type: 'CONSUMABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 90000,
+    weight_kg: 2.0,
+    max_servings: 20,
+    sold_at_location_ids: ['LOC_SUPERMARKET_MARKET']
+  },
+  {
+    item_def_id: 'ITEM_BACKPACK_STANDARD',
+    display_name_key: 'Balo vải bền (+10kg sức chứa)',
+    category: 'CLOTHING',
+    usage_type: 'DURABLE_REUSABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 320000,
+    weight_kg: 0.7,
+    carry_bonus_kg: 10.0,
+    sold_at_location_ids: ['LOC_SUPERMARKET_MARKET']
+  },
+  {
+    item_def_id: 'ITEM_WRISTWATCH',
+    display_name_key: 'Đồng hồ đeo tay cơ bản (Mở khóa giờ)',
+    category: 'OTHER',
+    usage_type: 'DURABLE_REUSABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 450000,
+    weight_kg: 0.1,
+    sold_at_location_ids: ['LOC_TECH_STORE', 'LOC_SECONDHAND_ELECTRONICS']
+  },
+  {
+    item_def_id: 'ITEM_SMARTPHONE',
+    display_name_key: 'Điện thoại thông minh (Giờ + Thời tiết)',
+    category: 'PHONE',
+    usage_type: 'DURABLE_REUSABLE',
+    size_class: 'PORTABLE_CARRY',
+    base_price_vnd: 4200000,
+    weight_kg: 0.2,
+    sold_at_location_ids: ['LOC_TECH_STORE', 'LOC_SECONDHAND_ELECTRONICS']
+  }
+];
+
+const ALL_MAP_LOCATION_IDS = Object.keys(EcoLifeJsonDb.mapCoords.location_coordinates);
 
 // ============================================================================
-// 3. CÁC HÀM TOÁN HỌC PHẲNG & CHIẾU CẢM QUAN (KHÔNG LỘ SỐ %)
+// 3. COMPONENT CHÍNH: APP ĐIỀU PHỐI TOÀN BỘ VÒNG ĐỜI ECO-LIFE V3.1
 // ============================================================================
 
-function clamp(val: number, min: number, max: number): number {
-  if (val < min) return min;
-  if (val > max) return max;
-  return Math.round(val * 100) / 100;
-}
+export default function App() {
+  const [screen, setScreen] = useState<AppScreenState>('TITLE');
+  const [savedProfiles, setSavedProfiles] = useState<SavedProfileSummary[]>(() =>
+    listAllSavedProfiles()
+  );
+  const [confirmDeleteProfileId, setConfirmDeleteProfileId] = useState<string | null>(null);
 
-function scoreToColor(score: number): ColorCode {
-  if (score >= 85) return 'BLUE';
-  if (score >= 65) return 'GREEN';
-  if (score >= 45) return 'YELLOW';
-  if (score >= 25) return 'ORANGE';
-  return 'RED';
-}
+  // Trạng thái phiên chơi thật (nguồn chân lý duy nhất từ ecoLifeCentralEngine.ts)
+  const [session, setSession] = useState<EcoLifeSavedSessionState | null>(null);
+  const [hud, setHud] = useState<FrontendHudProjection | null>(null);
+  const [activePopup, setActivePopup] = useState<ActiveEventPopupDto | null>(null);
+  const [popupSecondsLeft, setPopupSecondsLeft] = useState<number>(0);
+  const [ptsdFreezeLeft, setPtsdFreezeLeft] = useState<number>(0);
 
-function getWeakestOrgan(organs: OrganStateMap): { key: keyof OrganStateMap; val: number } {
-  const keys: Array<keyof OrganStateMap> = [
-    'brain',
-    'heart',
-    'lungs',
-    'liver',
-    'digestive',
-    'musculoskeletal',
-    'kidneys',
-    'integumentary_skin'
-  ];
-  let minKey: keyof OrganStateMap = 'brain';
-  let minVal = organs.brain;
-  for (const k of keys) {
-    if (organs[k] < minVal) {
-      minVal = organs[k];
-      minKey = k;
-    }
-  }
-  return { key: minKey, val: minVal };
-}
+  // Cấu hình màn hình tạo nhân vật & tuổi thơ
+  const [birthYearInput, setBirthYearInput] = useState<number>(2002);
+  const [childhoodVotes, setChildhoodVotes] = useState<Array<'A' | 'B' | 'C' | 'D'>>([]);
 
-function buildSensoryMonologue(npc: HumanEntityState): string {
-  const { key, val } = getWeakestOrgan(npc.hidden_black_box.organs);
-  const color = scoreToColor(val);
-  const pers = npc.identity_biometrics.locked_personality;
-  const box = npc.hidden_black_box;
+  // Điều khiển thời gian thực, Cutscene 3s, Modal 70% & thông báo cảm quan
+  const [speed, setSpeed] = useState<SpeedSetting>(1);
+  const [activeModal, setActiveModal] = useState<ActiveModalKind>('NONE');
+  const [cutscene, setCutscene] = useState<ActiveCutsceneState | null>(null);
+  const [feedbackToastVi, setFeedbackToastVi] = useState<string>('');
+  const [viewingReportItem, setViewingReportItem] = useState<OwnedInventoryItemInstance | null>(
+    null
+  );
 
-  if (color === 'BLUE' || color === 'GREEN') {
-    if (box.hours_awake_continuous > 30) {
-      return 'Cơn buồn ngủ ập tới từng chập, mắt hoa lên vì thức trắng quá lâu — sắp gục rồi!';
-    }
-    if (box.hours_awake_continuous > 18) {
-      return 'Mí mắt nặng trĩu, đầu óc lơ mơ chậm chạp vì thức khuya kéo dài.';
-    }
-    if (box.bladder_urgency_pct >= 85) {
-      return 'Bàng quang căng tức khó chịu, cần tìm nhà vệ sinh ngay.';
-    }
-    if (box.hours_since_last_meal >= 6) {
-      return 'Bụng đói cồn cào, tay chân hơi bủn rủn vì đã quá bữa ăn.';
-    }
-    if (box.naps_taken_since_full_sleep >= 2) {
-      return 'Ngủ chập chờn từng đoạn ngắn mà thiếu giấc ngủ đêm trọn vẹn khiến đầu óc nặng trĩu...';
-    }
-    if (box.body_hygiene_pct <= 35) {
-      return 'Người bết mồ hôi và bụi bẩn, cần được tắm rửa cho tỉnh táo.';
-    }
-    if (pers === 'PERS_INTROVERT') return 'Cơ thể nhẹ nhõm, nhịp thở đều đặn, đầu óc tĩnh lặng.';
-    if (pers === 'PERS_EXTROVERT') return 'Người tràn đầy năng lượng, chỉ muốn ra ngoài gặp gỡ mọi người!';
-    if (pers === 'PERS_DAREDEVIL') return 'Sung sức thế này thì cày thêm ca đêm nữa cũng chẳng xi nhê gì.';
-    if (pers === 'PERS_EMPATHETIC') return 'Cơ thể khỏe khoắn khiến lòng mình cũng thấy bình yên theo.';
-    return 'Sức khỏe ổn định, sẵn sàng cho các kế hoạch trong ngày.';
-  }
+  // Cuốn Nhật Ký Đời Người (Trang bìa = 0, 5 Chương = 1..5, Trang cuối Di sản = 6)
+  const [memoirPageIdx, setMemoirPageIdx] = useState<number>(0);
+  const [memoirReturnScreen, setMemoirReturnScreen] = useState<AppScreenState>('TITLE');
 
-  if (key === 'digestive' || key === 'liver') {
-    return color === 'RED'
-      ? 'Cơn đau quặn thắt vùng bụng trên khiến mồ hôi lạnh vã ra, không thể chịu nổi nữa!'
-      : 'Vùng bụng trên âm ỉ khó chịu, người mệt mỏi và chán ăn.';
-  }
-  if (key === 'heart') {
-    return color === 'RED'
-      ? 'Ngực đau thắt dữ dội, mồ hôi vã như tắm — cực kỳ nguy kịch!'
-      : 'Ngực cứ tức nghẹn, nóng rát vùng chấn thủy và hơi khó thở.';
-  }
-  if (key === 'lungs') {
-    return 'Cổ họng ngứa rát, thỉnh thoảng ho khan từng cơn khi hít sâu.';
-  }
-  if (key === 'brain') {
-    return 'Đầu đau nhức từng cơn, mắt hoa lên vì thiếu ngủ và căng thẳng kéo dài.';
-  }
-  if (key === 'kidneys') {
-    return 'Vùng thắt lưng dưới căng tức âm ỉ do nhịn tiểu hoặc uống ít nước.';
-  }
-  if (key === 'integumentary_skin') {
-    return 'Da dẻ bết rít, mẩn ngứa khó chịu vì bụi bẩn và mồ hôi tích tụ.';
-  }
-  return 'Vùng thắt lưng và các khớp gối nhức mỏi âm ỉ, đi lại chậm chạp.';
-}
+  // Công cụ QA nội bộ (chỉ hoạt động khi import.meta.env.DEV === true)
+  const [showDevQaObserver, setShowDevQaObserver] = useState<boolean>(false);
 
-function createRandomNpcAtAgeSix(birthYear: number): HumanEntityState {
-  const now = new Date();
-  const birthDay = now.getDate();
-  const birthMonth = now.getMonth() + 1;
+  const sessionRef = useRef<EcoLifeSavedSessionState | null>(null);
+  sessionRef.current = session;
 
-  const gender: 'MALE' | 'FEMALE' = Math.random() < 0.5 ? 'MALE' : 'FEMALE';
-  const lastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
-  const firstPool = gender === 'MALE' ? MALE_NAMES : FEMALE_NAMES;
-  const firstName = firstPool[Math.floor(Math.random() * firstPool.length)];
-
-  const tiers: FamilyTierCode[] = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'];
-  const familyTier = tiers[Math.floor(Math.random() * tiers.length)];
-  const region: 'RURAL' | 'URBAN' = Math.random() < 0.55 ? 'RURAL' : 'URBAN';
-
-  const personalities: PersonalityCode[] = [
-    'PERS_INTROVERT',
-    'PERS_EXTROVERT',
-    'PERS_DAREDEVIL',
-    'PERS_EMPATHETIC',
-    'PERS_AMBIVERT'
-  ];
-  const lockedPersonality = personalities[Math.floor(Math.random() * personalities.length)];
-
-  const startCashMap: Record<FamilyTierCode, number> = {
-    Q1: 0,
-    Q2: 200000,
-    Q3: 1500000,
-    Q4: 5000000,
-    Q5: 20000000
+  const refreshSavedProfileList = () => {
+    setSavedProfiles(listAllSavedProfiles());
   };
 
-  return {
-    entity_id: `NPC_${Date.now()}`,
-    controller_mode: 'AI_AUTONOMOUS',
-    current_region: region,
-    current_location_id: 'LOC_HOME',
-    current_sub_node_id: 'HOME_LIVING_ROOM',
-    cash_vnd: startCashMap[familyTier],
-    happiness_score: 76,
-    identity_biometrics: {
-      full_name: `${lastName} ${firstName}`,
-      gender,
-      birth_day: birthDay,
-      birth_month: birthMonth,
-      birth_year: birthYear,
-      family_tier: familyTier,
-      exact_age_years: 6,
-      height_cm: 116,
-      weight_kg: 21,
-      education_level_vi: 'Học sinh Tiểu học',
-      hobby_vi: 'Đọc truyện & Khám phá',
-      locked_personality: lockedPersonality,
-      innate_traits: []
-    },
-    hidden_black_box: {
-      organs: {
-        brain: 90,
-        heart: 90,
-        lungs: 90,
-        liver: 90,
-        digestive: 90,
-        musculoskeletal: 90,
-        kidneys: 90,
-        integumentary_skin: 90
-      },
-      sleep_debt_hours: 0,
-      hours_awake_continuous: 0,
-      hours_since_last_meal: 2,
-      bladder_urgency_pct: 20,
-      body_hygiene_pct: 85,
-      naps_taken_since_full_sleep: 0,
-      ptsd_trauma_score: 0
-    },
-    capability_flags: {
-      is_clock_visible: true,
-      is_time_management_unlocked: false,
-      is_biometrics_decoded: false,
-      is_personality_decoded: true,
-      is_dementia_autopilot: false
-    },
-    yearly_event_tracker: {},
-    monthly_event_tracker: {}
-  };
-}
-
-// ============================================================================
-// 4. COMPONENT CHÍNH: TRÌNH THEO DÕI CUỘC ĐỜI NPC TỰ HÀNH (GIẤY DÓ)
-// ============================================================================
-
-export default function NpcAutonomousObserver() {
-  const [selectedBirthYear, setSelectedBirthYear] = useState<number>(2000);
-  const [npcEntity, setNpcEntity] = useState<HumanEntityState | null>(null);
-  const [calendarDate, setCalendarDate] = useState<{ day: number; month: number; year: number }>({
-    day: new Date().getDate(),
-    month: new Date().getMonth() + 1,
-    year: 2006
-  });
-  const [currentHour, setCurrentHour] = useState<number>(7);
-  const [isAutoRunning, setIsAutoRunning] = useState<boolean>(false);
-  const [isDeceased, setIsDeceased] = useState<boolean>(false);
-  const [deathCauseVi, setDeathCauseVi] = useState<string>('');
-  const [logs, setLogs] = useState<NpcLifeEventLog[]>([]);
-  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
-  const [activeTab, setActiveTab] = useState<'TIMELINE' | 'MEMOIR'>('TIMELINE');
-
-  const timerRef = useRef<number | null>(null);
-
-  const handleStartNewNpcLife = () => {
-    setIsAutoRunning(false);
-    setIsDeceased(false);
-    setDeathCauseVi('');
-    setActiveTab('TIMELINE');
-
-    const freshNpc = createRandomNpcAtAgeSix(selectedBirthYear);
-    const startDate = {
-      day: freshNpc.identity_biometrics.birth_day,
-      month: freshNpc.identity_biometrics.birth_month,
-      year: selectedBirthYear + 6
-    };
-
-    const dateFormatted = `${String(startDate.day).padStart(2, '0')}/${String(startDate.month).padStart(2, '0')}/${startDate.year}`;
-    const bio = freshNpc.identity_biometrics;
-    const initSummary = `Chào đời ngày ${String(bio.birth_day).padStart(2, '0')}/${String(bio.birth_month).padStart(2, '0')}/${bio.birth_year} (${bio.gender === 'MALE' ? 'Nam' : 'Nữ'}, Gia cảnh ${bio.family_tier}, ${freshNpc.current_region === 'RURAL' ? 'Nông Thôn' : 'Thành Thị'}). Tròn 6 tuổi bắt đầu vào Lớp 1.`;
-
-    setNpcEntity(freshNpc);
-    setCalendarDate(startDate);
-    setCurrentHour(7);
-    setJournalEntries([{ age_years: 6, text_vi: initSummary }]);
-    setLogs([
-      {
-        id: 'LOG_INIT',
-        age_years: 6,
-        time_str: `${dateFormatted} - 07:00`,
-        location_name: 'Nhà Riêng',
-        action_summary: initSummary,
-        health_color: 'BLUE',
-        happiness_color: 'GREEN',
-        monologue: buildSensoryMonologue(freshNpc)
+  // [Chốt chống gian lận 3]: Lưu tức thì khi người chơi đóng tab / thu nhỏ cửa sổ Desktop
+  useEffect(() => {
+    const handleSuspendSave = () => {
+      if (sessionRef.current && !sessionRef.current.death_summary?.is_deceased) {
+        dispatchCentralEngineCommand(sessionRef.current, { type: 'APP_EXIT_SUSPEND' });
       }
-    ]);
+    };
+    window.addEventListener('beforeunload', handleSuspendSave);
+    return () => window.removeEventListener('beforeunload', handleSuspendSave);
+  }, []);
+
+  // [Mini Cutscene 3 giây]: Chạy thanh tiến trình phủ ngay lên Sân Khấu Đồng Nhất
+  const triggerMiniCutscene = (captionVi: string | null) => {
+    if (!captionVi) return;
+    setCutscene({ caption_vi: captionVi, progress_pct: 5 });
   };
 
-  const stepOneHourTick = () => {
-    if (!npcEntity || isDeceased) {
-      setIsAutoRunning(false);
+  useEffect(() => {
+    if (!cutscene) return;
+    const stepMs = 150;
+    const increment = 100 / (3000 / stepMs);
+    const timer = window.setInterval(() => {
+      setCutscene((prev) => {
+        if (!prev) return null;
+        const nextPct = prev.progress_pct + increment;
+        if (nextPct >= 100) {
+          return null;
+        }
+        return { ...prev, progress_pct: nextPct };
+      });
+    }, stepMs);
+    return () => window.clearInterval(timer);
+  }, [cutscene !== null]);
+
+  // Hàm mở một Popup sự kiện kèm thiết lập đếm ngược & đóng băng PTSD 2 giây
+  const openEventPopupState = (popup: ActiveEventPopupDto) => {
+    setActivePopup(popup);
+    setPopupSecondsLeft(popup.effective_countdown_seconds);
+    setPtsdFreezeLeft(popup.ptsd_freeze_seconds);
+    setActiveModal('NONE');
+    // Tự tạm dừng đồng hồ chính khi sự kiện bật lên (EVENT_POPUP_FROZEN)
+    setSpeed(0);
+  };
+
+  // Hàm gửi lệnh tập trung qua Engine Trung Tâm V3.1
+  const runEngineCommand = (command: CentralEngineCommand) => {
+    if (!session) return;
+
+    // Sao chép sâu phiên chơi để đảm bảo React nhận đúng tham chiếu state mới sau cập nhật
+    const clonedSession: EcoLifeSavedSessionState = JSON.parse(JSON.stringify(session));
+    const response = dispatchCentralEngineCommand(clonedSession, command);
+
+    setSession(clonedSession);
+    setHud(response.hud);
+    setFeedbackToastVi(response.action_result.message_vi);
+
+    if (response.action_result.ok && response.action_result.cutscene_caption_vi) {
+      triggerMiniCutscene(response.action_result.cutscene_caption_vi);
+    }
+
+    if (response.active_popup) {
+      openEventPopupState(response.active_popup);
+    }
+
+    // Nếu nhân vật vừa qua đời -> Cuốn Nhật Ký Đời Người tự động bung toàn màn hình (UC-08)
+    if (response.death_summary?.is_deceased) {
+      setActivePopup(null);
+      setActiveModal('NONE');
+      setSpeed(0);
+      setMemoirPageIdx(0);
+      setMemoirReturnScreen('TITLE');
+      setScreen('MEMOIR_ENDGAME');
+    }
+
+    refreshSavedProfileList();
+  };
+
+  // [Trục Thời Gian Thực]: 1 giây thực = 1 phút game (nhân hệ số tốc độ 1x / 2x / 4x)
+  useEffect(() => {
+    if (screen !== 'PLAYING' || !session || activePopup || cutscene) {
       return;
     }
 
-    const npc: HumanEntityState = JSON.parse(JSON.stringify(npcEntity));
-    const box = npc.hidden_black_box;
-    const organs = box.organs;
-    const age = Math.floor(npc.identity_biometrics.exact_age_years);
-    const personality = npc.identity_biometrics.locked_personality;
-
-    let hoursPassed = 1;
-    let actionSummary = '';
-    let addedJournal: string | null = null;
-    let wentToSleepThisTick = false;
-
-    // Ngưỡng buồn ngủ linh hoạt theo Tính cách (KHÔNG gán cứng 22h hay 23h)
-    let sleepThresholdHours = 18;
-    if (personality === 'PERS_EMPATHETIC' || personality === 'PERS_INTROVERT') {
-      sleepThresholdHours = 16;
-    } else if (personality === 'PERS_DAREDEVIL') {
-      sleepThresholdHours = 32; // Dễ thức trắng đêm cày cuốc hoặc đi chơi đêm
-    } else if (personality === 'PERS_EXTROVERT') {
-      sleepThresholdHours = 24;
+    // Khi nhân vật bị lú lẫn tuổi già (is_dementia_autopilot): khóa nút Pause, ép tự chạy tốc độ >= 1x
+    const isDementia = session.player.capability_flags.is_dementia_autopilot;
+    const effectiveSpeed = isDementia ? Math.max(1, speed) : speed;
+    if (effectiveSpeed === 0) {
+      return;
     }
 
-    // [1. Chế độ lú lẫn tuổi già (Tuổi >= 65 & Não < 25%)]
-    if (age >= 65 && organs.brain < 25) {
-      npc.capability_flags.is_dementia_autopilot = true;
-      npc.current_location_id = 'LOC_HOME';
-      hoursPassed = 2;
-      box.sleep_debt_hours = clamp(box.sleep_debt_hours - 1.5, 0, 100);
-      actionSummary = 'Ngồi thẫn thờ bên hiên nhà nhìn nắng chiều trôi qua trong vô thức...';
-    }
-    // [2. Sập nguồn cưỡng chế nếu thức trắng chạm 40 tiếng (Module 3.10)]
-    else if (box.hours_awake_continuous >= 40) {
-      wentToSleepThisTick = true;
-      hoursPassed = 6;
-      box.hours_awake_continuous = 0;
-      box.naps_taken_since_full_sleep = 0;
-      box.sleep_debt_hours = clamp(box.sleep_debt_hours - 8, 0, 100);
-      organs.brain = clamp(organs.brain - 4, 0, 100);
-      npc.happiness_score = clamp(npc.happiness_score - 12, 0, 100);
+    const tickIntervalMs = 1000;
+    const minutesPerTick = effectiveSpeed * 5; // Mỗi giây thực tiến 5/10/20 phút game để trải nghiệm nhịp mượt
 
-      if (npc.current_location_id === 'LOC_TRANSIT_ROAD') {
-        const stolen = Math.round(npc.cash_vnd * 0.8);
-        npc.cash_vnd = Math.max(0, npc.cash_vnd - stolen);
-        actionSummary =
-          'SẬP NGUỒN CƯỠNG CHẾ (40h thức trắng): Ngất gục ngủ trên vỉa hè suốt 6 tiếng và bị kẻ gian móc sạch ví!';
-        addedJournal =
-          'Thức trắng 40 tiếng dẫn đến ngất xỉu ngoài đường phố và bị móc túi mất tiền.';
-      } else {
-        actionSummary =
-          'SẬP NGUỒN CƯỠNG CHẾ (40h thức trắng): Cơ thể gục ngã ngủ li bì 6 tiếng ngay tại chỗ.';
-        addedJournal = 'Bán mạng thức trắng 40 tiếng đến mức cơ thể sập nguồn ngất lịm.';
+    const timer = window.setInterval(() => {
+      if (!sessionRef.current || sessionRef.current.death_summary?.is_deceased) {
+        return;
       }
-    }
-    // [3. Cấp cứu nội tạng nguy kịch (< 25%) nếu đủ tiền]
-    else if (getWeakestOrgan(organs).val < 25 && npc.cash_vnd >= 800000) {
-      npc.current_location_id = 'LOC_HOSPITAL';
-      npc.cash_vnd = npc.cash_vnd - 800000;
-      hoursPassed = 6;
-      npc.capability_flags.is_biometrics_decoded = true;
-      const weak = getWeakestOrgan(organs);
-      organs[weak.key] = clamp(organs[weak.key] + 22, 0, 100);
-      actionSummary = 'Nhập viện khám tổng quát & điều trị kịp thời (-800.000đ, mở khóa số đo cơ thể).';
-      addedJournal = 'Phải nhập viện cấp cứu vì sức khỏe suy kiệt nặng, may mắn qua khỏi.';
-    }
-    // [4. Nhu cầu vệ sinh cấp bách (Đi tiểu bảo vệ Thận / Tắm rửa bảo vệ Da)]
-    else if (box.bladder_urgency_pct >= 75) {
-      box.bladder_urgency_pct = 0;
-      hoursPassed = 1;
-      actionSummary = 'Đi vệ sinh giải tỏa căng tức bàng quang.';
-    } else if (box.body_hygiene_pct <= 40 && npc.current_location_id === 'LOC_HOME') {
-      box.body_hygiene_pct = 100;
-      organs.integumentary_skin = clamp(organs.integumentary_skin + 1.5, 0, 100);
-      npc.happiness_score = clamp(npc.happiness_score + 2, 0, 100);
-      hoursPassed = 1;
-      actionSummary = 'Tắm nước ấm sạch sẽ tại nhà, cơ thể sảng khoái dễ chịu.';
-    }
-    // [5. Đi ngủ giấc dài 7 tiếng khi chạm ngưỡng buồn ngủ cá nhân (Bất kể ngày hay đêm)]
-    else if (box.hours_awake_continuous >= sleepThresholdHours || box.sleep_debt_hours >= 14) {
-      wentToSleepThisTick = true;
-      npc.current_location_id = 'LOC_HOME';
-      npc.current_sub_node_id = 'HOME_BEDROOM';
-      hoursPassed = 7;
-      box.hours_awake_continuous = 0;
-      box.naps_taken_since_full_sleep = 0;
-      box.sleep_debt_hours = clamp(box.sleep_debt_hours - 14, 0, 100);
-      organs.brain = clamp(organs.brain + 8, 0, 100);
-      organs.digestive = clamp(organs.digestive + 1, 0, 100);
-      actionSummary = `Buồn ngủ rã rời sau nhiều giờ thức, lên giường ngủ một giấc trọn vẹn 7 tiếng.`;
-    }
-    // [6. Nhu cầu ăn uống khi đói (>= 5 tiếng chưa ăn)]
-    else if (box.hours_since_last_meal >= 5) {
-      const foodCost = age < 18 ? 0 : npc.current_region === 'RURAL' ? 20000 : 30000;
-      if (npc.cash_vnd >= foodCost) {
-        npc.cash_vnd = npc.cash_vnd - foodCost;
-        box.hours_since_last_meal = 0;
-        box.bladder_urgency_pct = clamp(box.bladder_urgency_pct + 18, 0, 100);
-        organs.digestive = clamp(organs.digestive + 1.5, 0, 100);
-        npc.happiness_score = clamp(npc.happiness_score + 2, 0, 100);
-        hoursPassed = 1;
-        actionSummary =
-          foodCost === 0
-            ? 'Ăn bữa cơm nóng gia đình chuẩn bị sẵn.'
-            : `Ăn cơm & uống nước bổ sung năng lượng (-${foodCost.toLocaleString('vi-VN')}đ).`;
-      } else {
-        hoursPassed = 1;
-        organs.digestive = clamp(organs.digestive - 2, 0, 100);
-        npc.happiness_score = clamp(npc.happiness_score - 3, 0, 100);
-        actionSummary = 'Ví cạn tiền, đành nhịn đói uống nước lã cầm hơi...';
-      }
-    }
-    // [7. Khung giờ hành chính 08:00 - 17:00: Đi học (T8-T5) hoặc Đi làm]
-    else if (currentHour >= 8 && currentHour < 17) {
-      const isSummerBreak = calendarDate.month === 6 || calendarDate.month === 7;
-      if (age >= 6 && age <= 17 && !isSummerBreak) {
-        const schoolId =
-          age <= 10
-            ? 'LOC_SCHOOL_PRIMARY'
-            : age <= 14
-              ? 'LOC_SCHOOL_SECONDARY'
-              : 'LOC_SCHOOL_HIGHSCHOOL';
-        npc.current_location_id = schoolId;
-        hoursPassed = 1;
-        actionSummary = `Ngồi học chăm chú tại ${LOCATION_LABEL_MAP[schoolId]}.`;
+      const cloned: EcoLifeSavedSessionState = JSON.parse(JSON.stringify(sessionRef.current));
+      const tickRes = stepCentralRealTimeTick(cloned, minutesPerTick, 0.06);
 
-        if (Math.random() < 0.14) {
-          const roll = Math.random();
-          if (roll < 0.35) {
-            npc.happiness_score = clamp(npc.happiness_score + 4, 0, 100);
-            actionSummary += ' | Bạn cùng bàn mượn tập chép bài (+4 Hạnh phúc).';
-          } else if (roll < 0.7) {
-            npc.happiness_score = clamp(npc.happiness_score - 5, 0, 100);
-            actionSummary += ' | Bị gọi lên bảng khảo bài đầu giờ hơi lúng túng.';
-          } else if (!npc.capability_flags.is_biometrics_decoded) {
-            npc.capability_flags.is_biometrics_decoded = true;
-            actionSummary += ' | Y tế trường học đo chiều cao, cân nặng & thị lực định kỳ!';
-            addedJournal = 'Được y tế trường học đo chiều cao, cân nặng và thị lực định kỳ.';
-          }
+      setSession(cloned);
+      setHud(tickRes.hud);
+
+      if (tickRes.action_result.message_vi) {
+        setFeedbackToastVi(tickRes.action_result.message_vi);
+      }
+
+      if (tickRes.active_popup) {
+        openEventPopupState(tickRes.active_popup);
+        refreshSavedProfileList();
+      } else if (tickRes.death_summary?.is_deceased) {
+        setActiveModal('NONE');
+        setSpeed(0);
+        setMemoirPageIdx(0);
+        setMemoirReturnScreen('TITLE');
+        setScreen('MEMOIR_ENDGAME');
+        refreshSavedProfileList();
+      }
+    }, tickIntervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [screen, speed, activePopup, cutscene, session?.player.capability_flags.is_dementia_autopilot]);
+
+  // [Bộ Đếm Ngược Popup Sự Kiện 3-15 giây + Đóng Băng PTSD 2 giây]
+  useEffect(() => {
+    if (!activePopup) return;
+
+    const timer = window.setInterval(() => {
+      if (ptsdFreezeLeft > 0) {
+        setPtsdFreezeLeft((prev) => Math.max(0, Math.round((prev - 0.1) * 10) / 10));
+        return;
+      }
+
+      setPopupSecondsLeft((prev) => {
+        const next = Math.round((prev - 0.1) * 10) / 10;
+        if (next <= 0) {
+          // Hết giờ đếm ngược -> tự động gửi null để Engine chọn phương án phạt mặc định / thói quen lú lẫn
+          window.clearInterval(timer);
+          setActivePopup(null);
+          runEngineCommand({ type: 'SUBMIT_EVENT_CHOICE', selected_choice_id: null });
+          return 0;
         }
-      } else if (age >= 18 && age < 60) {
-        npc.current_location_id = 'LOC_WORK_SME';
-        const dailyShiftPay = npc.current_region === 'RURAL' ? 260000 : 380000;
-        npc.cash_vnd = npc.cash_vnd + dailyShiftPay;
-        organs.musculoskeletal = clamp(organs.musculoskeletal - 0.8, 0, 100);
-        hoursPassed = 4;
-        actionSummary = `Hoàn thành ca làm việc tại ${LOCATION_LABEL_MAP.LOC_WORK_SME} (+${dailyShiftPay.toLocaleString('vi-VN')}đ).`;
-      } else {
-        npc.current_location_id = 'LOC_HOME';
-        hoursPassed = 1;
-        actionSummary =
-          age <= 17
-            ? 'Nghỉ hè tháng 6–7 ở nhà phụ giúp gia đình và đọc sách.'
-            : 'An dưỡng tuổi hưu tại nhà, đọc báo uống trà.';
+        return next;
+      });
+    }, 100);
+
+    return () => window.clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePopup, ptsdFreezeLeft]);
+
+  // [Phím tắt lật trang Nhật Ký ← →]
+  useEffect(() => {
+    if (screen !== 'MEMOIR_ENDGAME') return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        setMemoirPageIdx((p) => Math.min(6, p + 1));
+      } else if (e.key === 'ArrowLeft') {
+        setMemoirPageIdx((p) => Math.max(0, p - 1));
       }
-    }
-    // [8. Thời gian tối/đêm hoặc rảnh rỗi: Tự do thức khuya cày việc / đi chơi đêm nếu chưa buồn ngủ]
-    else if (
-      (personality === 'PERS_DAREDEVIL' || personality === 'PERS_EXTROVERT') &&
-      age >= 18 &&
-      age < 60 &&
-      (currentHour >= 19 || currentHour <= 3)
-    ) {
-      if (personality === 'PERS_DAREDEVIL') {
-        npc.current_location_id = 'LOC_WORK_SME';
-        npc.cash_vnd = npc.cash_vnd + 160000;
-        hoursPassed = 2;
-        actionSummary = 'Thức xuyên đêm cày thêm việc tự do (+160.000đ).';
-      } else {
-        npc.current_location_id = 'LOC_TRANSIT_ROAD';
-        npc.happiness_score = clamp(npc.happiness_score + 3, 0, 100);
-        hoursPassed = 2;
-        actionSummary = 'Thức khuya đi dạo phố đêm gặp gỡ bạn bè.';
-      }
-    } else {
-      npc.current_location_id = 'LOC_HOME';
-      if (currentHour >= 12 && currentHour <= 14 && box.naps_taken_since_full_sleep === 0) {
-        box.naps_taken_since_full_sleep = 1;
-        box.sleep_debt_hours = clamp(box.sleep_debt_hours - 1.5, 0, 100);
-        organs.brain = clamp(organs.brain + 1.2, 0, 100);
-        hoursPassed = 1;
-        actionSummary = 'Chợp mắt nghỉ trưa nhẹ nhàng (20p), đầu óc tỉnh táo hơn.';
-      } else {
-        hoursPassed = 1;
-        npc.happiness_score = clamp(npc.happiness_score + 1, 0, 100);
-        actionSummary = 'Sinh hoạt tự do, đọc sách tại phòng khách.';
-      }
-    }
-
-    // Cộng dồn giờ thức liên tục và áp dụng hình phạt sinh học khi thức khuya (Module 3.10)
-    if (!wentToSleepThisTick) {
-      box.hours_awake_continuous = box.hours_awake_continuous + hoursPassed;
-      if (box.hours_awake_continuous > 16) {
-        box.sleep_debt_hours = clamp(box.sleep_debt_hours + hoursPassed * 1.0, 0, 100);
-        organs.brain = clamp(organs.brain - hoursPassed * 0.6, 0, 100);
-        organs.heart = clamp(organs.heart - hoursPassed * 0.4, 0, 100);
-        organs.liver = clamp(organs.liver - hoursPassed * 0.4, 0, 100);
-      }
-      if (box.hours_awake_continuous > 30) {
-        organs.brain = clamp(organs.brain - hoursPassed * 1.2, 0, 100);
-        organs.heart = clamp(organs.heart - hoursPassed * 0.8, 0, 100);
-      }
-    }
-
-    box.hours_since_last_meal = box.hours_since_last_meal + hoursPassed;
-    box.bladder_urgency_pct = clamp(box.bladder_urgency_pct + 11 * hoursPassed, 0, 100);
-    box.body_hygiene_pct = clamp(box.body_hygiene_pct - 3 * hoursPassed, 0, 100);
-
-    if (box.hours_since_last_meal > 10) {
-      organs.digestive = clamp(organs.digestive - 1.5 * hoursPassed, 0, 100);
-    }
-    if (box.bladder_urgency_pct >= 95) {
-      organs.kidneys = clamp(organs.kidneys - 1.5 * hoursPassed, 0, 100);
-    }
-
-    // Cập nhật đồng hồ Ngày / Tháng / Năm lịch thực tế
-    const nextHourRaw = currentHour + hoursPassed;
-    const daysAdded = Math.floor(nextHourRaw / 24);
-    const nextHour = nextHourRaw % 24;
-
-    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    let nextDay = calendarDate.day + daysAdded;
-    let nextMonth = calendarDate.month;
-    let nextYear = calendarDate.year;
-    while (nextDay > daysInMonth[nextMonth - 1]) {
-      nextDay = nextDay - daysInMonth[nextMonth - 1];
-      nextMonth = nextMonth + 1;
-      if (nextMonth > 12) {
-        nextMonth = 1;
-        nextYear = nextYear + 1;
-      }
-    }
-
-    const bio = npc.identity_biometrics;
-    const prevAge = Math.floor(bio.exact_age_years);
-    const passedBirthday =
-      nextMonth > bio.birth_month || (nextMonth === bio.birth_month && nextDay >= bio.birth_day);
-    const newAge = Math.max(6, nextYear - bio.birth_year - (passedBirthday ? 0 : 1));
-    bio.exact_age_years = newAge;
-
-    if (newAge <= 10) {
-      bio.education_level_vi = 'Học sinh Tiểu học';
-      bio.height_cm = 115 + (newAge - 6) * 5;
-      bio.weight_kg = 20 + (newAge - 6) * 3;
-    } else if (newAge <= 14) {
-      bio.education_level_vi = 'Học sinh THCS';
-      bio.height_cm = 136 + (newAge - 11) * 6;
-      bio.weight_kg = 33 + (newAge - 11) * 4;
-    } else if (newAge <= 17) {
-      bio.education_level_vi = 'Học sinh THPT';
-      bio.height_cm = 158 + (newAge - 15) * 3;
-      bio.weight_kg = 48 + (newAge - 15) * 3;
-    } else if (newAge === 18 && prevAge === 17) {
-      bio.education_level_vi = 'Tốt nghiệp THPT (Tự lập)';
-      addedJournal = 'Tròn 18 tuổi, bước qua ngưỡng cửa trưởng thành với bao dự định mới.';
-    }
-
-    if (newAge > prevAge && newAge >= 60) {
-      organs.brain = clamp(organs.brain - 2.0, 0, 100);
-      organs.heart = clamp(organs.heart - 2.0, 0, 100);
-      organs.lungs = clamp(organs.lungs - 2.0, 0, 100);
-      organs.liver = clamp(organs.liver - 2.0, 0, 100);
-      organs.digestive = clamp(organs.digestive - 2.0, 0, 100);
-      organs.musculoskeletal = clamp(organs.musculoskeletal - 2.0, 0, 100);
-      organs.kidneys = clamp(organs.kidneys - 2.0, 0, 100);
-      organs.integumentary_skin = clamp(organs.integumentary_skin - 2.0, 0, 100);
-    }
-
-    if (
-      nextDay === bio.birth_day &&
-      nextMonth === bio.birth_month &&
-      npc.current_location_id === 'LOC_HOME' &&
-      (npc.yearly_event_tracker.BIRTHDAY ?? 5) < newAge
-    ) {
-      npc.yearly_event_tracker.BIRTHDAY = newAge;
-      if (npc.cash_vnd >= 250000) {
-        npc.cash_vnd = npc.cash_vnd - 250000;
-        npc.happiness_score = clamp(npc.happiness_score + 12, 0, 100);
-        actionSummary += ' | Sinh nhật: Mua chiếc bánh kem nhỏ quây quần bên gia đình (-250.000đ).';
-        addedJournal = `Đón sinh nhật tuổi ${newAge} ấm áp bên người thân.`;
-      } else {
-        npc.happiness_score = clamp(npc.happiness_score + 4, 0, 100);
-        actionSummary += ' | Sinh nhật: Lặng lẽ đón tuổi mới trong bình yên.';
-      }
-    } else if (
-      (nextMonth === 1 || nextMonth === 2) &&
-      (npc.yearly_event_tracker.TET ?? 5) < newAge
-    ) {
-      npc.yearly_event_tracker.TET = newAge;
-      if (newAge < 18) {
-        npc.cash_vnd = npc.cash_vnd + 500000;
-        npc.happiness_score = clamp(npc.happiness_score + 14, 0, 100);
-        actionSummary += ' | Tết Nguyên Đán: Nhận phong bao lì xì đầu năm (+500.000đ).';
-        addedJournal = 'Đón Tết Nguyên Đán rộn ràng và nhận lì xì mừng tuổi.';
-      } else if (npc.cash_vnd >= 1500000) {
-        npc.cash_vnd = npc.cash_vnd - 1500000;
-        npc.happiness_score = clamp(npc.happiness_score + 12, 0, 100);
-        actionSummary += ' | Tết Nguyên Đán: Sắm Tết và biếu cha mẹ (-1.500.000đ).';
-        addedJournal = 'Sum họp đón Tết Nguyên Đán trọn vẹn bên gia đình.';
-      }
-    } else if (
-      nextMonth === 8 &&
-      newAge <= 17 &&
-      (npc.yearly_event_tracker.BACK_TO_SCHOOL ?? 5) < newAge
-    ) {
-      npc.yearly_event_tracker.BACK_TO_SCHOOL = newAge;
-      npc.happiness_score = clamp(npc.happiness_score + 6, 0, 100);
-      actionSummary += ' | Mùa Tựu Trường tháng 8: Sửa soạn sách vở bước vào năm học mới.';
-    } else if (
-      nextDay === 5 &&
-      newAge >= 20 &&
-      npc.monthly_event_tracker.RENT !== `${nextYear}-${nextMonth}`
-    ) {
-      npc.monthly_event_tracker.RENT = `${nextYear}-${nextMonth}`;
-      const rentCost = npc.current_region === 'RURAL' ? 900000 : 1800000;
-      if (npc.cash_vnd >= rentCost) {
-        npc.cash_vnd = npc.cash_vnd - rentCost;
-        actionSummary += ` | Ngày 05 đầu tháng: Thanh toán tiền trọ & điện nước (-${rentCost.toLocaleString('vi-VN')}đ).`;
-      } else {
-        npc.happiness_score = clamp(npc.happiness_score - 10, 0, 100);
-        actionSummary += ' | Ngày 05 đầu tháng: Chậm tiền trọ, phải xin chủ nhà khất nợ.';
-      }
-    }
-
-    // Kiểm tra điều kiện qua đời (Đột quỵ Karoshi, Suy đa tạng, Tuổi già)
-    const minOrganVal = getWeakestOrgan(organs).val;
-    let diedNow = false;
-    let causeText = '';
-    if (box.sleep_debt_hours >= 72 && organs.heart <= 10) {
-      diedNow = true;
-      causeText = 'Đột quỵ do kiệt sức thức khuya lao động quá độ (Karoshi)';
-    } else if (minOrganVal <= 0) {
-      diedNow = true;
-      causeText = 'Suy đa tạng nặng';
-    } else if (newAge >= 85 && minOrganVal <= 15) {
-      diedNow = true;
-      causeText = 'Tuổi cao sức yếu, an nghỉ tự nhiên';
-    }
-
-    const healthColor = scoreToColor(minOrganVal);
-    const happinessColor = scoreToColor(npc.happiness_score);
-    const monologue = buildSensoryMonologue(npc);
-    const dateStr = `${String(nextDay).padStart(2, '0')}/${String(nextMonth).padStart(2, '0')}/${nextYear}`;
-
-    const newLog: NpcLifeEventLog = {
-      id: `LOG_${Date.now()}_${Math.random()}`,
-      age_years: newAge,
-      time_str: `${dateStr} - ${String(nextHour).padStart(2, '0')}:00`,
-      location_name: LOCATION_LABEL_MAP[npc.current_location_id] || npc.current_location_id,
-      action_summary: actionSummary,
-      health_color: healthColor,
-      happiness_color: happinessColor,
-      monologue
     };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [screen]);
 
-    setNpcEntity(npc);
-    setCalendarDate({ day: nextDay, month: nextMonth, year: nextYear });
-    setCurrentHour(nextHour);
-    setLogs((prev) => [newLog, ...prev].slice(0, 60));
+  // ============================================================================
+  // 4. HÀM CHUYỂN MÀN HÌNH & TẢI / TẠO CUỘC ĐỜI THẬT
+  // ============================================================================
 
-    if (addedJournal) {
-      setJournalEntries((prev) => [...prev, { age_years: newAge, text_vi: addedJournal! }]);
+  const handleOpenSavedProfile = (profileId?: string) => {
+    const restored = restoreCentralSession(profileId);
+    if (!restored.session || !restored.hud) {
+      setFeedbackToastVi('Chưa có hồ sơ cuộc đời nào được lưu.');
+      return;
     }
 
-    if (diedNow) {
-      setIsDeceased(true);
-      setDeathCauseVi(causeText);
-      setIsAutoRunning(false);
-      setActiveTab('MEMOIR');
-      setJournalEntries((prev) => [
-        ...prev,
-        {
-          age_years: newAge,
-          text_vi: `Khép lại cuộc đời ở tuổi ${newAge} (${newAge < 50 ? 'Hưởng dương' : 'Hưởng thọ'} ${newAge} tuổi) — ${causeText}.`
-        }
-      ]);
+    setSession(restored.session);
+    setHud(restored.hud);
+    setActiveModal('NONE');
+
+    // Nếu cuộc đời đã qua đời -> Mở thẳng Cuốn Nhật Ký Đời Người
+    if (restored.session.death_summary?.is_deceased) {
+      setMemoirPageIdx(0);
+      setMemoirReturnScreen('LIVES_LIST');
+      setScreen('MEMOIR_ENDGAME');
+      return;
+    }
+
+    // Nếu chưa xong giai đoạn 0-5 tuổi -> Quay lại hoàn tất 5 cột mốc tuổi thơ
+    if (restored.session.player.identity_biometrics.exact_age_years < 6) {
+      setChildhoodVotes([]);
+      setScreen('CHILDHOOD_0_5');
+      return;
+    }
+
+    setScreen('PLAYING');
+    // Chống Alt+F4: Nếu lần tắt trước đang kẹt sự kiện thì mở lại ngay đúng sự kiện đó với số giây gốc
+    if (restored.restoredPopup) {
+      openEventPopupState(restored.restoredPopup);
+    } else {
+      setActivePopup(null);
+      setSpeed(1);
     }
   };
 
-  useEffect(() => {
-    if (isAutoRunning && !isDeceased) {
-      timerRef.current = window.setInterval(() => {
-        stepOneHourTick();
-      }, 380);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
+  const handleConfirmCreateNewLife = () => {
+    const safeYear = Math.max(1950, Math.min(2026, Math.floor(birthYearInput) || 2002));
+    const profileId = `LIFE_${Date.now()}`;
+    const created = createNewCentralSession({
+      profileId,
+      birthYear: safeYear,
+      controllerMode: 'PLAYER_CONTROLLED'
+    });
+
+    setSession(created.session);
+    setHud(created.hud);
+    setChildhoodVotes([]);
+    setActivePopup(null);
+    setActiveModal('NONE');
+    setFeedbackToastVi('');
+    refreshSavedProfileList();
+    setScreen('CHILDHOOD_0_5');
+  };
+
+  const handlePickChildhoodVote = (vote: 'A' | 'B' | 'C' | 'D') => {
+    const nextVotes = [...childhoodVotes, vote];
+    setChildhoodVotes(nextVotes);
+
+    // Đủ 5 cột mốc (1 -> 5 tuổi) -> Khóa tính cách ở mốc 6 tuổi và mở khóa màn chơi thời gian thực
+    if (nextVotes.length >= CHILDHOOD_MILESTONES.length && session) {
+      const cloned: EcoLifeSavedSessionState = JSON.parse(JSON.stringify(session));
+      const res = dispatchCentralEngineCommand(cloned, {
+        type: 'LOCK_CHILDHOOD_PERSONALITY',
+        votes: nextVotes
+      });
+      setSession(cloned);
+      setHud(res.hud);
+      setFeedbackToastVi(res.action_result.message_vi);
+      setSpeed(1);
+      refreshSavedProfileList();
+      setScreen('PLAYING');
     }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  });
+  };
 
-  useEffect(() => {
-    handleStartNewNpcLife();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleDeleteProfileClick = (profileId: string) => {
+    // Xác nhận 2 bước chống bấm xóa nhầm cuộc đời đang chơi
+    if (confirmDeleteProfileId !== profileId) {
+      setConfirmDeleteProfileId(profileId);
+      return;
+    }
+    deleteSavedProfile(profileId);
+    setConfirmDeleteProfileId(null);
+    refreshSavedProfileList();
+  };
 
-  const healthColor: ColorCode = npcEntity
-    ? scoreToColor(getWeakestOrgan(npcEntity.hidden_black_box.organs).val)
-    : 'GREEN';
-  const happinessColor: ColorCode = npcEntity
-    ? scoreToColor(npcEntity.happiness_score)
-    : 'GREEN';
+  // Các dữ liệu tính toán phụ trợ cho HUD & Modal
+  const latestAliveProfile = useMemo(
+    () => savedProfiles.find((p) => !p.is_deceased) || null,
+    [savedProfiles]
+  );
 
-  return (
-    <div
-      style={{
-        backgroundColor: '#F2ECE0',
-        color: '#1F1B16',
-        minHeight: '100vh',
-        padding: '20px',
-        fontFamily: 'Georgia, "Be Vietnam Pro", serif'
-      }}
-    >
-      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-        <div
-          style={{
-            borderBottom: '2px solid #1F1B16',
-            paddingBottom: '12px',
-            marginBottom: '16px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '12px'
-          }}
-        >
-          <div>
-            <h1 style={{ margin: 0, fontSize: '22px', color: '#B8382A' }}>
-              DÒNG ĐỜI — TRÌNH QUAN SÁT NPC TỰ HÀNH (AI_AUTONOMOUS)
-            </h1>
-            <p style={{ margin: '4px 0 0', fontSize: '13px', opacity: 0.85 }}>
-              Tự do thức khuya không gán cứng giờ ngủ: Ngủ theo áp lực buồn ngủ & tính cách; thức quá 18h/30h/40h bị hao mòn nội tạng & sập nguồn cưỡng chế
-            </p>
-          </div>
+  const cleanMenuActions = useMemo(
+    () => (session ? getAvailableActionsForCurrentSpot(session) : []),
+    [session]
+  );
 
-          <div style={{ display: 'flex', gap: '8px' }}>
+  const unlockedHomeRooms = useMemo(() => {
+    if (!session) return ['HOME_LIVING_ROOM', 'HOME_KITCHEN', 'HOME_BATHROOM'];
+    const tierDef = EcoLifeJsonDb.bankingHousing.housing_tiers.find(
+      (h) => h.house_tier === session.player.house_tier
+    );
+    return tierDef ? tierDef.unlocked_sub_nodes : ['HOME_LIVING_ROOM', 'HOME_KITCHEN', 'HOME_BATHROOM'];
+  }, [session]);
+
+  const carryStatus = useMemo(
+    () => (session ? calculateDynamicCarryCapacity(session.player) : null),
+    [session]
+  );
+
+  const storeItemsAtCurrentSpot = useMemo(() => {
+    if (!session) return [];
+    return STORE_PORTABLE_ITEMS.filter((it) =>
+      it.sold_at_location_ids.includes(session.player.current_location_id)
+    );
+  }, [session]);
+
+  const furnitureSoldAtCurrentSpot = useMemo(() => {
+    if (!session) return [];
+    return EcoLifeJsonDb.furniture.filter((f) =>
+      f.sold_at_location_ids.includes(session.player.current_location_id)
+    );
+  }, [session]);
+
+  // ============================================================================
+  // 5. LỚP RENDER CHÍNH (BỌC NGOÀI BỞI DevOnlyAdminGate TỰ CẮT KHI BUILD DESKTOP)
+  // ============================================================================
+
+  const renderMainContent = () => {
+    // [Chế độ QA Nội Bộ — Chỉ tồn tại khi Dev]
+    if (import.meta.env.DEV && showDevQaObserver) {
+      return (
+        <div className="min-h-screen bg-[#F2ECE0]">
+          <div className="sticky top-0 z-40 flex items-center justify-between border-b-2 border-[#1F1B16] bg-[#1F1B16] px-4 py-2.5 text-xs text-[#F9F5EC]">
+            <span className="font-bold">Chế Độ Kiểm Chứng Logic & Quần Thể NPC (Dev-Only)</span>
             <button
-              onClick={stepOneHourTick}
-              disabled={isDeceased || isAutoRunning}
-              style={{
-                padding: '8px 14px',
-                border: '1px solid #1F1B16',
-                backgroundColor: '#EAE1D0',
-                cursor: isDeceased ? 'not-allowed' : 'pointer',
-                fontWeight: 'bold'
-              }}
+              type="button"
+              onClick={() => setShowDevQaObserver(false)}
+              className="rounded border border-[#B8382A] bg-[#B8382A] px-3 py-1 font-bold text-white"
             >
-              +1 Nhịp AI
-            </button>
-            <button
-              onClick={() => setIsAutoRunning(!isAutoRunning)}
-              disabled={isDeceased}
-              style={{
-                padding: '8px 16px',
-                border: '1px solid #B8382A',
-                backgroundColor: isAutoRunning ? '#B8382A' : '#1F1B16',
-                color: '#F2ECE0',
-                cursor: isDeceased ? 'not-allowed' : 'pointer',
-                fontWeight: 'bold'
-              }}
-            >
-              {isAutoRunning ? '⏸ Tạm Dừng' : '▶ Tự Động Theo Dõi'}
+              ← Quay Lại Game Chính
             </button>
           </div>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            flexWrap: 'wrap',
-            gap: '12px',
-            padding: '12px 14px',
-            border: '1px solid #C8BFA8',
-            backgroundColor: '#FAF6EE',
-            marginBottom: '16px'
-          }}
-        >
-          <div style={{ flex: '1 1 260px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', marginBottom: '4px' }}>
-              Chọn Năm Sinh Ra (Lựa chọn duy nhất — Tên, Giới tính, Gia cảnh Q1–Q5 & Vùng miền ngẫu nhiên 100%)
-            </label>
-            <input
-              type="number"
-              min={1950}
-              max={2026}
-              value={selectedBirthYear}
-              onChange={(e) => setSelectedBirthYear(Number(e.target.value) || 2000)}
-              style={{
-                width: '100%',
-                padding: '7px',
-                border: '1px solid #1F1B16',
-                background: '#FFF',
-                fontSize: '14px'
-              }}
-            />
-          </div>
-          <button
-            onClick={handleStartNewNpcLife}
-            style={{
-              padding: '9px 18px',
-              backgroundColor: '#B8382A',
-              color: '#F2ECE0',
-              border: 'none',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
+          <Suspense
+            fallback={
+              <div className="p-8 text-center text-sm">Đang nạp Trung tâm Kiểm chứng Logic...</div>
+            }
           >
-            Khởi Tạo Cuộc Đời Mới (Random Nhân Thân)
-          </button>
+            <LazyNpcAutonomousObserver />
+          </Suspense>
         </div>
+      );
+    }
 
-        {npcEntity && (
-          <div
-            style={{
-              border: '1px solid #1F1B16',
-              padding: '16px',
-              backgroundColor: '#FAF6EE',
-              marginBottom: '18px'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-              <div>
-                <h2 style={{ margin: 0, fontSize: '20px' }}>
-                  {npcEntity.identity_biometrics.full_name} ({Math.floor(npcEntity.identity_biometrics.exact_age_years)} tuổi •{' '}
-                  {npcEntity.identity_biometrics.gender === 'MALE' ? 'Nam' : 'Nữ'})
-                </h2>
-                <div style={{ fontSize: '13px', marginTop: '4px', lineHeight: 1.5 }}>
-                  Ngày sinh:{' '}
-                  <strong>
-                    {String(npcEntity.identity_biometrics.birth_day).padStart(2, '0')}/
-                    {String(npcEntity.identity_biometrics.birth_month).padStart(2, '0')}/
-                    {npcEntity.identity_biometrics.birth_year}
-                  </strong>{' '}
-                  • Gia cảnh: <strong>{npcEntity.identity_biometrics.family_tier}</strong> • Vùng:{' '}
-                  <strong>{npcEntity.current_region === 'RURAL' ? 'Nông Thôn' : 'Thành Thị'}</strong>
-                  <br />
-                  Học vấn: <strong>{npcEntity.identity_biometrics.education_level_vi}</strong> • Tính cách:{' '}
-                  <strong>{PERSONALITY_LABEL_MAP[npcEntity.identity_biometrics.locked_personality]}</strong> • Vóc dáng:{' '}
-                  <strong>
-                    {npcEntity.capability_flags.is_biometrics_decoded
-                      ? `${npcEntity.identity_biometrics.height_cm}cm • ${npcEntity.identity_biometrics.weight_kg}kg`
-                      : 'Chưa rõ vóc dáng (Chờ khám sức khỏe)'}
-                  </strong>
-                </div>
-              </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Ví tiền: {npcEntity.cash_vnd.toLocaleString('vi-VN')} đ
-                </div>
-                <div style={{ fontSize: '13px', marginTop: '4px' }}>
-                  Lịch: {String(calendarDate.day).padStart(2, '0')}/{String(calendarDate.month).padStart(2, '0')}/
-                  {calendarDate.year} — {String(currentHour).padStart(2, '0')}:00
-                </div>
-                <div style={{ fontSize: '12px', opacity: 0.75, marginTop: '2px' }}>
-                  Vị trí: {LOCATION_LABEL_MAP[npcEntity.current_location_id] || npcEntity.current_location_id}
-                </div>
-              </div>
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 1: MÀN CHÀO GIẤY DÓ (UC-01)
+    // ------------------------------------------------------------------------
+    if (screen === 'TITLE') {
+      return (
+        <div className="flex min-h-screen flex-col items-center justify-center bg-[#F2ECE0] p-6 text-[#1F1B16]">
+          <div className="w-full max-w-md space-y-6 rounded border-2 border-[#1F1B16] bg-[#FAF6EE] p-8 text-center shadow-lg">
+            <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#B8382A] bg-[#FDECE9] font-serif text-xl font-bold text-[#B8382A]">
+              Đời
             </div>
 
-            <div style={{ display: 'flex', gap: '24px', marginTop: '14px', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span
-                  style={{
-                    width: '14px',
-                    height: '14px',
-                    borderRadius: '50%',
-                    backgroundColor: COLOR_HEX_MAP[healthColor],
-                    display: 'inline-block'
-                  }}
-                />
-                <span>
-                  Sức khỏe: <strong>{HEALTH_LABEL_MAP[healthColor]}</strong>
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span
-                  style={{
-                    width: '14px',
-                    height: '14px',
-                    borderRadius: '50%',
-                    backgroundColor: COLOR_HEX_MAP[happinessColor],
-                    display: 'inline-block'
-                  }}
-                />
-                <span>
-                  Tâm trạng: <strong>{HAPPINESS_LABEL_MAP[happinessColor]}</strong>
-                </span>
-              </div>
-
-              {npcEntity.capability_flags.is_dementia_autopilot && (
-                <span style={{ color: '#B8382A', fontWeight: 'bold' }}>
-                  [Trạng thái: Lú lẫn tuổi già — Sinh hoạt vô thức]
-                </span>
-              )}
-            </div>
-
-            <div
-              style={{
-                marginTop: '12px',
-                padding: '10px',
-                borderLeft: '3px solid #B8382A',
-                backgroundColor: '#F2ECE0',
-                fontStyle: 'italic',
-                fontSize: '14px'
-              }}
-            >
-              “{buildSensoryMonologue(npcEntity)}”
-            </div>
-
-            {isDeceased && (
-              <div
-                style={{
-                  marginTop: '14px',
-                  padding: '12px',
-                  backgroundColor: '#1F1B16',
-                  color: '#F2ECE0',
-                  textAlign: 'center'
-                }}
+            <div>
+              <h1
+                className="text-3xl font-bold tracking-wider text-[#1F1B16]"
+                style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
               >
-                <strong>
-                  {Math.floor(npcEntity.identity_biometrics.exact_age_years) < 50 ? 'HƯỞNG DƯƠNG' : 'HƯỞNG THỌ'}{' '}
-                  {Math.floor(npcEntity.identity_biometrics.exact_age_years)} TUỔI:
-                </strong>{' '}
-                {npcEntity.identity_biometrics.full_name} — Nguyên nhân: {deathCauseVi}.
+                DÒNG ĐỜI
+              </h1>
+              <p className="mt-1 text-xs uppercase tracking-widest text-[#6B5B47]">
+                Eco-Life • Mô Phỏng Cuộc Sống Cảm Quan Không Số (V3.1)
+              </p>
+            </div>
+
+            <div className="space-y-3 pt-2">
+              {latestAliveProfile && (
+                <button
+                  type="button"
+                  onClick={() => handleOpenSavedProfile(latestAliveProfile.profile_id)}
+                  className="w-full rounded border-2 border-[#1F1B16] bg-[#B8382A] px-4 py-3 text-sm font-bold text-[#FAF6EE] transition hover:bg-[#9E2D20]"
+                >
+                  Tiếp tục: {latestAliveProfile.full_name} — {latestAliveProfile.age_years} tuổi
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setScreen('BIRTH_SETUP')}
+                className="w-full rounded border-2 border-[#1F1B16] bg-[#1F1B16] px-4 py-3 text-sm font-bold text-[#FAF6EE] transition hover:bg-[#332C24]"
+              >
+                Bắt Đầu Cuộc Đời Mới
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  refreshSavedProfileList();
+                  setScreen('LIVES_LIST');
+                }}
+                className="w-full rounded border border-[#1F1B16] bg-[#F2ECE0] px-4 py-2.5 text-sm font-semibold text-[#1F1B16] transition hover:bg-[#E5DAC5]"
+              >
+                Danh Sách Cuộc Đời ({savedProfiles.length})
+              </button>
+            </div>
+
+            {import.meta.env.DEV && (
+              <div className="border-t border-dashed border-[#C8BFA8] pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowDevQaObserver(true)}
+                  className="inline-flex items-center gap-1.5 rounded border border-[#B8382A] bg-[#FFF5F3] px-3 py-1.5 text-xs font-bold text-[#B8382A] hover:bg-[#FDE4DF]"
+                >
+                  <FlaskConical className="h-3.5 w-3.5" />
+                  Mở Trung Tâm Test Logic & Quần Thể NPC (Dev)
+                </button>
               </div>
             )}
           </div>
-        )}
-
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-          <button
-            onClick={() => setActiveTab('TIMELINE')}
-            style={{
-              padding: '7px 14px',
-              border: '1px solid #1F1B16',
-              backgroundColor: activeTab === 'TIMELINE' ? '#1F1B16' : '#FAF6EE',
-              color: activeTab === 'TIMELINE' ? '#F2ECE0' : '#1F1B16',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            Nhịp Sinh Hoạt Tự Hành ({logs.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('MEMOIR')}
-            style={{
-              padding: '7px 14px',
-              border: '1px solid #1F1B16',
-              backgroundColor: activeTab === 'MEMOIR' ? '#1F1B16' : '#FAF6EE',
-              color: activeTab === 'MEMOIR' ? '#F2ECE0' : '#1F1B16',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            Cuốn Nhật Ký Đời Người — 5 Chương ({journalEntries.length})
-          </button>
         </div>
+      );
+    }
 
-        {activeTab === 'TIMELINE' ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {logs.map((entry) => (
-              <div
-                key={entry.id}
-                style={{
-                  padding: '10px 12px',
-                  border: '1px solid #D5CCB8',
-                  backgroundColor: '#FAF6EE',
-                  fontSize: '13px'
-                }}
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 2: DANH SÁCH CUỘC ĐỜI ĐÃ LƯU THẬT (UC-01)
+    // ------------------------------------------------------------------------
+    if (screen === 'LIVES_LIST') {
+      return (
+        <div className="min-h-screen bg-[#F2ECE0] p-6 text-[#1F1B16]">
+          <div className="mx-auto max-w-2xl space-y-5">
+            <div className="flex items-center justify-between border-b-2 border-[#1F1B16] pb-3">
+              <h2
+                className="text-xl font-bold"
+                style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <strong>
-                    [{entry.age_years} tuổi • {entry.time_str}] — Tại: {entry.location_name}
-                  </strong>
-                  <span style={{ color: COLOR_HEX_MAP[entry.health_color], fontWeight: 'bold' }}>
-                    ● {HEALTH_LABEL_MAP[entry.health_color]}
-                  </span>
+                Danh Sách Cuộc Đời Đã Lưu
+              </h2>
+              <button
+                type="button"
+                onClick={() => setScreen('TITLE')}
+                className="rounded border border-[#1F1B16] bg-[#FAF6EE] px-3 py-1.5 text-xs font-bold"
+              >
+                ← Về Màn Chào
+              </button>
+            </div>
+
+            {savedProfiles.length === 0 ? (
+              <div className="rounded border border-dashed border-[#8C7B60] bg-[#FAF6EE] p-10 text-center text-sm italic text-[#6B5B47]">
+                Chưa có cuộc đời nào được ghi lại. Hãy bắt đầu một cuộc đời mới.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {savedProfiles.map((prof) => (
+                  <div
+                    key={prof.profile_id}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded border border-[#1F1B16] bg-[#FAF6EE] p-4"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-serif text-base font-bold">{prof.full_name}</span>
+                        <span className="rounded bg-[#EAE1D0] px-2 py-0.5 text-xs font-semibold">
+                          {prof.age_years} tuổi
+                        </span>
+                        {prof.is_deceased && (
+                          <span className="rounded bg-[#1F1B16] px-2 py-0.5 text-[11px] font-bold text-[#F9F5EC]">
+                            Đã An Nghỉ
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-1 text-xs text-[#6B5B47]">
+                        Lưu gần nhất: {new Date(prof.last_saved_unix_ms).toLocaleString('vi-VN')}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenSavedProfile(prof.profile_id)}
+                        className="rounded bg-[#B8382A] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#9E2D20]"
+                      >
+                        {prof.is_deceased ? 'Đọc Nhật Ký' : 'Chơi Tiếp'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteProfileClick(prof.profile_id)}
+                        className={`inline-flex items-center gap-1 rounded border px-2.5 py-1.5 text-xs font-bold ${
+                          confirmDeleteProfileId === prof.profile_id
+                            ? 'border-[#B8382A] bg-[#B8382A] text-white'
+                            : 'border-[#C8BFA8] bg-white text-[#9C2418]'
+                        }`}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                        {confirmDeleteProfileId === prof.profile_id ? 'Xác nhận xóa?' : 'Xóa'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 3: KHAI SINH CUỘC ĐỜI MỚI (CHỈ CHỌN NĂM SINH — RANDOM TOÀN BỘ)
+    // ------------------------------------------------------------------------
+    if (screen === 'BIRTH_SETUP') {
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-[#F2ECE0] p-6 text-[#1F1B16]">
+          <div className="w-full max-w-md space-y-5 rounded border-2 border-[#1F1B16] bg-[#FAF6EE] p-6 shadow-md">
+            <div className="border-b border-[#C8BFA8] pb-3 text-center">
+              <div className="text-xs font-bold uppercase tracking-widest text-[#B8382A]">
+                Giấy Khai Sinh • Vòng Đời Mới
+              </div>
+              <h2
+                className="mt-1 text-2xl font-bold"
+                style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+              >
+                Chọn Năm Chào Đời
+              </h2>
+            </div>
+
+            <p className="text-xs leading-relaxed text-[#4A3F30]">
+              Con người không thể chọn nơi mình sinh ra. Bạn chỉ chọn <strong>Năm sinh</strong>;
+              hệ thống sẽ ngẫu nhiên hoàn toàn <strong>Họ tên, Giới tính, Vùng miền (Nông Thôn /
+              Thành Thị)</strong> và <strong>Gia cảnh (Q1 – Q5)</strong> cùng ngày tháng thực tế
+              hôm nay.
+            </p>
+
+            <div>
+              <label className="mb-1 block text-xs font-bold">Năm sinh (1950 – 2026)</label>
+              <input
+                type="number"
+                min={1950}
+                max={2026}
+                value={birthYearInput}
+                onChange={(e) => setBirthYearInput(Number(e.target.value))}
+                className="w-full rounded border-2 border-[#1F1B16] bg-white px-3 py-2 text-center text-lg font-bold"
+              />
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setScreen('TITLE')}
+                className="flex-1 rounded border border-[#1F1B16] bg-[#F2ECE0] py-2.5 text-xs font-bold"
+              >
+                Quay Lại
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmCreateNewLife}
+                className="flex-1 rounded bg-[#B8382A] py-2.5 text-xs font-bold text-white hover:bg-[#9E2D20]"
+              >
+                Chào Đời Ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 4: GIAI ĐOẠN TUỔI THƠ 0 - 5 TUỔI (KHÓA ĐỒNG HỒ, 5 CỘT MỐC A-D)
+    // ------------------------------------------------------------------------
+    if (screen === 'CHILDHOOD_0_5' && session) {
+      const bio = session.player.identity_biometrics;
+      const stepIndex = Math.min(childhoodVotes.length, CHILDHOOD_MILESTONES.length - 1);
+      const currentMilestone = CHILDHOOD_MILESTONES[stepIndex];
+
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-[#F2ECE0] p-4 text-[#1F1B16] sm:p-6">
+          <div className="w-full max-w-2xl space-y-5 rounded border-2 border-[#1F1B16] bg-[#FAF6EE] p-6 shadow-md">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#C8BFA8] pb-3">
+              <div>
+                <div className="text-xs font-bold uppercase text-[#B8382A]">
+                  Tua Nhanh Tuổi Thơ (0 – 5 Tuổi) • Khóa Đồng Hồ
                 </div>
-                <div>{entry.action_summary}</div>
-                <div style={{ fontSize: '12px', opacity: 0.75, marginTop: '3px', fontStyle: 'italic' }}>
-                  Cảm nhận: {entry.monologue}
+                <h2
+                  className="text-lg font-bold"
+                  style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                >
+                  {bio.full_name} ({bio.gender === 'MALE' ? 'Nam' : 'Nữ'}) — Sinh{' '}
+                  {String(bio.birth_day).padStart(2, '0')}/
+                  {String(bio.birth_month).padStart(2, '0')}/{bio.birth_year}
+                </h2>
+              </div>
+              <span className="rounded border border-[#B8382A] bg-[#FDECE9] px-3 py-1 text-xs font-bold text-[#B8382A]">
+                Gia cảnh {bio.family_tier} •{' '}
+                {session.player.current_region === 'RURAL' ? 'Nông Thôn' : 'Thành Thị'}
+              </span>
+            </div>
+
+            <div className="space-y-2 rounded border border-[#D4C6AE] bg-[#F2ECE0] p-4">
+              <div className="text-xs font-bold text-[#6B5B47]">
+                Cột mốc {stepIndex + 1} / {CHILDHOOD_MILESTONES.length}
+              </div>
+              <h3 className="font-serif text-lg font-bold text-[#1F1B16]">
+                {currentMilestone.title_vi}
+              </h3>
+              <p className="text-sm leading-relaxed text-[#3A3126]">{currentMilestone.body_vi}</p>
+            </div>
+
+            <div className="space-y-2">
+              {currentMilestone.options.map((opt) => (
+                <button
+                  key={opt.vote}
+                  type="button"
+                  onClick={() => handlePickChildhoodVote(opt.vote)}
+                  className="w-full rounded border border-[#1F1B16] bg-white px-4 py-3 text-left text-xs font-semibold transition hover:border-[#B8382A] hover:bg-[#FFF5F3] sm:text-sm"
+                >
+                  {opt.label_vi}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 5: CUỐN NHẬT KÝ ĐỜI NGƯỜI 5 CHƯƠNG & BIA MỘ ENDGAME (UC-08)
+    // ------------------------------------------------------------------------
+    if (screen === 'MEMOIR_ENDGAME' && session && session.death_summary) {
+      const death: FrontendDeathAndMemoirDto = session.death_summary;
+      const bio = session.player.identity_biometrics;
+
+      return (
+        <div className="flex min-h-screen flex-col items-center justify-center bg-[#E7DEC8] p-4 text-[#1F1B16] sm:p-6">
+          <div className="w-full max-w-3xl space-y-5 rounded border-2 border-[#1F1B16] bg-[#FAF6EE] p-6 shadow-xl sm:p-8">
+            <div className="flex items-center justify-between border-b border-[#C8BFA8] pb-3 text-xs font-bold text-[#6B5B47]">
+              <span>CUỐN NHẬT KÝ ĐỜI NGƯỜI — {bio.full_name.toUpperCase()}</span>
+              <span>Trang {memoirPageIdx + 1} / 7 (Phím ← →)</span>
+            </div>
+
+            {/* Trang 0: Trang Bìa Bia Mộ */}
+            {memoirPageIdx === 0 && (
+              <div className="space-y-4 py-8 text-center">
+                <div className="text-xs font-bold uppercase tracking-widest text-[#B8382A]">
+                  Khép Lại Một Kiếp Người
+                </div>
+                <h1
+                  className="text-3xl font-bold"
+                  style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                >
+                  {bio.full_name}
+                </h1>
+                <div className="text-sm font-semibold text-[#4A3F30]">
+                  {bio.birth_year} — {session.clock.current_year} • {death.honorific_label_vi}
+                </div>
+                <div className="mx-auto max-w-md rounded border border-[#C8BFA8] bg-[#F2ECE0] p-4 text-sm italic">
+                  “{death.epitaph_vi}”
+                </div>
+                <div className="text-xs text-[#6B5B47]">
+                  Nguyên nhân qua đời: <strong>{death.cause_label_vi}</strong> (vào {death.season_vi})
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {MEMOIR_CHAPTERS.map((chap) => {
-              const items = journalEntries.filter(
-                (j) => j.age_years >= chap.minAge && j.age_years <= chap.maxAge
-              );
+            )}
+
+            {/* Trang 1..5: 5 Chương Đời Người */}
+            {memoirPageIdx >= 1 && memoirPageIdx <= 5 && (() => {
+              const chap = death.chapters[memoirPageIdx - 1];
               return (
-                <div
-                  key={chap.index}
-                  style={{
-                    padding: '14px',
-                    border: '1px solid #C8BFA8',
-                    backgroundColor: '#FAF6EE'
-                  }}
-                >
-                  <h4 style={{ margin: '0 0 8px', color: '#B8382A' }}>{chap.title}</h4>
-                  {items.length === 0 ? (
-                    <div style={{ fontSize: '13px', opacity: 0.65, fontStyle: 'italic' }}>
-                      Trang giấy còn để ngỏ...
-                    </div>
+                <div className="min-h-[280px] space-y-3">
+                  <h2
+                    className="border-b border-[#D4C6AE] pb-2 text-lg font-bold text-[#B8382A]"
+                    style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                  >
+                    {chap.title_vi}
+                  </h2>
+                  {chap.entries.length === 0 ? (
+                    <p className="py-10 text-center text-sm italic text-[#7A6A53]">
+                      Những năm tháng lặng lẽ trôi qua không ghi dấu biến cố lớn.
+                    </p>
                   ) : (
-                    <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', lineHeight: 1.6 }}>
-                      {items.map((it, idx) => (
-                        <li key={idx}>
-                          <strong>[{it.age_years} tuổi]</strong> {it.text_vi}
+                    <ul className="max-h-72 space-y-2 overflow-y-auto pr-2 text-xs leading-relaxed">
+                      {chap.entries.map((entry, idx) => (
+                        <li key={idx} className="border-b border-dotted border-[#D4C6AE] pb-1.5">
+                          <strong className="text-[#B8382A]">
+                            [{entry.age_recorded} tuổi{entry.date_str_vi ? ` • ${entry.date_str_vi}` : ''}]
+                          </strong>{' '}
+                          {entry.text_vi}
                         </li>
                       ))}
                     </ul>
                   )}
                 </div>
               );
-            })}
+            })()}
+
+            {/* Trang 6: Tổng kết Tài sản & Di chúc */}
+            {memoirPageIdx === 6 && (
+              <div className="min-h-[280px] space-y-4">
+                <h2
+                  className="border-b border-[#D4C6AE] pb-2 text-lg font-bold text-[#B8382A]"
+                  style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                >
+                  Trang Cuối: Di Sản & Di Chúc Để Lại
+                </h2>
+                <div className="rounded border border-[#C8BFA8] bg-[#F2ECE0] p-4 text-sm">
+                  Tổng giá trị di sản ước tính:{' '}
+                  <strong className="text-[#B8382A]">
+                    {death.total_estate_vnd.toLocaleString('vi-VN')} đ
+                  </strong>
+                </div>
+                <div className="space-y-2 text-xs">
+                  <div className="font-bold">{death.will_fallback_note_vi}</div>
+                  {death.will_lines.map((wl, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between rounded border border-[#DFD5C2] bg-white px-3 py-2"
+                    >
+                      <span>
+                        {wl.beneficiary_name} ({wl.relation_label_vi})
+                      </span>
+                      <strong>{wl.percentage_share}% di sản</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Điều hướng lật trang & 2 nút kết thúc */}
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#C8BFA8] pt-4">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={memoirPageIdx === 0}
+                  onClick={() => setMemoirPageIdx((p) => Math.max(0, p - 1))}
+                  className="rounded border border-[#1F1B16] bg-white px-3 py-1.5 text-xs font-bold disabled:opacity-40"
+                >
+                  ← Trang Trước
+                </button>
+                <button
+                  type="button"
+                  disabled={memoirPageIdx === 6}
+                  onClick={() => setMemoirPageIdx((p) => Math.min(6, p + 1))}
+                  className="rounded border border-[#1F1B16] bg-white px-3 py-1.5 text-xs font-bold disabled:opacity-40"
+                >
+                  Trang Sau →
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  refreshSavedProfileList();
+                  setScreen(memoirReturnScreen);
+                }}
+                className="rounded bg-[#1F1B16] px-4 py-1.5 text-xs font-bold text-[#FAF6EE]"
+              >
+                {memoirReturnScreen === 'LIVES_LIST' ? 'Về Danh Sách Cuộc Đời' : 'Trở Về Màn Chào'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // MÀN HÌNH 6: MÀN CHƠI CHÍNH — SÂN KHẤU ĐỒNG NHẤT & THANH CẢM QUAN KHÔNG SỐ
+    // ------------------------------------------------------------------------
+    if (!session || !hud) {
+      return null;
+    }
+
+    const player = session.player;
+    const isDementiaLocked = player.capability_flags.is_dementia_autopilot;
+    const isHudBottomDisabled = activeModal !== 'NONE' || Boolean(activePopup) || Boolean(cutscene);
+    const regionRules = EcoLifeJsonDb.regions.region_types[player.current_region];
+    const lockedLocations: readonly string[] = regionRules.locked_location_ids;
+
+    return (
+      <div className="flex h-screen w-screen flex-col overflow-hidden bg-[#F2ECE0] text-[#1F1B16]">
+        {/* === TOP-BAR: THỜI GIAN (HOẶC MÙ GIỜ), NGÀY LỊCH, TIỀN MẶT, TỐC ĐỘ === */}
+        <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b-2 border-[#1F1B16] bg-[#FAF6EE] px-4 py-2.5 text-xs">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                runEngineCommand({ type: 'APP_EXIT_SUSPEND' });
+                setSpeed(0);
+                setScreen('TITLE');
+              }}
+              className="rounded border border-[#1F1B16] bg-[#F2ECE0] px-2.5 py-1 font-bold hover:bg-[#E5DAC5]"
+            >
+              ← Màn Chào
+            </button>
+
+            <div>
+              <div className="font-bold text-[#1F1B16]">
+                {hud.blind_profile_view.full_name} • {hud.blind_profile_view.age_years} tuổi
+              </div>
+              <div className="text-[11px] text-[#5A5043]">
+                {formatSessionDateVi(session)} •{' '}
+                {hud.is_exact_clock_shown ? (
+                  <strong className="text-[#B8382A]">{hud.time_display_vi}</strong>
+                ) : (
+                  <span className="italic">{hud.time_display_vi}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="rounded border border-[#C8BFA8] bg-[#F2ECE0] px-3 py-1 font-bold">
+              Ví: <span className="text-[#B8382A]">{player.cash_vnd.toLocaleString('vi-VN')} đ</span>
+            </div>
+
+            {/* Điều khiển tốc độ Pause / 1x / 2x / 4x (Lú lẫn tuổi già khóa Pause) */}
+            <div className="inline-flex overflow-hidden rounded border border-[#1F1B16]">
+              {([0, 1, 2, 4] as SpeedSetting[]).map((spd) => {
+                const disabledPause = spd === 0 && isDementiaLocked;
+                return (
+                  <button
+                    key={spd}
+                    type="button"
+                    disabled={disabledPause || Boolean(activePopup)}
+                    onClick={() => setSpeed(spd)}
+                    className={`inline-flex items-center gap-0.5 px-2.5 py-1 font-bold transition disabled:opacity-35 ${
+                      speed === spd
+                        ? 'bg-[#1F1B16] text-[#FAF6EE]'
+                        : 'bg-[#FAF6EE] text-[#1F1B16] hover:bg-[#EAE1D0]'
+                    }`}
+                  >
+                    {spd === 0 ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
+                    {spd === 0 ? '' : `${spd}×`}
+                  </button>
+                );
+              })}
+            </div>
+
+            {import.meta.env.DEV && (
+              <button
+                type="button"
+                onClick={() => setShowDevQaObserver(true)}
+                className="inline-flex items-center gap-1 rounded border border-[#B8382A] bg-[#FFF5F3] px-2 py-1 text-[11px] font-bold text-[#B8382A]"
+                title="Mở Trung tâm Test Logic & NPC (Dev)"
+              >
+                <FlaskConical className="h-3 w-3" /> QA
+              </button>
+            )}
+          </div>
+        </header>
+
+        {/* === SÂN KHẤU ĐỒNG NHẤT (UNIFIED VIEWPORT — THUẦN QUAN SÁT TĨNH) === */}
+        <main className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden p-4">
+          <div
+            className={`relative flex h-full w-full max-w-5xl flex-col justify-between overflow-hidden rounded-md border-2 border-[#1F1B16] bg-[#FAF6EE] shadow-md transition ${
+              isDementiaLocked ? 'grayscale-[45%]' : ''
+            }`}
+            style={{
+              background:
+                player.current_location_id === 'LOC_HOME'
+                  ? 'linear-gradient(180deg, #FAF6EE 0%, #FAF6EE 66%, #E5DBC7 66%, #E5DBC7 100%)'
+                  : 'linear-gradient(180deg, #EFE9DA 0%, #EFE9DA 68%, #D9CEB8 68%, #D9CEB8 100%)'
+            }}
+          >
+            {/* Dải nhãn địa điểm & vùng miền trên góc sân khấu */}
+            <div className="z-10 flex flex-wrap items-center justify-between gap-2 border-b border-[#D4C6AE] bg-[#FAF6EE]/90 px-4 py-2 text-xs">
+              <div className="flex items-center gap-2 font-bold">
+                <MapPin className="h-4 w-4 text-[#B8382A]" />
+                <span>{translateVi(player.current_location_id)}</span>
+                {player.current_location_id === 'LOC_HOME' && (
+                  <span className="rounded bg-[#EAE1D0] px-2 py-0.5 text-[11px]">
+                    {translateVi(player.current_sub_node_id)} (Nhà cấp {player.house_tier})
+                  </span>
+                )}
+              </div>
+              <span className="text-[11px] font-semibold text-[#5A5043]">
+                {player.current_region === 'RURAL' ? 'Vùng Quê Nông Thôn' : 'Khu Đô Thị Thành Phố'}
+              </span>
+            </div>
+
+            {/* Lớp vẽ xếp lớp Nội thất đã mua (visual_slot) khi đang ở trong phòng nhà riêng */}
+            <div className="relative flex-1">
+              {hud.placed_furniture_in_current_room.length === 0 ? (
+                <div className="flex h-full flex-col items-center justify-center p-6 text-center text-xs text-[#6B5B47]">
+                  <div className="rounded border border-dashed border-[#B7A98E] bg-[#FAF6EE]/80 px-5 py-4">
+                    <div className="font-serif text-base font-bold text-[#1F1B16]">
+                      {player.current_location_id === 'LOC_HOME'
+                        ? translateVi(player.current_sub_node_id)
+                        : translateVi(player.current_location_id)}
+                    </div>
+                    <p className="mt-1">
+                      {player.current_location_id === 'LOC_HOME'
+                        ? 'Căn phòng hiện còn trống trải. Nội thất bạn mua sẽ tự động hiện đúng vị trí tại đây.'
+                        : 'Mở menu Tương Tác ở thanh đáy để thực hiện các việc được phép tại địa điểm này.'}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                hud.placed_furniture_in_current_room.map((furn) => (
+                  <div
+                    key={furn.instance_id}
+                    style={{
+                      position: 'absolute',
+                      left: `${furn.visual_slot.anchor_x_pct}%`,
+                      top: `${furn.visual_slot.anchor_y_pct}%`,
+                      width: `${furn.visual_slot.width_pct}%`,
+                      zIndex: furn.visual_slot.z_index
+                    }}
+                    className={`rounded border-2 p-2 text-center shadow-sm ${
+                      furn.is_broken_locked
+                        ? 'border-[#B8382A] bg-[#FDECE9]/95 text-[#7A1C12]'
+                        : 'border-[#1F1B16] bg-[#FAF6EE]/95 text-[#1F1B16]'
+                    }`}
+                  >
+                    <div className="text-xs font-bold">{furn.display_name}</div>
+                    <div className="mt-0.5 text-[10px] italic text-[#5A5043]">
+                      {furn.is_broken_locked ? 'Đã hỏng — Cần gọi thợ sửa' : furn.sensory_monologue}
+                    </div>
+                  </div>
+                ))
+              )}
+
+              {/* Dòng thông báo phản hồi thao tác gần nhất ở mép dưới sân khấu */}
+              {feedbackToastVi && !cutscene && !activePopup && (
+                <div className="absolute bottom-3 left-4 right-4 z-20 rounded border border-[#1F1B16] bg-[#FAF6EE]/95 px-3.5 py-2 text-xs font-medium text-[#1F1B16] shadow">
+                  {feedbackToastVi}
+                </div>
+              )}
+            </div>
+
+            {/* TRẠNG THÁI 2 CỦA SÂN KHẤU: MINI CUTSCENE 3 GIÂY (CHỮ TRỰC TIẾP LÊN MẶT TRANH) */}
+            {cutscene && (
+              <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#1F1B16]/75 p-6 text-center text-[#FAF6EE]">
+                <Sparkles className="mb-3 h-7 w-7 text-[#F3D19C]" />
+                <p
+                  className="max-w-lg text-lg font-semibold leading-relaxed"
+                  style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                >
+                  {cutscene.caption_vi}
+                </p>
+                <div className="mt-5 h-1.5 w-64 overflow-hidden rounded-full bg-[#FAF6EE]/25">
+                  <div
+                    className="h-full bg-[#E5A952] transition-all duration-150"
+                    style={{ width: `${Math.min(100, cutscene.progress_pct)}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TRẠNG THÁI 3 CỦA SÂN KHẤU: POPUP SỰ KIỆN 3 MÀU ĐẾM NGƯỢC 3-15 GIÂY */}
+            {activePopup && (
+              <div className="absolute inset-0 z-40 flex items-center justify-center bg-[#1F1B16]/70 p-4">
+                <div
+                  className={`w-full max-w-lg space-y-4 rounded-md border-2 bg-[#FAF6EE] p-5 shadow-2xl ${
+                    activePopup.ui_kind === 'danger'
+                      ? 'border-[#B8382A]'
+                      : activePopup.ui_kind === 'chance'
+                        ? 'border-[#27AE60]'
+                        : 'border-[#1F1B16]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`rounded px-2 py-0.5 text-[11px] font-bold text-white ${
+                        activePopup.ui_kind === 'danger'
+                          ? 'bg-[#B8382A]'
+                          : activePopup.ui_kind === 'chance'
+                            ? 'bg-[#27AE60]'
+                            : 'bg-[#5A5043]'
+                      }`}
+                    >
+                      {activePopup.ui_kind === 'danger'
+                        ? 'SỰ KIỆN NGUY HIỂM'
+                        : activePopup.ui_kind === 'chance'
+                          ? 'CƠ HỘI BẤT NGỜ'
+                          : 'BIẾN CỐ ĐỜI THƯỜNG'}
+                    </span>
+                    <span className="font-mono text-xs font-bold text-[#B8382A]">
+                      {ptsdFreezeLeft > 0
+                        ? `Đóng băng PTSD: ${ptsdFreezeLeft.toFixed(1)}s`
+                        : `Còn ${popupSecondsLeft.toFixed(1)}s`}
+                    </span>
+                  </div>
+
+                  {/* Thanh đếm ngược trực quan */}
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-[#E4DAC8]">
+                    <div
+                      className={`h-full transition-all duration-100 ${
+                        activePopup.ui_kind === 'danger' ? 'bg-[#B8382A]' : 'bg-[#1F1B16]'
+                      }`}
+                      style={{
+                        width: `${Math.max(
+                          0,
+                          Math.min(
+                            100,
+                            (popupSecondsLeft / Math.max(1, activePopup.effective_countdown_seconds)) *
+                              100
+                          )
+                        )}%`
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <h3
+                      className="text-base font-bold text-[#1F1B16]"
+                      style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                    >
+                      {activePopup.title_vi}
+                    </h3>
+                    <p className="mt-1.5 text-xs leading-relaxed text-[#3A3126]">
+                      {activePopup.narrative_body_vi}
+                    </p>
+                  </div>
+
+                  {activePopup.hide_choices_due_to_dementia ? (
+                    <div className="rounded border border-dashed border-[#B8382A] bg-[#FDECE9] p-3 text-center text-xs italic text-[#7A1C12]">
+                      Trí nhớ mờ mịt không thể tự phán đoán... Cơ thể tự phản xạ theo thói quen cũ khi hết giờ.
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {activePopup.available_choices.map((ch) => (
+                        <button
+                          key={ch.choice_id}
+                          type="button"
+                          disabled={ptsdFreezeLeft > 0}
+                          onClick={() => {
+                            setActivePopup(null);
+                            runEngineCommand({
+                              type: 'SUBMIT_EVENT_CHOICE',
+                              selected_choice_id: ch.choice_id
+                            });
+                          }}
+                          className="w-full rounded border border-[#1F1B16] bg-white px-3.5 py-2.5 text-left text-xs font-semibold transition hover:border-[#B8382A] hover:bg-[#FFF5F3] disabled:cursor-not-allowed disabled:opacity-45"
+                        >
+                          {ch.button_label_vi}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
+
+        {/* === THANH ĐÁY CẢM QUAN KHÔNG SỐ & 4 NÚT CHỨC NĂNG GOM === */}
+        <footer
+          className={`shrink-0 border-t-2 border-[#1F1B16] bg-[#FAF6EE] px-4 py-3 transition ${
+            isHudBottomDisabled ? 'pointer-events-none opacity-45' : ''
+          }`}
+        >
+          <div className="mx-auto flex max-w-5xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            {/* Khối Cảm quan Không số: 2 Đèn 5 màu + Câu độc thoại cơ thể */}
+            <div className="min-w-0 flex-1 space-y-1">
+              <div className="flex flex-wrap items-center gap-4 text-xs">
+                <span className="inline-flex items-center gap-1.5 font-semibold">
+                  <span
+                    className="inline-block h-3.5 w-3.5 rounded-full border border-[#1F1B16]/40"
+                    style={{ backgroundColor: COLOR_HEX_MAP[hud.health_color] }}
+                  />
+                  Sức khỏe: <strong>{hud.health_label_vi}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-semibold">
+                  <span
+                    className="inline-block h-3.5 w-3.5 rounded-full border border-[#1F1B16]/40"
+                    style={{ backgroundColor: COLOR_HEX_MAP[hud.happiness_color] }}
+                  />
+                  Hạnh phúc: <strong>{hud.happiness_label_vi}</strong>
+                </span>
+                {isDementiaLocked && (
+                  <span className="rounded bg-[#B8382A] px-2 py-0.5 text-[10px] font-bold text-white">
+                    TỰ HÀNH VÔ THỨC (LÚ LẪN)
+                  </span>
+                )}
+              </div>
+              <p className="truncate text-xs italic text-[#4A3F30]">“{hud.body_monologue_vi}”</p>
+            </div>
+
+            {/* Nhóm nút gom: TƯƠNG TÁC, DI CHUYỂN, TÚI ĐỒ, HỒ SƠ, NHẬT KÝ */}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                disabled={isDementiaLocked}
+                onClick={() => setActiveModal('INTERACT')}
+                className="inline-flex items-center gap-1.5 rounded bg-[#B8382A] px-3.5 py-2 text-xs font-bold text-white hover:bg-[#9E2D20] disabled:opacity-40"
+              >
+                <Hand className="h-4 w-4" /> Tương Tác
+              </button>
+
+              <button
+                type="button"
+                disabled={isDementiaLocked}
+                onClick={() => setActiveModal('MOVE')}
+                className="inline-flex items-center gap-1.5 rounded bg-[#1F1B16] px-3.5 py-2 text-xs font-bold text-[#FAF6EE] hover:bg-[#332C24] disabled:opacity-40"
+              >
+                <Compass className="h-4 w-4" /> Di Chuyển
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveModal('BAG')}
+                className="inline-flex items-center gap-1.5 rounded border border-[#1F1B16] bg-[#F2ECE0] px-3 py-2 text-xs font-bold hover:bg-[#E5DAC5]"
+              >
+                <Backpack className="h-4 w-4" /> Túi Đồ
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveModal('PROFILE')}
+                className="inline-flex items-center gap-1.5 rounded border border-[#1F1B16] bg-[#F2ECE0] px-3 py-2 text-xs font-bold hover:bg-[#E5DAC5]"
+              >
+                <User className="h-4 w-4" /> Hồ Sơ
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveModal('JOURNAL')}
+                className="inline-flex items-center gap-1.5 rounded border border-[#1F1B16] bg-[#F2ECE0] px-3 py-2 text-xs font-bold hover:bg-[#E5DAC5]"
+              >
+                <BookOpen className="h-4 w-4" /> Nhật Ký
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        {/* ====================================================================
+            LỚP MODAL 70% PHỦ XÁM MÀN HÌNH (CHUẨN MASTER TECHNICAL HANDOFF)
+           ==================================================================== */}
+        {activeModal !== 'NONE' && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F1B16]/65 p-4"
+            onClick={() => setActiveModal('NONE')}
+          >
+            <div
+              className="flex max-h-[76vh] w-full max-w-3xl flex-col overflow-hidden rounded-md border-2 border-[#1F1B16] bg-[#FAF6EE] shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-[#C8BFA8] bg-[#EFE7D7] px-4 py-3">
+                <h2
+                  className="text-base font-bold text-[#B8382A]"
+                  style={{ fontFamily: '"Noto Serif", "Times New Roman", serif' }}
+                >
+                  {activeModal === 'INTERACT' &&
+                    `Tương Tác Tại ${translateVi(player.current_location_id)}`}
+                  {activeModal === 'MOVE' && 'Di Chuyển Phòng & Bản Đồ Khu Vực'}
+                  {activeModal === 'BAG' && 'Túi Đồ Hành Trang & Đồ Gia Dụng'}
+                  {activeModal === 'PROFILE' && 'Hồ Sơ Nhân Vật (Mù Thông Tin)'}
+                  {activeModal === 'JOURNAL' && 'Nhật Ký Đời Người Đang Viết'}
+                  {activeModal === 'MEDICAL_REPORT' && 'Phiếu Kết Quả Khám Bệnh Đa Khoa'}
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('NONE')}
+                  className="rounded p-1 hover:bg-[#DFD4BF]"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="flex-1 space-y-4 overflow-y-auto p-4 text-xs">
+                {/* --- MODAL A: CLEAN MENU TƯƠNG TÁC (KÈM ICON MŨI TÊN TĂNG/GIẢM) --- */}
+                {activeModal === 'INTERACT' && (
+                  <>
+                    {/* 1. Các hành động chuẩn theo địa điểm/phòng (Clean Menu) */}
+                    <div className="space-y-2">
+                      <div className="font-bold uppercase text-[#6B5B47]">
+                        Thao Tác Khả Dụng Tại Chỗ (Ẩn Sạch Mục Sai Địa Điểm)
+                      </div>
+
+                      {cleanMenuActions.length === 0 &&
+                        storeItemsAtCurrentSpot.length === 0 &&
+                        furnitureSoldAtCurrentSpot.length === 0 && (
+                          <p className="italic text-[#6B5B47]">
+                            Không có thao tác chuyên biệt tại phòng/khu vực này.
+                          </p>
+                        )}
+
+                      {cleanMenuActions.map((act) => {
+                        // Riêng ngủ/chợp mắt tách thành 3 nút trực tiếp (Chợp mắt 20p, Ngủ trưa 45p, Ngủ đêm 7h)
+                        if (act.command_type === 'SLEEP_OR_NAP') {
+                          return (
+                            <div
+                              key={act.command_type}
+                              className="space-y-1.5 rounded border border-[#D4C6AE] bg-white p-3"
+                            >
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="font-bold">{act.label_vi}</span>
+                                <ActionStatIndicators indicators={act.stat_indicators} />
+                              </div>
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'SLEEP_OR_NAP',
+                                      sleep_action_id: 'ACT_NAP_SHORT_20M'
+                                    });
+                                  }}
+                                  className="rounded border border-[#1F1B16] bg-[#FAF6EE] px-3 py-1.5 font-semibold hover:bg-[#EAE1D0]"
+                                >
+                                  Chợp mắt ngắn
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'SLEEP_OR_NAP',
+                                      sleep_action_id: 'ACT_NAP_NOON_45M'
+                                    });
+                                  }}
+                                  className="rounded border border-[#1F1B16] bg-[#FAF6EE] px-3 py-1.5 font-semibold hover:bg-[#EAE1D0]"
+                                >
+                                  Ngủ trưa
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'SLEEP_OR_NAP',
+                                      sleep_action_id: 'ACT_SLEEP_STANDARD_7H'
+                                    });
+                                  }}
+                                  className="rounded bg-[#1F1B16] px-3 py-1.5 font-bold text-white hover:bg-[#332C24]"
+                                >
+                                  Ngủ giấc sâu trọn vẹn
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        // Riêng Hiệu thuốc tách 2 lựa chọn OTC (Thuốc giảm đau vs Bốc thuốc triệu chứng)
+                        if (act.command_type === 'PHARMACY_OTC') {
+                          return (
+                            <div
+                              key={act.command_type}
+                              className="space-y-2 rounded border border-[#D4C6AE] bg-white p-3"
+                            >
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="font-bold">{act.label_vi}</span>
+                                <ActionStatIndicators indicators={act.stat_indicators} />
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'PHARMACY_OTC',
+                                      otc_mode: 'PAINKILLER'
+                                    });
+                                  }}
+                                  className="rounded border border-[#B8382A] bg-[#FFF5F3] px-3 py-1.5 font-semibold text-[#B8382A]"
+                                >
+                                  Mua Thuốc Giảm Đau (45.000đ)
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'PHARMACY_OTC',
+                                      otc_mode: 'SYMPTOM_GUESS_OTC'
+                                    });
+                                  }}
+                                  className="rounded border border-[#1F1B16] bg-[#FAF6EE] px-3 py-1.5 font-semibold"
+                                >
+                                  Kể triệu chứng nhờ bốc thuốc OTC (85.000đ)
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        // Các nút hành động trực tiếp khác
+                        return (
+                          <button
+                            key={act.command_type}
+                            type="button"
+                            onClick={() => {
+                              setActiveModal('NONE');
+                              if (act.command_type === 'EAT_MEAL') {
+                                runEngineCommand({ type: 'EAT_MEAL', input: { mode: 'HOME_COOKED' } });
+                              } else if (act.command_type === 'USE_TOILET') {
+                                runEngineCommand({ type: 'USE_TOILET' });
+                              } else if (act.command_type === 'TAKE_SHOWER') {
+                                runEngineCommand({ type: 'TAKE_SHOWER' });
+                              } else if (act.command_type === 'CLEAN_HOUSE') {
+                                runEngineCommand({ type: 'CLEAN_HOUSE' });
+                              } else if (act.command_type === 'HOSPITAL_FULL_EXAM') {
+                                runEngineCommand({ type: 'HOSPITAL_FULL_EXAM' });
+                              } else if (act.command_type === 'BUY_USE_RX_MEDICINE') {
+                                runEngineCommand({ type: 'BUY_USE_RX_MEDICINE' });
+                              } else if (act.command_type === 'HOSPITAL_REHAB') {
+                                runEngineCommand({ type: 'HOSPITAL_REHAB' });
+                              } else if (act.command_type === 'STUDY_SCHOOL') {
+                                runEngineCommand({ type: 'STUDY_SCHOOL' });
+                              } else if (act.command_type === 'WORK_SHIFT') {
+                                runEngineCommand({
+                                  type: 'WORK_SHIFT',
+                                  input: { shift_type: 'SHIFT_DAY', hours_worked: 4 }
+                                });
+                              } else if (act.command_type === 'REFUEL_VEHICLE') {
+                                runEngineCommand({ type: 'REFUEL_VEHICLE', option: 'REFUEL_50K' });
+                              } else if (act.command_type === 'BANK_OR_NOTARY') {
+                                runEngineCommand({
+                                  type: 'BANK_OR_NOTARY',
+                                  input: {
+                                    operation: 'NOTARIZE_WILL',
+                                    will_lines: [
+                                      {
+                                        beneficiary_name: 'Quỹ Từ Thiện Cộng Đồng',
+                                        relation_label_vi: 'Người thụ hưởng',
+                                        percentage_share: 100
+                                      }
+                                    ]
+                                  }
+                                });
+                              }
+                            }}
+                            className="flex w-full flex-wrap items-center justify-between gap-2 rounded border border-[#1F1B16] bg-white px-3.5 py-2.5 text-left transition hover:border-[#B8382A] hover:bg-[#FFF5F3]"
+                          >
+                            <span className="font-bold">{act.label_vi}</span>
+                            <ActionStatIndicators indicators={act.stat_indicators} />
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* 2. Tương tác lên Nội thất ĐÃ MUA đặt trong phòng hiện tại */}
+                    {hud.placed_furniture_in_current_room.length > 0 && (
+                      <div className="space-y-2 border-t border-[#D4C6AE] pt-3">
+                        <div className="font-bold uppercase text-[#6B5B47]">
+                          Thiết Bị & Nội Thất Trong Phòng
+                        </div>
+                        {hud.placed_furniture_in_current_room.map((furn) => (
+                          <div
+                            key={furn.instance_id}
+                            className="space-y-2 rounded border border-[#D4C6AE] bg-white p-3"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold">{furn.display_name}</span>
+                              {furn.is_broken_locked && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'REPAIR_EQUIPMENT',
+                                      target_kind: 'HOME_FURNITURE',
+                                      instance_id: furn.instance_id
+                                    });
+                                  }}
+                                  className="inline-flex items-center gap-1 rounded bg-[#B8382A] px-2.5 py-1 font-bold text-white"
+                                >
+                                  <Wrench className="h-3 w-3" /> Gọi Thợ Tới Nhà Sửa
+                                </button>
+                              )}
+                            </div>
+                            <p className="italic text-[#5A5043]">{furn.sensory_monologue}</p>
+                            <div className="space-y-1.5">
+                              {furn.available_actions.map((fa) => (
+                                <button
+                                  key={fa.action_id}
+                                  type="button"
+                                  onClick={() => {
+                                    setActiveModal('NONE');
+                                    runEngineCommand({
+                                      type: 'INTERACT_FURNITURE',
+                                      furniture_id: furn.furniture_id,
+                                      action_id: fa.action_id
+                                    });
+                                  }}
+                                  className="flex w-full flex-wrap items-center justify-between gap-2 rounded border border-[#C8BFA8] bg-[#FAF6EE] px-3 py-2 text-left hover:border-[#B8382A]"
+                                >
+                                  <span className="font-semibold">{fa.button_label}</span>
+                                  <ActionStatIndicators indicators={fa.stat_indicators} />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* 3. Quầy mua sắm Location-Bound (chỉ hiện tại Siêu thị / Cửa hàng Công nghệ / Chợ đồ cũ) */}
+                    {(storeItemsAtCurrentSpot.length > 0 || furnitureSoldAtCurrentSpot.length > 0) && (
+                      <div className="space-y-2 border-t border-[#D4C6AE] pt-3">
+                        <div className="flex items-center gap-1.5 font-bold uppercase text-[#B8382A]">
+                          <ShoppingBag className="h-4 w-4" />
+                          Quầy Hàng Tại {translateVi(player.current_location_id)}
+                        </div>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          {storeItemsAtCurrentSpot.map((it) => {
+                            const isSecondhand =
+                              player.current_location_id === 'LOC_SECONDHAND_ELECTRONICS';
+                            const displayPrice = isSecondhand
+                              ? Math.round(it.base_price_vnd * 0.45)
+                              : it.base_price_vnd;
+                            return (
+                              <button
+                                key={it.item_def_id}
+                                type="button"
+                                onClick={() => {
+                                  setActiveModal('NONE');
+                                  runEngineCommand({ type: 'BUY_ITEM', item_def: it });
+                                }}
+                                className="flex items-center justify-between gap-2 rounded border border-[#C8BFA8] bg-white p-2.5 text-left hover:border-[#B8382A]"
+                              >
+                                <div>
+                                  <div className="font-bold">{it.display_name_key}</div>
+                                  <div className="text-[11px] text-[#6B5B47]">
+                                    {it.weight_kg} kg •{' '}
+                                    {it.usage_type === 'CONSUMABLE' ? 'Tiêu thụ' : 'Dùng bền'}
+                                  </div>
+                                </div>
+                                <span className="shrink-0 font-bold text-[#B8382A]">
+                                  {displayPrice.toLocaleString('vi-VN')} đ
+                                </span>
+                              </button>
+                            );
+                          })}
+
+                          {furnitureSoldAtCurrentSpot.map((furn) => {
+                            const isSecondhand =
+                              player.current_location_id === 'LOC_SECONDHAND_ELECTRONICS';
+                            const displayPrice = isSecondhand
+                              ? Math.round(furn.base_price_vnd * 0.45)
+                              : furn.base_price_vnd;
+                            return (
+                              <button
+                                key={furn.furniture_id}
+                                type="button"
+                                onClick={() => {
+                                  setActiveModal('NONE');
+                                  runEngineCommand({
+                                    type: 'BUY_FURNITURE',
+                                    furniture_id: furn.furniture_id
+                                  });
+                                }}
+                                className="flex items-center justify-between gap-2 rounded border border-[#1F1B16] bg-[#FFFDF8] p-2.5 text-left hover:border-[#B8382A]"
+                              >
+                                <div>
+                                  <div className="font-bold">{translateVi(furn.name_key)}</div>
+                                  <div className="text-[11px] text-[#6B5B47]">
+                                    Nội thất giao thẳng về Nhà Riêng
+                                  </div>
+                                </div>
+                                <span className="shrink-0 font-bold text-[#B8382A]">
+                                  {displayPrice.toLocaleString('vi-VN')} đ
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* --- MODAL B: DI CHUYỂN PHÒNG & BẢN ĐỒ KHU VỰC (RURAL / URBAN) --- */}
+                {activeModal === 'MOVE' && (
+                  <>
+                    {player.current_location_id === 'LOC_HOME' && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-1.5 font-bold uppercase text-[#6B5B47]">
+                          <Home className="h-4 w-4" /> Chuyển Phòng Trong Nhà (Cấp {player.house_tier})
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {unlockedHomeRooms.map((roomId) => (
+                            <button
+                              key={roomId}
+                              type="button"
+                              onClick={() => {
+                                setActiveModal('NONE');
+                                runEngineCommand({ type: 'SWITCH_HOME_ROOM', sub_node_id: roomId });
+                              }}
+                              className={`rounded border px-3 py-1.5 font-bold ${
+                                player.current_sub_node_id === roomId
+                                  ? 'border-[#B8382A] bg-[#B8382A] text-white'
+                                  : 'border-[#1F1B16] bg-white hover:bg-[#EAE1D0]'
+                              }`}
+                            >
+                              {translateVi(roomId)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2 border-t border-[#D4C6AE] pt-3">
+                      <div className="font-bold uppercase text-[#B8382A]">
+                        Bản Đồ Khu Vực ({player.current_region === 'RURAL' ? 'Nông Thôn' : 'Thành Thị'})
+                      </div>
+                      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        {ALL_MAP_LOCATION_IDS.filter((locId) => !lockedLocations.includes(locId)).map(
+                          (locId) => {
+                            const distKm = calculateDistanceKmBetweenLocations(
+                              player.current_location_id,
+                              locId
+                            );
+                            const isHere = player.current_location_id === locId;
+                            return (
+                              <button
+                                key={locId}
+                                type="button"
+                                disabled={isHere}
+                                onClick={() => {
+                                  setActiveModal('NONE');
+                                  runEngineCommand({
+                                    type: 'TRAVEL_TO_LOCATION',
+                                    target_location_id: locId,
+                                    transit_mode: player.active_vehicle ? 'OWN_VEHICLE' : 'PUBLIC_BUS'
+                                  });
+                                }}
+                                className={`flex items-center justify-between rounded border px-3 py-2 text-left transition ${
+                                  isHere
+                                    ? 'border-[#B8382A] bg-[#FDECE9] font-bold text-[#B8382A]'
+                                    : 'border-[#C8BFA8] bg-white hover:border-[#1F1B16]'
+                                }`}
+                              >
+                                <span className="font-semibold">{translateVi(locId)}</span>
+                                <span className="text-[11px] text-[#6B5B47]">
+                                  {isHere ? 'Đang ở đây' : `${distKm} km`}
+                                </span>
+                              </button>
+                            );
+                          }
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Chuyển vùng Nông Thôn <-> Thành Thị khi đủ 18 tuổi */}
+                    {player.identity_biometrics.exact_age_years >= 18 && (
+                      <div className="border-t border-[#D4C6AE] pt-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveModal('NONE');
+                            runEngineCommand({
+                              type: 'MIGRATE_REGION',
+                              target_region: player.current_region === 'RURAL' ? 'URBAN' : 'RURAL'
+                            });
+                          }}
+                          className="w-full rounded border border-[#1F1B16] bg-[#EAE1D0] px-3 py-2 font-bold hover:bg-[#DFD4BF]"
+                        >
+                          {player.current_region === 'RURAL'
+                            ? translateVi('act_migrate_to_city_label')
+                            : translateVi('act_return_to_countryside_label')}
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* --- MODAL C: TÚI ĐỒ HÀNH TRANG ĐỘNG (KG) & PHIẾU KHÁM BỆNH --- */}
+                {activeModal === 'BAG' && carryStatus && (
+                  <div className="space-y-3">
+                    <div
+                      className={`rounded border p-3 font-bold ${
+                        carryStatus.is_overburdened
+                          ? 'border-[#B8382A] bg-[#FDECE9] text-[#B8382A]'
+                          : 'border-[#C8BFA8] bg-[#F2ECE0]'
+                      }`}
+                    >
+                      Tải trọng đang mang: {carryStatus.current_weight_kg} /{' '}
+                      {carryStatus.max_capacity_kg} kg{' '}
+                      {carryStatus.is_overburdened && '— QUÁ TẢI (Đi chậm ×1.3 & đau lưng)'}
+                    </div>
+
+                    <div className="space-y-2">
+                      {player.inventory_items.map((item) => (
+                        <div
+                          key={item.instance_id}
+                          className="flex flex-wrap items-center justify-between gap-2 rounded border border-[#D4C6AE] bg-white p-3"
+                        >
+                          <div>
+                            <div className="font-bold">{translateVi(item.display_name_key)}</div>
+                            <div className="text-[11px] text-[#6B5B47]">
+                              {item.weight_kg} kg •{' '}
+                              {item.usage_type === 'CONSUMABLE'
+                                ? `Còn ${item.remaining_servings ?? 1} phần`
+                                : 'Đồ dùng bền'}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            {item.category === 'FOOD' && item.usage_type === 'CONSUMABLE' && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setActiveModal('NONE');
+                                  runEngineCommand({
+                                    type: 'EAT_MEAL',
+                                    input: {
+                                      mode: 'FROM_INVENTORY',
+                                      inventoryInstanceId: item.instance_id
+                                    }
+                                  });
+                                }}
+                                className="rounded bg-[#1F1B16] px-2.5 py-1 font-bold text-white"
+                              >
+                                Ăn Ngay
+                              </button>
+                            )}
+
+                            {item.item_def_id === 'ITEM_MEDICAL_REPORT' && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setViewingReportItem(item);
+                                  setActiveModal('MEDICAL_REPORT');
+                                }}
+                                className="inline-flex items-center gap-1 rounded bg-[#B8382A] px-2.5 py-1 font-bold text-white"
+                              >
+                                <FileText className="h-3.5 w-3.5" /> Đọc Bệnh Án
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* --- MODAL D: HỒ SƠ MÙ THÔNG TIN (UC-03) --- */}
+                {activeModal === 'PROFILE' && (
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Họ & Tên</div>
+                        <div className="font-bold">{hud.blind_profile_view.full_name}</div>
+                      </div>
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Tuổi / Học vấn</div>
+                        <div className="font-bold">
+                          {hud.blind_profile_view.age_years} tuổi •{' '}
+                          {player.identity_biometrics.education_level_key}
+                        </div>
+                      </div>
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Tính cách ngầm</div>
+                        <div className="font-bold">
+                          {hud.blind_profile_view.personality_display_vi}
+                        </div>
+                      </div>
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Vóc dáng & BMI</div>
+                        <div className="font-bold">
+                          {hud.blind_profile_view.biometrics_display_vi}
+                        </div>
+                      </div>
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Sở thích</div>
+                        <div className="font-bold">{hud.blind_profile_view.hobby_display_vi}</div>
+                      </div>
+                      <div className="rounded border border-[#D4C6AE] bg-white p-3">
+                        <div className="text-[11px] text-[#6B5B47]">Tiền tiết kiệm / BHXH</div>
+                        <div className="font-bold">
+                          {player.bank_savings_vnd.toLocaleString('vi-VN')} đ •{' '}
+                          {player.has_social_insurance ? 'Có BHXH (-80% viện phí)' : 'Chưa có BHXH'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* --- MODAL E: NHẬT KÝ ĐỜI NGƯỜI ĐANG GHI CHÉP --- */}
+                {activeModal === 'JOURNAL' && (
+                  <div className="space-y-2">
+                    {session.journal_logs.length === 0 ? (
+                      <p className="italic text-[#6B5B47]">Chưa có ghi chép nào.</p>
+                    ) : (
+                      [...session.journal_logs].reverse().map((log, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded border border-[#DFD5C2] bg-white px-3 py-2 leading-relaxed"
+                        >
+                          <strong className="text-[#B8382A]">
+                            [{log.age_recorded} tuổi{log.date_str_vi ? ` • ${log.date_str_vi}` : ''}]
+                          </strong>{' '}
+                          {log.text_vi}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* --- MODAL F: PHIẾU KẾT QUẢ KHÁM BỆNH ĐA KHOA (KHÔNG HIỆN %) --- */}
+                {activeModal === 'MEDICAL_REPORT' && viewingReportItem && (
+                  <div className="space-y-3">
+                    <div className="rounded border border-[#1F1B16] bg-white p-4">
+                      <div className="border-b border-[#C8BFA8] pb-2 text-center">
+                        <div className="font-serif text-base font-bold text-[#B8382A]">
+                          PHIẾU KẾT QUẢ XÉT NGHIỆM TỔNG QUÁT
+                        </div>
+                        <div className="text-[11px] text-[#6B5B47]">
+                          Bệnh nhân: {player.identity_biometrics.full_name} • Ngày khám:{' '}
+                          {viewingReportItem.medical_report_date_str || formatSessionDateVi(session)}
+                        </div>
+                      </div>
+                      <div className="mt-3 space-y-2">
+                        {(viewingReportItem.medical_diagnoses || []).map((diag) => (
+                          <div
+                            key={diag.organ_key}
+                            className={`rounded border p-2.5 ${
+                              diag.severity_tag === 'CRITICAL'
+                                ? 'border-[#B8382A] bg-[#FDECE9]'
+                                : diag.severity_tag === 'WARNING'
+                                  ? 'border-[#D4AC0D] bg-[#FEF9E7]'
+                                  : 'border-[#DFD5C2] bg-[#FAF6EE]'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between font-bold">
+                              <span>{diag.organ_label_vi}</span>
+                              <span>
+                                {diag.severity_tag === 'CRITICAL'
+                                  ? 'NGUY KỊCH'
+                                  : diag.severity_tag === 'WARNING'
+                                    ? 'CẦN THEO DÕI'
+                                    : 'ỔN ĐỊNH'}
+                              </span>
+                            </div>
+                            <div className="mt-0.5 text-[11px] text-[#4A3F30]">
+                              {diag.clinical_note_vi}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>
-      <DevOnlyAdminGate/>
+    );
+  };
+
+  return (
+    <div
+      style={{
+        fontFamily: '"Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif',
+        fontVariantNumeric: 'lining-nums'
+      }}
+    >
+      {/* Cổng DevOnlyAdminGate tự cắt bỏ hoàn toàn trang Admin JSON khi build Desktop Tauri */}
+      <DevOnlyAdminGate enableFloatingButton={!showDevQaObserver}>
+        {renderMainContent()}
+      </DevOnlyAdminGate>
     </div>
-    
   );
 }

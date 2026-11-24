@@ -1,8 +1,8 @@
 {
 "$schema": "http://json-schema.org/draft-07/schema#",
 "metadata": {
-"version": "2.1.0",
-"description": "Dữ liệu 4 phân khúc đơn vị tuyển dụng, ca kíp, KPI, Nghĩa vụ quân sự và Chế độ thai sản BHXH (đồng bộ 100% mã location_id với bản đồ và sự kiện công sở)"
+"version": "2.2.0",
+"description": "Dữ liệu 4 phân khúc đơn vị tuyển dụng, danh mục việc làm bán thời gian (Part-time / Thời vụ cứu đói), ca kíp, KPI, Nghĩa vụ quân sự và Chế độ thai sản BHXH."
 },
 "employer_tiers": {
 "TIER_1_INFORMAL": {
@@ -59,6 +59,78 @@
 "exempt_for_mother_infant_under_months": 12
 }
 },
+"part_time_jobs": [
+{
+"part_time_job_id": "PT_COMMUNITY_CLEANUP",
+"title_key": "Lao động thời vụ / Phụ dọn dẹp khu chợ",
+"location_id": "LOC_SUPERMARKET_MARKET",
+"environment_exposure": "OUTDOOR",
+"min_age": 16,
+"max_age": 68,
+"duration_minutes": 120,
+"base_pay_vnd": 80000,
+"energy_cost_pct": 8.0,
+"satiety_cost_pct": 7.0,
+"allows_criminal_record": true,
+"available_in_regions": ["RURAL", "URBAN"],
+"organ_wear_per_gig": {
+"musculoskeletal": -0.5,
+"integumentary_skin": -0.3
+}
+},
+{
+"part_time_job_id": "PT_CAFE_SERVER",
+"title_key": "Phụ quán ăn / Phục vụ ca ngắn (Part-time)",
+"location_id": "LOC_WORK_SME",
+"environment_exposure": "INDOOR",
+"min_age": 16,
+"max_age": 55,
+"duration_minutes": 180,
+"base_pay_vnd": 125000,
+"energy_cost_pct": 11.0,
+"satiety_cost_pct": 8.0,
+"allows_criminal_record": true,
+"available_in_regions": ["RURAL", "URBAN"],
+"organ_wear_per_gig": {
+"musculoskeletal": -0.6
+}
+},
+{
+"part_time_job_id": "PT_TUTOR_STUDENT",
+"title_key": "Gia sư dạy kèm tại nhà (Part-time)",
+"location_id": "LOC_HOME",
+"environment_exposure": "INDOOR",
+"min_age": 17,
+"max_age": 65,
+"duration_minutes": 120,
+"base_pay_vnd": 150000,
+"energy_cost_pct": 7.0,
+"satiety_cost_pct": 5.0,
+"allows_criminal_record": false,
+"available_in_regions": ["RURAL", "URBAN"],
+"organ_wear_per_gig": {
+"brain": -0.6
+}
+},
+{
+"part_time_job_id": "PT_DELIVERY_SHIPPER",
+"title_key": "Chạy giao hàng công nghệ theo cuốc (Part-time)",
+"location_id": "LOC_TRANSIT_ROAD",
+"environment_exposure": "OUTDOOR",
+"min_age": 18,
+"max_age": 60,
+"duration_minutes": 180,
+"base_pay_vnd": 165000,
+"energy_cost_pct": 12.0,
+"satiety_cost_pct": 10.0,
+"allows_criminal_record": true,
+"available_in_regions": ["URBAN"],
+"organ_wear_per_gig": {
+"musculoskeletal": -0.8,
+"lungs": -0.5
+}
+}
+],
 "job_catalog": [
 {
 "job_id": "JOB_STREET_HELPER",

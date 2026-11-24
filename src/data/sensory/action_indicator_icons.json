@@ -1,0 +1,147 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+"metadata": {
+"version": "3.2.0",
+"description": "Định nghĩa tập icon cảm quan chỉ báo chiều tác động (UP = tăng/hồi phục, DOWN = giảm/hao mòn) trên từng nút thao tác, bổ sung nhóm việc làm bán thời gian (WORK_PART_TIME)."
+},
+"stat_catalog": {
+"SATIETY": {
+"icon_name": "Utensils",
+"label_vi": "Độ no"
+},
+"ENERGY_SLEEP": {
+"icon_name": "Moon",
+"label_vi": "Tỉnh táo & Giấc ngủ"
+},
+"BLADDER_COMFORT": {
+"icon_name": "Droplets",
+"label_vi": "Thoải mái vệ sinh"
+},
+"HYGIENE": {
+"icon_name": "Sparkles",
+"label_vi": "Sạch sẽ cơ thể"
+},
+"HOUSE_CLEANLINESS": {
+"icon_name": "Home",
+"label_vi": "Sạch sẽ nhà cửa"
+},
+"HAPPINESS": {
+"icon_name": "Smile",
+"label_vi": "Tâm trạng"
+},
+"HEALTH_GENERAL": {
+"icon_name": "HeartPulse",
+"label_vi": "Thể trạng chung"
+},
+"MONEY": {
+"icon_name": "Coins",
+"label_vi": "Tiền mặt"
+},
+"TIME_SKILL": {
+"icon_name": "BookOpen",
+"label_vi": "Học tập & Kỷ luật"
+}
+},
+"action_effects_map": {
+"EAT_MEAL": [
+{ "stat_id": "SATIETY", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 },
+{ "stat_id": "BLADDER_COMFORT", "direction": "DOWN", "intensity": 1 }
+],
+"ACT_COOK_FRESH_MEAL": [
+{ "stat_id": "SATIETY", "direction": "UP", "intensity": 2 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 }
+],
+"SLEEP_OR_NAP": [
+{ "stat_id": "ENERGY_SLEEP", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 1 },
+{ "stat_id": "SATIETY", "direction": "DOWN", "intensity": 1 }
+],
+"ACT_SLEEP_STANDARD_7H": [
+{ "stat_id": "ENERGY_SLEEP", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 1 },
+{ "stat_id": "SATIETY", "direction": "DOWN", "intensity": 1 }
+],
+"ACT_NAP_SHORT_20M": [
+{ "stat_id": "ENERGY_SLEEP", "direction": "UP", "intensity": 1 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 }
+],
+"USE_TOILET": [
+{ "stat_id": "BLADDER_COMFORT", "direction": "UP", "intensity": 2 }
+],
+"TAKE_SHOWER": [
+{ "stat_id": "HYGIENE", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 }
+],
+"CLEAN_HOUSE": [
+{ "stat_id": "HOUSE_CLEANLINESS", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 }
+],
+"ACT_WASH_CLOTHES_AUTO": [
+{ "stat_id": "HYGIENE", "direction": "UP", "intensity": 1 },
+{ "stat_id": "HOUSE_CLEANLINESS", "direction": "UP", "intensity": 1 }
+],
+"ACT_FRIDGE_STORE_FOOD": [
+{ "stat_id": "SATIETY", "direction": "UP", "intensity": 1 }
+],
+"ACT_FRIDGE_CLEAN_DEFROST": [
+{ "stat_id": "HOUSE_CLEANLINESS", "direction": "UP", "intensity": 1 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 }
+],
+"ACT_WATCH_NEWS_WEATHER": [
+{ "stat_id": "TIME_SKILL", "direction": "UP", "intensity": 1 }
+],
+"ACT_WATCH_MOVIE_RELAX": [
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 2 }
+],
+"ACT_PC_CHECK_TIME_AND_CHAT": [
+{ "stat_id": "TIME_SKILL", "direction": "UP", "intensity": 1 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 }
+],
+"ACT_PC_WORK_FROM_HOME": [
+{ "stat_id": "MONEY", "direction": "UP", "intensity": 1 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 }
+],
+"WORK_SHIFT": [
+{ "stat_id": "MONEY", "direction": "UP", "intensity": 2 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 2 },
+{ "stat_id": "SATIETY", "direction": "DOWN", "intensity": 1 }
+],
+"WORK_PART_TIME": [
+{ "stat_id": "MONEY", "direction": "UP", "intensity": 1 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 },
+{ "stat_id": "SATIETY", "direction": "DOWN", "intensity": 1 }
+],
+"STUDY_SCHOOL": [
+{ "stat_id": "TIME_SKILL", "direction": "UP", "intensity": 2 },
+{ "stat_id": "ENERGY_SLEEP", "direction": "DOWN", "intensity": 1 }
+],
+"PHARMACY_OTC": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 1 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 1 }
+],
+"HOSPITAL_FULL_EXAM": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 2 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 2 }
+],
+"BUY_USE_RX_MEDICINE": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 1 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 2 }
+],
+"HOSPITAL_REHAB": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 2 },
+{ "stat_id": "HEALTH_GENERAL", "direction": "UP", "intensity": 2 },
+{ "stat_id": "HAPPINESS", "direction": "UP", "intensity": 1 }
+],
+"REFUEL_VEHICLE": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 1 }
+],
+"REPAIR_VEHICLE_PART": [
+{ "stat_id": "MONEY", "direction": "DOWN", "intensity": 2 }
+],
+"BANK_OR_NOTARY": [
+{ "stat_id": "MONEY", "direction": "UP", "intensity": 1 }
+]
+}
+}
